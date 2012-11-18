@@ -1,0 +1,76 @@
+{
+    // enforce
+    "bitwise": true,
+    "camelcase": true,
+    "curly": false,
+    "eqeqeq": true,
+    "forin": true,
+    "immed": false,
+    "indent": false,
+    "latedef": true,
+    "newcap": true,
+    "noarg": true,
+    "noempty": false,
+    "nonew": true,
+    "plusplus": false,
+    "quotmark": "single",
+    "unused": true,
+    "strict": false,
+    "trailing": true,
+    "maxstatements": 20,
+    "maxdepth": 5,
+    "maxparams": 4,
+    "maxcomplexity": 3,
+    "maxlen": 160,
+
+
+    // relaxing
+    "asi": true,
+    "boss": false,
+    "debug": false,
+    "eqnull": true,
+    "eqnull": true,
+    "es5": false,
+    "esnext": false,
+    "expr": false,
+    "expr": false,
+    "funcscope": false,
+    "sub": true,
+
+    // globals
+    "globals": {
+        "mocha": false,
+        "assert": false,
+        "require": false
+    },
+
+    "passfail": false,
+    "white": false
+//    "node" : true,
+//    "es5" : true,
+//    "browser" : true,
+//
+//    "boss" : false,
+//    "curly": false,
+//    "debug": false,
+//    "devel": false,
+//    "eqeqeq": true,
+//    "evil": true,
+//    "forin": false,
+//    "immed": true,
+//    "laxbreak": false,
+//    "newcap": true,
+//    "noarg": true,
+//    "noempty": false,
+//    "nonew": false,
+//    "nomen": false,
+//    "onevar": true,
+//    "plusplus": false,
+//    "regexp": false,
+//    "undef": true,
+//    "sub": true,
+//    "strict": false,
+//    "white": true,
+//    "unused": true
+
+}

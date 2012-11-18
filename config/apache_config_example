@@ -1,0 +1,19 @@
+NameVirtualHost *:9093
+Listen 9093
+<VirtualHost *:9093>
+   
+    DocumentRoot "/home/hassen/workspace/tasktree/app/web"
+
+    <Directory />
+        Options FollowSymLinks
+        AllowOverride None
+    </Directory>
+    <Directory "/home/hassen/workspace/tasktree/app/web">
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+
+</VirtualHost>
