@@ -1,7 +1,7 @@
 require "bundler/setup"
 require 'json'
 
-desc "Format javascript files\n format one file `rake format_js [filename]` \n format all files in git status `rake format_js`\n format all files `rake format_js all`"
+desc "Formats javascript files\n formats one file `rake format_js [filename]` \n formats all files in git status `rake format_js`\n format all files `rake format_js all`"
 task :format_js do
     extensions = ['.js', '.json']
 
@@ -30,10 +30,11 @@ task :format_js do
     abort
 end
 
-desc "Format javascript files\n format one file `rake format_js [filename]` \n format all files in git status `rake format_js`\n format all files `rake format_js all`"
+desc "runs JSHint -- same options as format_js"
 task :hint_js do
     extensions = ['.js', '.json']
 
+    # TODO(hbt) abstract this code because it is duplicated and the same as format_js
     if ARGV[1] == 'all'
         # all files
         javascript_files = Dir["**/*{#{extensions.join(',')}}"]
@@ -53,8 +54,7 @@ task :hint_js do
         p "analyzing #{file}"
         #        formated_content = `js-beautify --brace-style=expand -s 4 #{file}`
         results = `jshint --config=config/hintrc.json #{file}`
-        # // TODO(hbt): add sha1 check and only write when content is different
-        puts results if results != ""
+        puts results unless results == ""
     end
     abort
 end
