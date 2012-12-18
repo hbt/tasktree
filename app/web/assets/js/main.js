@@ -1,13 +1,11 @@
 require.config({
-    baseUrl: 'assets/js/'
+    baseUrl: 'assets/js'
 });
 
-require(['require', 'vendor/mocha/chai', 'vendor/underscore', 'lib/utils'], function(require, chai) {
-    require(['vendor/mocha/mocha'], function() {
+require(['require', 'components/jquery/jquery', 'components/chai/chai', 'components/underscore/underscore', 'lib/utils'], function(require, $, chai) {
+    require(['components/mocha/mocha'], function() {
         // Chai
         window.assert = chai.assert;
-//        should = chai.should();
-//        expect = chai.expect;
 
         // Mocha
         mocha.setup({
