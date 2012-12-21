@@ -65,3 +65,8 @@ task :pre_commit do
      puts %x[rake format_js]
      puts %x[rake hint_js]
 end
+
+
+task :start_server do
+     puts %x[sh dev_scripts/start_server]
+end

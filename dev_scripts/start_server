@@ -1,0 +1,2 @@
+forever -d -v stop app/server/app.js
+forever -a -v -d -o log/app.log -e log/app-err.log start -w app/server/app.js
