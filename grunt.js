@@ -5,9 +5,6 @@ module.exports = function(grunt)
 
   // Project configuration.
   grunt.initConfig({
-    lint:  {
-      files: ['app/web/**/*.js']
-    },
     watch: {
       files: ['app/web/**/*.js'],
       tasks: 'update-version-debug'
