@@ -2,17 +2,20 @@
     "name": "tasktree",
     "version": "0.0.1",
     "dependencies": {
-        "underscore": "1.3.x",
+        "underscore": "1.4.x",
         "express": "3.0.x",
         "connect": "2.4.x",
         "mongodb": "1.0.x",
         "mongoose": "2.7.x",
         "socket.io": "0.9.x",
-        "connect-auth": "0.5.x",
         "hbs": "1.0.x",
-        "mocha": "1.7.x"
+        "mocha": "1.7.x",
+        "forever": "0.10.x",
+        "jshint": "0.9.x",
+        "grunt": "0.3.x",
+        "bower": "0.6.x"
     },
     "engines": {
-        "node": "0.6.x"
+        "node": "0.8.x"
     }
 }

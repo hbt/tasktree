@@ -1,5 +1,5 @@
 /nbproject
-/app/server/node_modules
 /Gemfile.lock
 /.idea/
 /app/web/debug-version.txt
+/node_modules
