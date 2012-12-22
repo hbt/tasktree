@@ -2,8 +2,18 @@ require.config({
   baseUrl: 'assets/js'
 });
 
-require(['require', 'components/jquery/jquery', 'components/chai/chai', 'components/underscore/underscore', 'lib/utils'], function(require, $, chai)
+require(['require', 'components/jquery/jquery', 'components/chai/chai', 'components/underscore/underscore',
+  'lib/utils/global-utils'], function(require, $, chai)
 {
+
+  // TODO(hbt) restrict when in debug mode
+  require(['lib/utils/debug/reload'], function(ReloadUtils)
+  {
+    ReloadUtils.init()
+  })
+
+
+  // TODO(hbt) abstract tests
   require(['components/mocha/mocha'], function()
   {
     // Chai
@@ -21,4 +31,6 @@ require(['require', 'components/jquery/jquery', 'components/chai/chai', 'compone
       mocha.run();
     });
   })
+
+
 })
