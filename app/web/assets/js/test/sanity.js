@@ -50,12 +50,10 @@ define([], function()
 
     xit('remote database is running | to sync local data to remote database', function()
     {
-      assert.ok(2 > 1);
     })
 
     xit('browser supports web sockets | app requires instant two-way communication between local & remote', function()
     {
-      assert.ok(2 > 1);
     })
   })
 });

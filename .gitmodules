@@ -1,0 +1,3 @@
+[submodule "tasks/scc"]
+	path = tasks/scc
+	url = git@github.com:hbt/simple-custom-config
