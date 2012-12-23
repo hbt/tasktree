@@ -47,7 +47,13 @@ module.exports = function(grunt)
         files = _.chain(files)
           .map(function(file)
           {
-            var filename = file.trim().split(' ')[1]
+            var status = file.trim().split(' ').shift()
+            if(status === 'D')
+            {
+              return;
+            }
+
+            var filename = file.trim().split(' ').pop()
             return (filename && filename.indexOf('.js') !== -1 && filename.indexOf('.json') === -1) ? __dirname + '/../' + filename : null
           })
           .select(function(file)
@@ -73,6 +79,11 @@ module.exports = function(grunt)
       {
         grunt.helper('lint', grunt.file.read(file), config.options, config.globals, file);
       })
+
+      if(grunt.fail.errorcount > 1)
+      {
+        grunt.fatal('Not lint free')
+      }
 
       done()
     })
