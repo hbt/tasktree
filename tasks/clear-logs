@@ -1,0 +1,5 @@
+#!/bin/bash
+
+rm log/app.log
+rm log/app-err.log
+
