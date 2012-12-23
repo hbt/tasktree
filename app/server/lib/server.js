@@ -1,12 +1,15 @@
 (function()
 {
+  require('./utils/global')
   var express = require('express');
   var app = express();
+
+  var config = require('./../config/config').config
 
   app.get('/', function(req, res)
   {
     res.header('Access-Control-Allow-Origin', '*');
-    res.send('main');
+    res.send('up');
   });
 
   // TODO(hbt) organize url modules + calls i.e modules/controllers/controllerName/actionName
@@ -14,6 +17,7 @@
   {
     res.header('Access-Control-Allow-Origin', '*');
     res.send('down');
+
     // disable error handler
     process.removeAllListeners('uncaughtException')
 
@@ -23,7 +27,6 @@
 
   exports.start = function()
   {
-    // TODO(hbt) abstract config
-    app.listen(3000);
+    app.listen(config.serverPort);
   }
 })()

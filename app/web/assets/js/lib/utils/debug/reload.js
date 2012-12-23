@@ -7,7 +7,7 @@ define([], function()
     reloadIfNewVersion: function()
     {
       $.ajax({
-        url:     'http://localhost:9093/debug-version.txt',
+        url:     App.config.debugVersionURL + '/debug-version.txt?bustCache=' + (+new Date()),
         context: document.body,
         success: function(data)
         {
@@ -23,7 +23,6 @@ define([], function()
 
     init: function()
     {
-      // TODO(hbt) fix url
       window.setInterval(ReloadModule.reloadIfNewVersion, 500)
     }
   }

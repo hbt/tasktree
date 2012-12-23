@@ -1,12 +1,11 @@
-require('./utils/global-utils')
+require('./lib/utils/global')
 
 // TODO(hbt) abstract error handler
 process.on('uncaughtException', function(error)
 {
-  c.l(error.stack)
+  console.log(error.stack)
 });
 
-
 // start server
-var server = require('./modules/server')
+var server = require('./lib/server')
 server.start()

@@ -1,7 +1,7 @@
 define([], function()
 {
   return {
-    'server.port': '%%server_port%%',
-    'server.url':  '%%server_url%%'
+    'serverURL':       '%%server_url%%',
+    'debugVersionURL': '%%debug_version_url%%'
   }
 })

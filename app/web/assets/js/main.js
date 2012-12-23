@@ -3,15 +3,13 @@ require.config({
 });
 
 require(['require', 'components/jquery/jquery', 'components/chai/chai', 'components/underscore/underscore',
-  'lib/utils/global-utils'], function(require, $, chai)
+  'lib/core', 'lib/utils/global'], function(require, $, chai)
 {
-
   // TODO(hbt) restrict when in debug mode
   require(['lib/utils/debug/reload'], function(ReloadUtils)
   {
     ReloadUtils.init()
   })
-
 
   // TODO(hbt) abstract tests
   require(['components/mocha/mocha'], function()

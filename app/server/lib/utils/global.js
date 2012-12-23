@@ -7,7 +7,7 @@
   }
 
 // Note(hbt) used by the frontend
-  if(typeof exports === "undefined")
+  if(typeof exports === 'undefined')
   {
     initUtils()
   }
