@@ -1,2 +1,1 @@
-c = console
-c.l = console.log
+../../../../../server/utils/global-utils.js
