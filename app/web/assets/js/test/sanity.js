@@ -17,9 +17,34 @@ define([], function()
         });
       })
 
-
-      xit('server can recover from crashes | uses forever', function()
+      it('forever restarts server | to recover from crashes', function(done)
       {
+
+        // TODO(hbt) fix url
+        $.ajax({
+          url:     'http://localhost:3000/tests/purpose_crash',
+          context: document.body,
+          success: function()
+          {
+            var interval
+
+            function checkServerIsUp()
+            {
+              // TODO(hbt) fix url
+              $.ajax({
+                url:     'http://localhost:3000',
+                context: document.body,
+                success: function()
+                {
+                  done()
+                  window.clearInterval(interval)
+                }
+              });
+            }
+
+            interval = window.setInterval(checkServerIsUp, 200)
+          }
+        });
       })
     })
 
