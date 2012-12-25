@@ -54,6 +54,9 @@ module.exports = function(grunt)
             }
 
             var filename = file.trim().split(' ').pop()
+
+            // TODO(hbt) simplify condition and use path.extname
+            // TODO(hbt) use path.resolve to find where the file is located + path.normalize to get rid of the ../ stuff
             return (filename && filename.indexOf('.js') !== -1 && filename.indexOf('.json') === -1) ? __dirname + '/../' + filename : null
           })
           .select(function(file)
