@@ -146,7 +146,7 @@
         <text>Done/Yes</text>
       </controlProperties>
     </control>
-    <control controlID="71" controlTypeID="com.balsamiq.mockups::Button" x="826" y="524" w="136" h="71" measuredW="99" measuredH="27" zOrder="28" locked="false" isInGroup="-1">
+    <control controlID="71" controlTypeID="com.balsamiq.mockups::Button" x="805" y="524" w="136" h="71" measuredW="99" measuredH="27" zOrder="28" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Next/Skip/No</text>
       </controlProperties>

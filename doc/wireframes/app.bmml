@@ -200,5 +200,16 @@
         <text>Computer</text>
       </controlProperties>
     </control>
+    <control controlID="69" controlTypeID="com.balsamiq.mockups::SearchBox" x="278" y="184" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="39" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>search</text>
+      </controlProperties>
+    </control>
+    <control controlID="70" controlTypeID="com.balsamiq.mockups::Link" x="382" y="384" w="-1" h="-1" measuredW="63" measuredH="21" zOrder="40" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Advanced</text>
+      </controlProperties>
+    </control>
+    <control controlID="71" controlTypeID="com.balsamiq.mockups::ProgressBar" x="882" y="271" w="54" h="20" measuredW="100" measuredH="20" zOrder="41" locked="false" isInGroup="-1"/>
   </controls>
 </mockup>

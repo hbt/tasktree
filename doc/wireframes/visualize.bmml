@@ -100,12 +100,12 @@
         <text>Tags</text>
       </controlProperties>
     </control>
-    <control controlID="48" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="500" y="269" w="-1" h="-1" measuredW="140" measuredH="24" zOrder="19" locked="false" isInGroup="-1">
+    <control controlID="48" controlTypeID="com.balsamiq.mockups::BreadCrumbs" x="478" y="242" w="-1" h="-1" measuredW="140" measuredH="24" zOrder="19" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Computer%2CTaskTree</text>
       </controlProperties>
     </control>
-    <control controlID="81" controlTypeID="com.balsamiq.mockups::SearchBox" x="278" y="184" w="-1" h="-1" measuredW="120" measuredH="25" zOrder="20" locked="false" isInGroup="-1">
+    <control controlID="81" controlTypeID="com.balsamiq.mockups::SearchBox" x="278" y="184" w="135" h="-1" measuredW="120" measuredH="25" zOrder="20" locked="false" isInGroup="-1">
       <controlProperties>
         <text>search</text>
       </controlProperties>
@@ -113,6 +113,11 @@
     <control controlID="82" controlTypeID="com.balsamiq.mockups::Link" x="382" y="384" w="-1" h="-1" measuredW="63" measuredH="21" zOrder="21" locked="false" isInGroup="-1">
       <controlProperties>
         <text>Advanced</text>
+      </controlProperties>
+    </control>
+    <control controlID="83" controlTypeID="com.balsamiq.mockups::ButtonBar" x="987" y="284" w="172" h="32" measuredW="101" measuredH="29" zOrder="22" locked="false" isInGroup="-1">
+      <controlProperties>
+        <text>Kanban%2C</text>
       </controlProperties>
     </control>
   </controls>
