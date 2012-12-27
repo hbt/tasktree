@@ -5,6 +5,8 @@ var util = require('util')
 function configure()
 {
 
+  process.title = 'TaskTree server'
+
   // Note(hbt) From the node documentation
 
   //Note that uncaughtException is a very crude mechanism for exception handling and may be removed in the future.
