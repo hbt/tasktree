@@ -1,0 +1,11 @@
+#!/bin/bash
+
+# stop server
+forever -d -v stop app/server/app.js &> /dev/null
+
+# kill watchers
+ps aux | grep "grunt watch" | grep -v grep | awk '{print $2}' | xargs kill -9
+
+# kill tails
+ps aux | grep "tail -f log/app.log" | grep -v grep | awk '{print $2}' | xargs kill -9
+
