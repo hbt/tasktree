@@ -1,41 +1,25 @@
 require.config({
-  baseUrl: 'assets/js'
+  baseUrl: 'assets/js',
+  paths:   {
+    jquery:     'components/jquery/jquery',
+    underscore: 'components/underscore-amd/underscore',
+    backbone:   'components/backbone-amd/backbone'
+  }
 });
 
-require(['require', 'components/jquery/jquery', 'components/chai/chai', 'lib/core',
+
+require(['require', 'jquery', 'components/chai/chai',
 
   // not used in params
-  'components/underscore/underscore', 'lib/utils/global'],
+  'lib/core', 'backbone', 'underscore', 'lib/utils/global'],
 
-  function(require, $, chai, App)
+  function(require, $)
   {
-    App.init(function()
+    window.App.init(function()
     {
-      if(window.App.config.envName === 'dev')
+      $(document).ready(function()
       {
-        require(['lib/utils/debug/reload'], function(ReloadUtils)
-        {
-          ReloadUtils.init()
-        })
-      }
-
-      // TODO(hbt) abstract tests
-      require(['components/mocha/mocha'], function()
-      {
-        // Chai
-        window.assert = chai.assert;
-
-        // Mocha
-        mocha.setup({
-          ignoreLeaks: true,
-          ui:          'bdd'
-        })
-
-
-        require(['test/sanity'], function()
-        {
-          mocha.run();
-        });
+        Backbone.history.start()
       })
     })
   })

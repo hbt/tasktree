@@ -18,6 +18,11 @@
     res.header('Access-Control-Allow-Origin', '*');
     res.send('down');
 
+    if(config.skipCrashTests)
+    {
+      return;
+    }
+
     // disable error handler
     process.removeAllListeners('uncaughtException')
 
