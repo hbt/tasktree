@@ -1,12 +1,13 @@
-require(['require'], function(require)
+define(['require'], function(require)
 {
   var AppSingleton = (function()
   {
-    function initialize()
+    function initialize(callback)
     {
       require(['config/config'], function(configuration)
       {
         window.App.config = configuration
+        callback()
       })
     }
 
@@ -16,7 +17,8 @@ require(['require'], function(require)
   }())
 
 
-  window.App = window.App || AppSingleton
-  window.App.init()
+  var App = window.App || AppSingleton
+  window.App = App
 
+  return App
 })
