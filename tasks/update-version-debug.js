@@ -13,8 +13,7 @@ module.exports = function(grunt)
     {
       if(err)
       {
-        console.log(err)
-        throw err
+        grunt.fatal(err)
       }
       done()
     });
