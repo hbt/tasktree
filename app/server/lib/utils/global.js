@@ -1,18 +1,18 @@
-(function()
+function initDevUtils()
 {
-  function initUtils()
-  {
-    c = console
-    c.l = console.log
-  }
+  var config = require('./../../config/config').config
 
-// Note(hbt) used by the frontend
-  if(typeof exports === 'undefined')
+  // limit calls to any functions to dev code
+  if(config.envName === 'dev')
   {
-    initUtils()
+    var util = require('util')
+    l = util.log
+    t = console.trace
+    t1 = console.time
+    t2 = console.timeEnd
   }
-  else
-  {
-    exports = initUtils()
-  }
-})()
+}
+
+exports = initDevUtils()
+
+
