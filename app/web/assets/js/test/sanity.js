@@ -55,5 +55,9 @@ define([], function()
     xit('browser supports web sockets | app requires instant two-way communication between local & remote', function()
     {
     })
+
+    xit('can read/write to local storage | data is stored locally for offline usage', function()
+    {
+    })
   })
 });
