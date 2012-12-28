@@ -47,17 +47,18 @@ module.exports = function(grunt)
         files = _.chain(files)
           .map(function(file)
           {
+            // skip deleted
             var status = file.trim().split(' ').shift()
             if(status === 'D')
             {
               return;
             }
 
+            var path = require('path')
             var filename = file.trim().split(' ').pop()
 
-            // TODO(hbt) simplify condition and use path.extname
-            // TODO(hbt) use path.resolve to find where the file is located + path.normalize to get rid of the ../ stuff
-            return (filename && filename.indexOf('.js') !== -1 && filename.indexOf('.json') === -1) ? __dirname + '/../' + filename : null
+            var isJavascriptFile = filename &&  path.extname(filename) === '.js'
+            return (isJavascriptFile && filename.indexOf('.template.js') === -1) ? path.normalize(__dirname + '/../' + filename) : null
           })
           .select(function(file)
           {
