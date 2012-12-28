@@ -1,4 +1,4 @@
-define([], function()
+define(['require'], function(require)
 {
   var Router = Backbone.Router.extend({
 
@@ -18,8 +18,12 @@ define([], function()
           ui:          'bdd'
         })
 
+        var files = _.map('sanity,capture'.split(','), function(v)
+        {
+          return 'test/' + v
+        })
 
-        require(['test/sanity'], function()
+        require(files, function()
         {
           mocha.run();
         });
@@ -27,5 +31,9 @@ define([], function()
     }
   });
 
-  return Router
+
+  var router = new Router()
+  window.App.Router = window.App.Router || router
+
+  return window.App.Router
 })

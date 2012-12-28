@@ -1,5 +1,5 @@
 c = console
 c.l = console.log
-t = console.trace
-t1 = console.time
-t2 = console.timeEnd
+c.t = console.trace
+c.t1 = console.time
+c.t2 = console.timeEnd
