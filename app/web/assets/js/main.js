@@ -10,15 +10,25 @@ require.config({
     handlebars:        'components/require-handlebars-plugin/Handlebars',
     hbs:               'components/require-handlebars-plugin/hbs',
     i18nprecompile:    'components/require-handlebars-plugin/hbs/i18nprecompile',
-    json2:             'components/require-handlebars-plugin/hbs/json2'
+    json2:             'components/require-handlebars-plugin/hbs/json2',
+    css:               'components/require-css/css',
+    normalize:         'components/require-css/normalize',
+    'css-builder':     'components/require-css/css-builder'
+  },
+  map:     {
+    '*': {
+      'css': 'components/require-css/css'
+    }
   }
 });
 
 
-require(['require', 'jquery', 'components/chai/chai',
+require(['require', 'jquery',
 
   // not used in params
-  'lib/core', 'backbone', 'underscore', 'lib/utils/global'],
+  'lib/core', 'backbone', 'underscore', 'lib/utils/global',
+  'css!components/mocha/mocha'
+],
 
   function(require, $)
   {
