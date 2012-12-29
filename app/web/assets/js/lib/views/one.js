@@ -2,7 +2,6 @@ define(['hbs!lib/views/one.tmpl', 'lib/collection'], function(tmpltxt, data)
 {
   var View = Backbone.View.extend({
 
-    el:    null,
     model: null,
 
     events: {
@@ -23,13 +22,17 @@ define(['hbs!lib/views/one.tmpl', 'lib/collection'], function(tmpltxt, data)
     initialize: function(model)
     {
       this.model = model
+      var that = this
+      this.model.on('change', function (model)
+      {
+        that.render()
+      })
       this.render()
     },
 
     render: function()
     {
-      this.$el = $(tmpltxt({model: this.model}))
-
+      this.$el.html($(tmpltxt({model: this.model})))
       return this
     }
   })
