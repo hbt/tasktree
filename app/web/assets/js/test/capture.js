@@ -1,3 +1,4 @@
+// TODO(hbt) move to its own module
 define(['keyboardSimulator'], function(Keyboard)
 {
   describe('Capture | saves new tasks', function()

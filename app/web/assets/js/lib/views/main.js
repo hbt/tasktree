@@ -1,3 +1,4 @@
+// TODO(hbt) get rid of this
 define(['lib/views/capture', 'lib/views/list'], function(Capture, List)
 {
   var View = Backbone.View.extend({

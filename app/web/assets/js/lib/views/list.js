@@ -1,5 +1,6 @@
 define(['lib/collection', 'lib/views/one'], function(data, One)
 {
+  data = window.App.collections['Tasks']
   var View = Backbone.View.extend({
     el: $('#list-container'),
 

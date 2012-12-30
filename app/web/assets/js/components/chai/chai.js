@@ -192,7 +192,7 @@
       * @api public
       */
 
-    Assertion.includeStack = false;
+    Assertion.includeStack = true;
 
     Assertion.addProperty = function (name, fn) {
       util.addProperty(this.prototype, name, fn);
@@ -1644,6 +1644,11 @@
         new Assertion(act, msg).to.equal(exp);
       };
 
+
+      assert.is = function (act, exp, msg) {
+        new Assertion(act, msg).to.equal(exp)
+      };
+
       /**
        * ### .notStrictEqual(actual, expected, [message])
        *
@@ -1659,6 +1664,11 @@
        */
 
       assert.notStrictEqual = function (act, exp, msg) {
+        new Assertion(act, msg).to.not.equal(exp);
+      };
+
+
+      assert.isnt = function (act, exp, msg) {
         new Assertion(act, msg).to.not.equal(exp);
       };
 

@@ -1,19 +1,20 @@
 require.config({
   baseUrl: 'assets/js',
   paths:   {
-    jquery:            'components/jquery/jquery',
-    underscore:        'components/underscore-amd/underscore',
-    backbone:          'components/backbone-amd/backbone',
-    text:              'components/requirejs-text/text',
-    backboneStore:     'components/backbone.localStorage/backbone.localStorage',
-    keyboardSimulator: 'lib/utils/keyboard-simulator',
-    handlebars:        'components/require-handlebars-plugin/Handlebars',
-    hbs:               'components/require-handlebars-plugin/hbs',
-    i18nprecompile:    'components/require-handlebars-plugin/hbs/i18nprecompile',
-    json2:             'components/require-handlebars-plugin/hbs/json2',
-    css:               'components/require-css/css',
-    normalize:         'components/require-css/normalize',
-    'css-builder':     'components/require-css/css-builder'
+    jquery:              'components/jquery/jquery',
+    underscore:          'components/underscore-amd/underscore',
+    'underscore_string': 'components/underscore.string/lib/underscore.string',
+    backbone:            'components/backbone-amd/backbone',
+    text:                'components/requirejs-text/text',
+    backboneStore:       'components/backbone.localStorage/backbone.localStorage',
+    keyboardSimulator:   'lib/utils/keyboard-simulator',
+    handlebars:          'components/require-handlebars-plugin/Handlebars',
+    hbs:                 'components/require-handlebars-plugin/hbs',
+    i18nprecompile:      'components/require-handlebars-plugin/hbs/i18nprecompile',
+    json2:               'components/require-handlebars-plugin/hbs/json2',
+    css:                 'components/require-css/css',
+    normalize:           'components/require-css/normalize',
+    'css-builder':       'components/require-css/css-builder'
   },
   map:     {
     '*': {
@@ -23,16 +24,16 @@ require.config({
 });
 
 
-require(['require', 'jquery',
+require(['require', 'jquery', 'lib/core',
 
   // not used in params
-  'lib/core', 'backbone', 'underscore', 'lib/utils/global',
+  'backbone', 'underscore', 'lib/utils/global', 'underscore_string',
   'css!components/mocha/mocha'
 ],
 
-  function(require, $)
+  function(require, $, App)
   {
-    window.App.init(function()
+    App.init(function()
     {
       $(document).ready(function()
       {

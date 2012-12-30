@@ -1,4 +1,6 @@
-define(['text!lib/views/info.html', 'lib/collection'], function(tmpltxt, data)
+
+// TODO(hbt) move to its own module
+define(['text!lib/views/info.html'], function(tmpltxt)
 {
   var View = Backbone.View.extend({
     el: $('#capture-container'),
@@ -14,7 +16,7 @@ define(['text!lib/views/info.html', 'lib/collection'], function(tmpltxt, data)
       {
         var input = e.target
 
-        data.create({content: input.value})
+        window.App.collections.Tasks.create({content: input.value})
 
         input.value = ''
       }

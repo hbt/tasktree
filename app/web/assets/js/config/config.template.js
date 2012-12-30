@@ -1,11 +1,12 @@
 define([], function()
 {
-  var Config =  {
+  var Config = {
     'serverURL':       '%%server_url%%',
     'debugVersionURL': '%%debug_version_url%%',
     'envName':         '%%environment_name%%',
-    'skipCrashTests':   %%skip_crash_tests%%
-}
+    'skipCrashTests':  '%%skip_crash_tests%%' === 'true',
+    'namespace':       'tasktree-'
+  }
 
   window.App.config = window.App.config || Config
 

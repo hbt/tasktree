@@ -35,7 +35,7 @@ define(['require'], function(require)
     {
       var map = {
         views:  'main',
-        others: 'router,model,collection'
+        others: 'model,collection,collections/metadata'
       }
 
       // TODO(hbt) refactor use _.chain
@@ -54,7 +54,15 @@ define(['require'], function(require)
         })
       }))
 
-      files.push('config/config')
+      // TODO(hbt) add plugin list + retrieval
+      files.push('modules/tag/main')
+
+      // loop through plugin names
+
+      {
+        // return plugin/main
+      }
+
 
       return files
     }
@@ -62,19 +70,29 @@ define(['require'], function(require)
     function initialize(callback)
     {
       App.collections = App.collections || {}
+      App.collectionClasses = App.collectionClasses || {}
       App.models = App.models || {}
       App.views = App.views || {}
 
-      require(getFiles(), function()
+      // TODO(hbt) add global namespace for localstorage
+      require(['config/config', './router'], function(config, Router)
       {
+        // TODO(hbt) add global router
+        new Router()
+        App.config = config
+
         CustomEnvironment.configure(App.config.envName)
 
-        ;
-        new App.views['Main']()
+        require(getFiles(), function()
+        {
 
 
-        callback()
-      });
+          new App.views['Main']()
+
+          callback()
+        });
+      })
+
     }
 
 
@@ -84,8 +102,10 @@ define(['require'], function(require)
   }())
 
 
-  var App = window.App || AppSingleton
-  window.App = App
+  var App
+  // Note(hbt) only track reference using window.App or classes for looping
+  // i.e we can have multiple collections and we need to refer to them from other modules or track a class like the model
+  window.App = App = window.App || AppSingleton
 
-  return App
+  return window.App
 })
