@@ -14,7 +14,7 @@ php tasks/scc/scc.php config/custom_constants.txt
 forever -a -v -d -o log/app.log -e log/app-err.log start -w app/server/app.js
 
 # start watcher to reload browser when files change
-grunt watch &> /dev/null &
+grunt watch &
 
 # show logs
 tail -f log/app.log -f log/app-err.log &

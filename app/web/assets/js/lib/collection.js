@@ -18,7 +18,6 @@ define(['lib/model', 'lib/collections/mixins'], function(Model, Mixins)
   // global references
   window.App.collections['Data'] = window.App.collections['Data'] || Mixins.createGlobalCollection(Collection)
   window.App.collectionClasses['Data'] = window.App.collectionClasses['Data'] || Collection
-  window.App.collections['Tasks'] = window.App.collections['Tasks'] || new Collection()
 
 
   // TODO(hbt) should return class but other files should use the reference

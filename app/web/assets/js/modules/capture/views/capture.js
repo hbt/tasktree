@@ -1,6 +1,4 @@
-
-// TODO(hbt) move to its own module
-define(['text!lib/views/info.html'], function(tmpltxt)
+define(['hbs!modules/capture/views/capture.tmpl'], function(tmpl)
 {
   var View = Backbone.View.extend({
     el: $('#capture-container'),
@@ -16,7 +14,7 @@ define(['text!lib/views/info.html'], function(tmpltxt)
       {
         var input = e.target
 
-        window.App.collections.Tasks.create({content: input.value})
+        window.App.collections.Tasks.create({content: input.value}, {at: 0})
 
         input.value = ''
       }
@@ -29,12 +27,10 @@ define(['text!lib/views/info.html'], function(tmpltxt)
 
     render: function()
     {
-      this.el.innerHTML = tmpltxt
+      this.$el.html($(tmpl()))
       return this
     }
   })
-
-  window.App.views['Capture'] = View
 
   return View
 })

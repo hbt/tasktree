@@ -23,7 +23,7 @@ define(['require'], function(require)
           $(document).ready(function()
           {
             var div = document.createElement('div')
-            div.innerHTML = '<a href="#tests">Run tests</a>'
+            div.innerHTML = '<a href="?#tests">Run tests</a>'
             div.id = 'mocha'
             $(div).insertBefore($('#capture-container'))
           })
@@ -34,7 +34,6 @@ define(['require'], function(require)
     function getFiles()
     {
       var map = {
-        views:  'main',
         others: 'model,collection,collections/metadata'
       }
 
@@ -55,7 +54,7 @@ define(['require'], function(require)
       }))
 
       // TODO(hbt) add plugin list + retrieval
-      files.push('modules/tag/main')
+      files.push('modules/tag/main', 'modules/capture/main', 'modules/list/main')
 
       // loop through plugin names
 
@@ -85,9 +84,6 @@ define(['require'], function(require)
 
         require(getFiles(), function()
         {
-
-
-          new App.views['Main']()
 
           callback()
         });

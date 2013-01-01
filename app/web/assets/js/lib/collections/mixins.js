@@ -69,7 +69,7 @@ define([], function()
     }
 
     // add it to the current collection
-    this.add(ret)
+    this.add(ret, options)
 
     return ret
   }

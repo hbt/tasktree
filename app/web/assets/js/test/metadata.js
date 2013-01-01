@@ -39,7 +39,6 @@ define([], function()
         {
           assert.is(model.getMetadata().at(0).getChildren().length, 1, 'metadata has data')
           assert.is(model.getMetadata().at(0).getChildren().at(0).get('id'), model.get('id'), 'getChildren returns collection of data')
-          assert.is(metadata.getChildren().length, 1)
         })
 
         it('metadata + data should point to the same references', function()
@@ -56,8 +55,8 @@ define([], function()
         {
           var length = window.App.collections.Metadata.length
 
-          var metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
-          metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
+          var metadata = window.App.collections.Metadata.createUnique({content: 'another meta'})
+          metadata = window.App.collections.Metadata.createUnique({content: 'another meta'})
 
           assert.is(window.App.collections.Metadata.length, length + 1)
         })
@@ -113,4 +112,15 @@ define([], function()
       });
     });
   });
+
+
+  // TODO(hbt) migrate to its own test file
+  describe('model', function()
+  {
+    xit('content should be trimmed', function()
+    {
+
+    })
+  });
+
 });

@@ -18,21 +18,26 @@ define(['keyboardSimulator'], function(Keyboard)
 
     describe('capturing', function()
     {
+      var input
+      var value = 'new task from capture'
 
       it('type in input', function()
       {
-        var input = $('#capture-container').find('input')
+        input = $('#capture-container').find('input')
         input.focus()
-        Keyboard.simulateTyping('new task yep\r\n', 'keydown')
+        Keyboard.simulateTyping(value + '\r\n', 'keydown')
       })
 
-      xit('on Enter task is saved & syncs', function()
+      it('on Enter task is saved', function()
       {
+        assert.is(window.App.collections.Tasks.at(0).get('content'), value)
       })
 
-      xit('input is cleared', function()
+      it('input is cleared', function()
       {
+        assert.is(input.val(), '')
       })
+
 
       xit('task is tagged as #unprocessed', function()
       {
@@ -40,12 +45,23 @@ define(['keyboardSimulator'], function(Keyboard)
       })
 
 
-      xit('task is added to the top of the list | to edit in case user presses Enter by mistake', function()
+      it('task is added to the top of the list | to edit in case user presses Enter by mistake', function()
+      {
+        var nvalue = 'second from capture'
+        input.focus()
+        Keyboard.simulateTyping(nvalue + '\r\n', 'keydown')
+
+        var first = $('#list-container').find('input')[0]
+        assert.is(window.App.collections.Tasks.at(0).get('content'), nvalue)
+        assert.is(first.value, nvalue)
+      })
+
+      xit('task fades away after 20 seconds', function()
       {
 
       })
 
-      xit('task fades away after 20 seconds', function()
+      xit('should not save empty content', function()
       {
 
       })
