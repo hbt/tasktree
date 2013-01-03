@@ -51,7 +51,7 @@ define(['keyboardSimulator'], function(Keyboard)
         input.focus()
         Keyboard.simulateTyping(nvalue + '\r\n', 'keydown')
 
-        var first = $('#list-container').find('input')[0]
+        var first = $('#list-container .task-input')[0]
         assert.is(window.App.collections.Tasks.at(0).get('content'), nvalue)
         assert.is(first.value, nvalue)
       })

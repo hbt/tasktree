@@ -33,6 +33,9 @@ require(['require', 'jquery', 'lib/core',
 
   function(require, $, App)
   {
+    _.events = {}
+    _.extend(_.events, Backbone.Events);
+
     App.init(function()
     {
       $(document).ready(function()

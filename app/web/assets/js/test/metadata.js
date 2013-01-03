@@ -12,11 +12,11 @@ define([], function()
         it('data should have metadata', function()
         {
           // add metadata as json
-          model = window.App.collections.Data.create({content: 'new task'})
+          model = window.App.collections.Data.create({content: 'new task'}, {silent: true})
           model.addMetadata({content: 'some meta'})
 
           assert.is(model.get('metadata').length, 1, 'adds metadata')
-          assert.is(model.getMetadata().at(0).get('content'), 'some meta', 'accessible via helper')
+          assert.is(_.contains(model.getMetadata().pluck('content'), 'some meta'), true, 'accessible via helper')
 
           assert.is(model.getMetadata().at(0).get('isMetadata'), true, 'differentiates data from metadata')
           assert.is(model.get('isMetadata'), false, 'differentiates data from metadata')
@@ -51,7 +51,7 @@ define([], function()
 
       describe('uniqueness', function()
       {
-        xit('metadata is tracked by content which is unique', function()
+        it('metadata is tracked by content which is unique', function()
         {
           var length = window.App.collections.Metadata.length
 
@@ -61,27 +61,40 @@ define([], function()
           assert.is(window.App.collections.Metadata.length, length + 1)
         })
 
-        xit('metadata and data collections both contain unique id references', function()
+        it('metadata and data collections both contain unique id references', function()
         {
           var metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
-          var model = window.App.collections.Data.create({content: 'new task'})
+          var metadataLength = metadata.getChildren().length
+          var model = window.App.collections.Data.create({content: 'new task'}, {silent: true})
           model.addMetadata(metadata)
           model.addMetadata({content: 'new meta '})
 
           assert.is(model.getMetadata().length, 1)
-          assert.is(metadata.getChildren().length, 1)
+          assert.is(metadata.getChildren().length, metadataLength + 1)
         })
       });
     });
 
     describe('when removing medata', function()
     {
-      xit('data should no longer have metadata', function()
+      it('data should no longer have metadata', function()
       {
+        // add metadata as json
+        var model = window.App.collections.Data.create({content: 'new task metadata remove'}, {silent: true})
+        model.addMetadata([
+          {content: 'some meta to be removed'},
+          {content: 'meta stays'}
+        ])
+        assert.is(model.getMetadata().length, 2)
+
+        model.removeMetadata({content: 'some meta to be removed'})
+        assert.is(model.getMetadata().length, 1)
       })
 
-      xit('medata should not have data as a child', function()
+      it('medata should not have data as a child', function()
       {
+        var metadata = window.App.collections.Metadata.createUnique({content: 'some meta to be removed'})
+        assert.is(metadata.getChildren().length, 0)
       })
     });
   })

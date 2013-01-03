@@ -6,15 +6,19 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
     model: null,
 
     events: {
-      'keydown': 'save'
+      'keydown .task-input': 'save',
+      'change .status':      function()
+      {
+        this.model.toggleDone()
+      }
     },
 
     save: function(e)
     {
       if(e.keyCode === 13)
       {
-        var input = e.target
-        var id = input.id.replace('task-', '')
+        var input = $(e.target)
+        var id = input.data('id')
 
         tasks._byId[id].save({content: input.value })
       }
@@ -23,15 +27,13 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
     initialize: function(model)
     {
       this.model = model
-      this.model.on('change', this.updateOnChange, this)
+      this.listenTo(model, 'change', this.updateOnChange)
 
       this.render()
     },
 
     updateOnChange: function()
     {
-      // parentElement is the list container. not in the container means this view is a dead reference.
-      // make it easy for the garbage collector to take it away
       if(this.el.parentElement === null)
       {
         this.remove()
@@ -42,20 +44,14 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
       }
     },
 
-    remove: function()
-    {
-      this.model.off('change', this.updateOnChange)
-      this.model = null
-      this.undelegateEvents()
-      Backbone.View.prototype.remove.call(this);
-
-      // Note(hbt) seems necessary because even after the operations above we still have a reference to this.$el
-      this.setElement(null)
-    },
-
     render: function()
     {
-      this.$el.html($(tmpltxt({model: this.model})))
+      this.$el.html($(tmpltxt({
+        id:      this.model.get('id'),
+        content: this.model.get('content'),
+        status:  this.model.isDone() ? 'checked' : ''
+      })))
+
       return this
     }
   })

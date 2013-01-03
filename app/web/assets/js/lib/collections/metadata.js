@@ -7,7 +7,7 @@ define(['lib/model', './mixins'], function(Model, Mixins)
 
     createUnique: function(json)
     {
-      var coll = window.App.collections['Metadata']
+      var coll = this.global
       var ret = null
 
       // check collection by id
@@ -22,7 +22,7 @@ define(['lib/model', './mixins'], function(Model, Mixins)
       json.content = json.content.trim()
       ret = coll.find(function(v)
       {
-        return v.content === json.content
+        return v.get('content') === json.content
       })
 
       // still nothing? create

@@ -1,7 +1,8 @@
 <br/>
-<div>
+<div id="task-{{id}}" data-id="{{id}}">
     <!-- TODO(hbt) use model.get instead of model.attributes -->
     <!-- TODO(hbt) add label -->
-    <input type="text" id="task-{{model.attributes.id}}" value="{{model.attributes.content}}"/>
+    <input type="checkbox" class="status" {{status}}/>
+    <input type="text" class="task-input" data-id="{{id}}" value="{{content}}"/>
     <br/>
 </div>

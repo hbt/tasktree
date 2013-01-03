@@ -1,4 +1,12 @@
 define(['./views/list'], function(ListView)
 {
-  new ListView()
+  _.events.on('app-init', function()
+  {
+    new ListView()
+  })
+
+  return {
+    views: [ListView]
+  }
 })
+

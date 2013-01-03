@@ -13,7 +13,7 @@ define([], function()
         {
           if(ReloadModule.lastVersion !== -1 && data > ReloadModule.lastVersion)
           {
-            window.location.reload()
+            window.location.reload(true)
           }
 
           ReloadModule.lastVersion = data

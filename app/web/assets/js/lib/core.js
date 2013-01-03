@@ -54,7 +54,7 @@ define(['require'], function(require)
       }))
 
       // TODO(hbt) add plugin list + retrieval
-      files.push('modules/tag/main', 'modules/capture/main', 'modules/list/main')
+      files.push('modules/tag/main', 'modules/capture/main', 'modules/list/main', 'modules/status/main')
 
       // loop through plugin names
 
@@ -85,6 +85,7 @@ define(['require'], function(require)
         require(getFiles(), function()
         {
 
+          _.events.trigger('app-init')
           callback()
         });
       })

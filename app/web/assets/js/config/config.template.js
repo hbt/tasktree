@@ -9,6 +9,9 @@ define([], function()
     'namespace':       'tasktree-' + (+new Date())
   }
 
+  // TODO(hbt) make namespace a function and loop through it
+  // TODO(hbt) abstract code in ConfigurationUtils
+
   window.App.config = window.App.config || Config
 
   return window.App.config

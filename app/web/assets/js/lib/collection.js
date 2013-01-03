@@ -2,7 +2,6 @@
 // once references are loaded they should not be removed nor reset
 // as those references are used by the rest of the app
 
-// TODO(hbt) should not use singleton
 define(['lib/model', 'lib/collections/mixins'], function(Model, Mixins)
 {
   // TODO(hbt) refactor + move to collections/
@@ -20,6 +19,5 @@ define(['lib/model', 'lib/collections/mixins'], function(Model, Mixins)
   window.App.collectionClasses['Data'] = window.App.collectionClasses['Data'] || Collection
 
 
-  // TODO(hbt) should return class but other files should use the reference
   return window.App.collectionClasses['Data']
 })

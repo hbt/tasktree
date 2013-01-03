@@ -32,7 +32,8 @@ define(['require'], function(require)
         })
 
         // TODO(hbt) add loop through module tests
-        require(['test/metadata', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init', 'modules/capture/tests/init'], function()
+        require(['test/metadata', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
+          'modules/status/tests/init', 'modules/capture/tests/init'], function()
         {
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
           mocha.run(function()
