@@ -9,3 +9,4 @@ ps aux | grep "grunt watch" | grep -v grep | awk '{print $2}' | xargs kill -9
 # kill tails
 ps aux | grep "tail -f log/app.log" | grep -v grep | awk '{print $2}' | xargs kill -9
 
+exit 0

@@ -13,9 +13,23 @@ php tasks/scc/scc.php config/custom_constants.txt
 # start node server & log output & reload when server files changes
 forever -a -v -d -o log/app.log -e log/app-err.log start -w app/server/app.js
 
+# use -ss to not [s]tart watchers or [s]how log
+while getopts s: flag
+    do
+        case $flag in
+
+            s)
+                  exit 0
+                  ;;
+        esac
+done
+shift $(( OPTIND - 1 ))
+
+
 # start watcher to reload browser when files change
-grunt watch &
+grunt watch 1> /dev/null &
 
 # show logs
 tail -f log/app.log -f log/app-err.log &
 
+exit 0

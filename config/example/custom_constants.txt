@@ -1,6 +1,13 @@
+# Update example as well
 
+# server
 server_port=3000
 server_url=http://localhost:3000
+
+# app
 debug_version_url=http://localhost:9093
 environment_name=dev
+
+# testing
+tests_url=http://localhost:9093/#tests
 skip_crash_tests=true

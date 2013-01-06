@@ -10,6 +10,8 @@ function initDevUtils()
     t = console.trace
     t1 = console.time
     t2 = console.timeEnd
+    c = console
+    c.l = console.log
   }
 }
 

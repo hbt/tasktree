@@ -38,6 +38,7 @@ define(['require'], function(require)
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
           mocha.run(function()
           {
+            // TODO(hbt) abstract
             // append #tests to all links to enter the #tests backbone route
             var links = $('#mocha').find('a')
             _.each(links, function(link)
@@ -48,6 +49,23 @@ define(['require'], function(require)
                 link.attr('href', link.attr('href') + '#tests')
               }
             })
+
+            // TODO(hbt) abstract
+            // send coverage
+            // TODO(hbt) abstract or replace __coverage__ by a camelcase string -- then re-enable hintrc camelcase support
+            if(typeof __coverage__ !== 'undefined')
+            {
+              $.ajax({
+                url:         App.config.serverURL + '/tests/cov',
+                data:        {cov: JSON.stringify(__coverage__)},
+                type:        'POST',
+                crossDomain: true,
+                success:     function()
+                {
+                  window.location.href = '/coverage-report/index.html'
+                }
+              });
+            }
           });
         });
 

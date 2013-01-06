@@ -54,6 +54,7 @@ module.exports = function(grunt)
               return;
             }
 
+            // TODO(hbt) move this up -- should not be in the loop
             var path = require('path')
             var filename = file.trim().split(' ').pop()
 

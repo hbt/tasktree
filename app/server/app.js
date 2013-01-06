@@ -1,3 +1,4 @@
+GLOBAL.coverage = {}
 require('./lib/utils/global')
 var util = require('util')
 

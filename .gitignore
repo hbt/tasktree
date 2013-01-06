@@ -4,13 +4,11 @@
 
 # developer/debug files
 /app/web/debug-version.txt
-
 # npm modules
 /node_modules
-
 # template files
 /app/server/config/config.js
 /app/web/assets/js/config/config.js
-
 # custom configuration
 /config/custom_constants.txt
+/html-report/
