@@ -43,6 +43,7 @@
     if(config.envName === 'dev')
     {
       var fs = require('fs')
+      // TODO(hbt) use path resolve
       var dir = __dirname + '/../../'
 
       // write frontend + backend coverage results to file

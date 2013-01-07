@@ -40,6 +40,8 @@ define(['lib/model', './mixins'], function(Model, Mixins)
 
   _.extend(Collection.prototype, Mixins)
 
+  // TODO(hbt) global collections should be fully initialized -- so createUnique will not add a new one with the same content but a different id
+  // TODO(hbt) global collections fetch should verify content and update references -- e.g two offline devices creating the same content, different ids
   window.App.collections['Metadata'] = window.App.collections['Metadata'] || Mixins.createGlobalCollection(Collection)
   window.App.collectionClasses['Metadata'] = window.App.collectionClasses['Metadata'] || Collection
 

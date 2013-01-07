@@ -13,10 +13,12 @@ define([], function()
         {
           // add metadata as json
           model = window.App.collections.Data.create({content: 'new task'}, {silent: true})
-          model.addMetadata({content: 'some meta'})
+          var added = model.addMetadata({content: 'some meta'})
 
+          assert.is(added, true)
           assert.is(model.get('metadata').length, 1, 'adds metadata')
-          assert.is(_.contains(model.getMetadata().pluck('content'), 'some meta'), true, 'accessible via helper')
+          assert.is(model.hasMetadata(model.getMetadata().at(0)), true)
+          assert.is(model.getMetadata().chain().pluck('attributes').pluck('content').contains('some meta').value(), true, 'accessible via helper')
 
           assert.is(model.getMetadata().at(0).get('isMetadata'), true, 'differentiates data from metadata')
           assert.is(model.get('isMetadata'), false, 'differentiates data from metadata')
@@ -57,6 +59,7 @@ define([], function()
 
           var metadata = window.App.collections.Metadata.createUnique({content: 'another meta'})
           metadata = window.App.collections.Metadata.createUnique({content: 'another meta'})
+          window.App.collections.Metadata.createUnique(metadata.toJSON())
 
           assert.is(window.App.collections.Metadata.length, length + 1)
         })

@@ -26,6 +26,7 @@ module.exports = function(grunt)
     var files = ['frontend', 'backend']
     _.each(files, function(file)
     {
+      // TODO(hbt) use path resolve
       var filepath = __dirname + '/../../app/' + file + '-coverage.json'
       if(fs.existsSync(filepath))
       {

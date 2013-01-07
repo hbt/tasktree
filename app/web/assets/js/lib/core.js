@@ -34,46 +34,30 @@ define(['require'], function(require)
     function getFiles()
     {
       var map = {
-        others: 'model,collection,collections/metadata'
+        'lib/%string%':          'model,collection,collections/metadata',
+        'modules/%string%/main': 'tag,capture,list,status'
       }
 
-      // TODO(hbt) refactor use _.chain
-      var files = _.flatten(_.map(map, function(v, k)
+      var ret = _.chain(map).map(function(list, prefix)
       {
-        return _.map(v.split(','), function(ov)
+        return _.map(list.split(','), function(v)
         {
-          if(k === 'others')
-          {
-            return 'lib/' + ov
-          }
-          else
-          {
-            return 'lib/' + k + '/' + ov
-          }
+          var str = prefix
+          return str.replace('%string%', v)
         })
-      }))
+      }).flatten().value()
 
-      // TODO(hbt) add plugin list + retrieval
-      files.push('modules/tag/main', 'modules/capture/main', 'modules/list/main', 'modules/status/main')
-
-      // loop through plugin names
-
-      {
-        // return plugin/main
-      }
-
-
-      return files
+      return ret
     }
 
     function initialize(callback)
     {
+      var App = window.App = window.App || AppSingleton
       App.collections = App.collections || {}
       App.collectionClasses = App.collectionClasses || {}
       App.models = App.models || {}
       App.views = App.views || {}
 
-      // TODO(hbt) add global namespace for localstorage
       require(['config/config', './router'], function(config, Router)
       {
         // TODO(hbt) add global router
@@ -85,11 +69,11 @@ define(['require'], function(require)
         require(getFiles(), function()
         {
 
+          // TODO(hbt) consider adding _.after to execute callback after all modules are done initializing
           _.events.trigger('app-init')
           callback()
         });
       })
-
     }
 
 
@@ -99,10 +83,7 @@ define(['require'], function(require)
   }())
 
 
-  var App
   // Note(hbt) only track reference using window.App or classes for looping
   // i.e we can have multiple collections and we need to refer to them from other modules or track a class like the model
-  window.App = App = window.App || AppSingleton
-
-  return window.App
+  return AppSingleton
 })

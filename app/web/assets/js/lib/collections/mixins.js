@@ -15,6 +15,8 @@ define([], function()
     }
     else
     {
+      // TODO(hbt) add test to retrieve tasks by id for filtering
+      // TODO(hbt) make sure metadata is fully initialized as this will created new references
       var json = this.localStorage.find({id: id})
       var model = new this.model(json)
       this.add(model)

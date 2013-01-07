@@ -22,6 +22,7 @@ module.exports = function(grunt)
 
     readFile: function()
     {
+      // TODO(hbt) use path + resolve
       return grunt.file.read(__dirname + '/../config/hintrc.json')
     }
   }

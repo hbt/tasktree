@@ -58,7 +58,7 @@ define(['backboneStore'], function()
       this.save({metadata: _.unique(metadataIds)})
       ret.addChild(this)
 
-      return ret
+      return this.hasMetadata(ret)
     },
 
     removeMetadata: function(metadata, collectionName)
@@ -69,6 +69,7 @@ define(['backboneStore'], function()
 
       if(_.isArray(metadata))
       {
+        // TODO(hbt) add test when removing multiple tags and verify it enters
         for(var i = 0; i < metadata.length; i++)
         {
           this.removeMetadata(metadata[i], collectionName)
@@ -91,12 +92,12 @@ define(['backboneStore'], function()
 
       existingMeta.removeChild(this)
 
-      return _.indexOf(metadataIds, existingMeta.get('id')) === -1
+      return !this.hasMetadata(existingMeta)
     },
 
     hasMetadata: function(metadata)
     {
-      return _.indexOf(this.get('metadata'), metadata.get('id')) === -1
+      return _.indexOf(this.get('metadata'), metadata.get('id')) !== -1
     },
 
     getMetadata: function(collectionName)
@@ -122,16 +123,20 @@ define(['backboneStore'], function()
       children.push(model.get('id'))
 
       this.save({children: _.unique(children)})
+
+      return this.hasChild(model)
     },
 
     removeChild: function(model)
     {
       this.save({children: _.chain(this.get('children')).without(model.get('id')).unique().value()})
+
+      return !this.hasChild(model)
     },
 
     hasChild: function(model)
     {
-      return _.indexOf(this.get('children'), model.get('id')) === -1
+      return _.indexOf(this.get('children'), model.get('id')) !== -1
     }
 
   })
