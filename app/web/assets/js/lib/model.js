@@ -8,6 +8,7 @@ define(['backboneStore'], function()
         metadata:   [],
         children:   [],
         isMetadata: false
+        // TODO(hbt) NEXT add parent attribute
       }
     },
 
