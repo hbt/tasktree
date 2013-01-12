@@ -28,7 +28,6 @@ define(['keyboardSimulator'], function(Keyboard)
 
         // change should be saved on blur
         assert.is(model.get('content'), newstr)
-
       })
 
       xit('should save after 60 secs if focus is still on and no other key was pressed | in case a change is made and user leaves', function()
@@ -36,25 +35,35 @@ define(['keyboardSimulator'], function(Keyboard)
 
       })
 
-      it('should create new one under current when pressing Enter', function()
+      describe('when pressing Enter', function()
       {
-        // focus on newly created
-        var first = $('#list-container .task-input').first()
-        first.focus()
+        it('should create new one under current and focus unless there is already an empty entry', function()
+        {
+          // focus on newly created
+          var first = $('#list-container .task-input').first()
+          first.focus()
 
-        // press Enter
-        var tasks = window.App.collections.Tasks
-        // TODO(hbt) replace \r\n by \r -- check other tests
-        Keyboard.simulateTyping(first.val() + '\r', 'keydown')
+          // press Enter
+          var tasks = window.App.collections.Tasks
+          // TODO(hbt) replace \r\n by \r -- check other tests
+          Keyboard.simulateTyping(first.val() + '\r', 'keydown')
 
-        // verify new input is created under
-        var newinput = $('#list-container .task-input')[1]
-        assert.is(tasks.at(1).get('content'), '')
-        assert.is(newinput.value, '')
+          // verify new input is created under + has focus
+          var newinput = $('#list-container .task-input')[1]
+          assert.is(tasks.at(1).get('content'), '')
+          assert.is(newinput.value, '')
+          assert.is(document.activeElement, newinput)
 
-        // TODO(hbt) add focus check
-//        assert.is(document.activeElement, newinput)
-      })
+
+          // no new empty entries are created if there is already one
+          first.focus()
+          var length = tasks.length
+          Keyboard.simulateTyping('\r', 'keydown')
+          assert.is(tasks.length, length)
+        })
+
+      });
+
     });
 
     describe('tree', function()

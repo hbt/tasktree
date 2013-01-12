@@ -4,8 +4,29 @@ define(['./one'], function(One)
   var View = Backbone.View.extend({
     el: $('#list-container'),
 
-    addOne:     function()
+    addOne:     function(model, collection, attrs)
     {
+//      var view = new One(model, tasks)
+//      if(attrs && attrs.at !== undefined)
+//      {
+//        if(attrs.at === 0)
+//        {
+//          this.$el.prepend(view.$el)
+//        }
+//        else
+//        {
+//          var prev = this.$el.find('.one-task').eq(attrs.at-1)
+//          c.l(attrs)
+//          view.$el.insertAfter(prev)
+////          c.l(prev)
+////          this.$el.insertAfter(this.$el.find('.one-task').eq(attrs.at-1), view.$el)
+//        }
+//      }
+//      else
+//      {
+//        this.$el.append(view.$el)
+//      }
+
       // TODO(hbt) optimize instead of rendering the whole view again, only add/remove stuff
       // TODO(hbt) NEXT use insertAfter, insertBefore
 
@@ -25,7 +46,7 @@ define(['./one'], function(One)
       }
       // TODO(hbt) NEXT elements should represent the collection
       this.$el.html('')
-      this.render()
+      this.render(model, collection, attrs)
     },
 
     // TODO(hbt) NEXT add model as a param
@@ -46,7 +67,7 @@ define(['./one'], function(One)
       this.render()
     },
 
-    render: function()
+    render: function(model, collection, attrs)
     {
       var that = this
 
@@ -54,7 +75,11 @@ define(['./one'], function(One)
       {
         var view = new One(v, tasks)
         that.$el.append(view.$el)
-        vv = view
+
+        if(attrs && attrs.focus && model && model === v)
+        {
+          view.$el.find('.task-input').focus()
+        }
       })
 
       return this

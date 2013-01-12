@@ -1,6 +1,5 @@
 define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
 {
-  var tasks = window.App.collections.Tasks
   var View = Backbone.View.extend({
 
     model:        null,
@@ -22,10 +21,13 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
     {
       // save content if different
       var input = $(e.target)
-      if(input.val() !== this.model.get('content'))
+      if(input.val() && input.val() !== this.model.get('content'))
       {
         this.model.save({content: input.val()})
+        return true
       }
+
+      return false
     },
 
     keyListener: function(e)
@@ -36,8 +38,14 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
         this.save(e)
 
         var nextPos = this.collection.indexOf(this.model) + 1
-        // TODO(hbt) add focus
-        this.collection.create({content: ''}, {at: nextPos })
+        if(this.collection.at(nextPos) && this.collection.at(nextPos).get('content') === '')
+        {
+          // TODO(hbt) add focus on next
+        }
+        else if($(e.target).val() !== '')
+        {
+            this.collection.create({content: ''}, {at: nextPos, focus: true })
+        }
       }
 
       // TODO(hbt) NEXT 7 on enter add new model to collection
@@ -55,19 +63,6 @@ define(['hbs!modules/list/views/one.tmpl'], function(tmpltxt)
       {
         // TODO(hbt) NEXT add child
       }
-    },
-
-    osave: function(e)
-    {
-      if(e.keyCode === 13)
-      {
-        var input = $(e.target)
-        var id = input.data('id')
-
-        tasks._byId[id].save({content: input.value })
-      }
-
-
     },
 
     initialize: function(model, collection)
