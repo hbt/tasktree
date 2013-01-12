@@ -4,7 +4,7 @@ define(['./one'], function(One)
   var View = Backbone.View.extend({
     el: $('#list-container'),
 
-    addOne: function()
+    addOne:     function()
     {
       // TODO(hbt) optimize instead of rendering the whole view again, only add/remove stuff
       // TODO(hbt) NEXT use insertAfter, insertBefore
@@ -29,6 +29,7 @@ define(['./one'], function(One)
     },
 
     // TODO(hbt) NEXT add model as a param
+    // TODO(hbt) NEXT 14
     initialize: function()
     {
       // TODO(hbt) NEXT tasks collection should be custom i.e if model, tasks are children otherwise, it is from the tags
@@ -51,7 +52,7 @@ define(['./one'], function(One)
 
       _.each(tasks.models, function(v)
       {
-        var view = new One(v)
+        var view = new One(v, tasks)
         that.$el.append(view.$el)
         vv = view
       })

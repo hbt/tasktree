@@ -1,34 +1,94 @@
-define([], function()
+define(['keyboardSimulator'], function(Keyboard)
 {
-  // TODO(hbt) NEXT implement
-  describe('in edit mode', function()
+  describe('list | one task', function()
   {
-    xit('should save when out of focus', function()
-    {
-      
-    })
 
-    xit('should create new one under current when pressing Enter', function()
+    // TODO(hbt) NEXT implement
+    describe('in edit mode', function()
     {
-      
-    })
-  });
+      // TODO(hbt) review tests where variables are defined out of scope + figure out how mocha interprets them
 
-  describe('tree', function()
-  {
-    xit('should create child when pressing shift+Enter', function()
+      it('should save on blur', function()
+      {
+        // capture
+        var str = 'new task'
+        var model = window.App.collections.Tasks.create({content: str}, {at: 0})
+
+        // focus on first one
+        var first = $('#list-container .task-input').first()
+        first.focus()
+
+        // make change
+        var newstr = str + ' changed'
+        first.val(newstr)
+
+        // remove focus
+        assert.is(model.get('content'), str)
+        first.blur()
+
+        // change should be saved on blur
+        assert.is(model.get('content'), newstr)
+
+      })
+
+      xit('should save after 60 secs if focus is still on and no other key was pressed | in case a change is made and user leaves', function()
+      {
+
+      })
+
+      it('should create new one under current when pressing Enter', function()
+      {
+        // focus on newly created
+        var first = $('#list-container .task-input').first()
+        first.focus()
+
+        // press Enter
+        var tasks = window.App.collections.Tasks
+        // TODO(hbt) replace \r\n by \r -- check other tests
+        Keyboard.simulateTyping(first.val() + '\r', 'keydown')
+
+        // verify new input is created under
+        var newinput = $('#list-container .task-input')[1]
+        assert.is(tasks.at(1).get('content'), '')
+        assert.is(newinput.value, '')
+
+        // TODO(hbt) add focus check
+//        assert.is(document.activeElement, newinput)
+      })
+    });
+
+    describe('tree', function()
     {
-      
-    })
+      xit('should create child when pressing shift+Enter', function()
+      {
+        // TODO(hbt) NEXT 8
 
-    xit('should move task as child when pressing -> button', function()
-    {
-      
-    })
+        // capture new
 
-    xit('should move task as a parent when pressing <- button', function()
-    {
+        // shift+enter
 
-    })
+        // verify child is created
+
+        // verify child has newly captured as parent
+
+        // verify child appears in list
+
+        // modify child text
+
+        // verify child saves
+
+      })
+
+      xit('should move task as child when pressing -> button', function()
+      {
+
+      })
+
+      xit('should move task as a parent when pressing <- button', function()
+      {
+
+      })
+    });
+
   });
 });
