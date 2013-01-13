@@ -29,7 +29,7 @@ define(['lib/model', './mixins'], function(Model, Mixins)
       if(!ret)
       {
         json.isMetadata = true
-        ret = coll.create(json)
+        ret = this.create(json)
       }
 
 

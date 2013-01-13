@@ -60,7 +60,7 @@ define(['backboneStore'], function()
       this.save({metadata: _.unique(metadataIds)})
       ret.addChild(this)
 
-      return this.hasMetadata(ret)
+      return ret
     },
 
     removeMetadata: function(metadata, collectionName)
@@ -94,7 +94,7 @@ define(['backboneStore'], function()
 
       existingMeta.removeChild(this)
 
-      return !this.hasMetadata(existingMeta)
+      return existingMeta
     },
 
     hasMetadata: function(metadata)
