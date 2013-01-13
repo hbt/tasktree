@@ -51,6 +51,22 @@ define(['require'], function(require)
               }
             })
 
+            var pendingTests = $('#mocha .pending > h2')
+            _.each(pendingTests, function(pendingTest)
+            {
+              pendingTest = $(pendingTest)
+              pendingTest.html('[*] --  ' + pendingTest.html())
+            })
+
+            var stats = $('#mocha-stats')
+            var pending = $('<li/>').html('pending: ' + pendingTests.length)
+            stats.prepend(pending)
+
+            // TODO(hbt) add one-liner link i.e if the one test fails -- display "FAILURE"
+
+            // TODO(hbt) add link to hide pending and only show passed/failures
+
+
             // TODO(hbt) abstract
             // send coverage
             // TODO(hbt) abstract or replace __coverage__ by a camelcase string -- then re-enable hintrc camelcase support

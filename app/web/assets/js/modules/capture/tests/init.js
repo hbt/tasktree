@@ -21,6 +21,7 @@ define(['keyboardSimulator'], function(Keyboard)
       var input
       var value = 'new task from capture'
 
+      // TODO(hbt) change to before
       it('type in input', function()
       {
         input = $('#capture-container').find('input')
