@@ -79,6 +79,11 @@ define(['keyboardSimulator'], function(Keyboard)
               Keyboard.simulateTyping('\r', 'keydown')
               assert.is(tasks.length, length)
             })
+
+            xit('should focus on new entry', function()
+            {
+
+            })
           });
 
         })

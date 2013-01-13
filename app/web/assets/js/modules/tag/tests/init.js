@@ -42,22 +42,22 @@ define([], function()
 
     describe('Tagging', function()
     {
-      // TODO(hbt) skipping the tests on this for now until I clear the structure in my head as to have indices for tags or not
-      describe('general', function()
-      {
-        xit('tags have __module__ tag as their metadata', function()
-        {
-        })
-
-        xit('tag content starts with #', function()
-        {
-
-        })
-      });
-      describe('using the UI', function()
-      {
-
-      });
+//      // TODO(hbt) skipping the tests on this for now until I clear the structure in my head as to have indices for tags or not
+//      describe('general', function()
+//      {
+//        xit('tags have __module__ tag as their metadata', function()
+//        {
+//        })
+//
+//        xit('tag content starts with #', function()
+//        {
+//
+//        })
+//      });
+//      describe('using the UI', function()
+//      {
+//
+//      });
 
 //        describe('when adding a tag using the UI', function()
 //        {
