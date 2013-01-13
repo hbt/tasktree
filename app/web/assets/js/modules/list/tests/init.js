@@ -37,6 +37,51 @@ define(['keyboardSimulator'], function(Keyboard)
 
       describe('when pressing Enter', function()
       {
+        describe('is there an empty entry under current?', function()
+        {
+          describe('yes', function()
+          {
+            xit('should not create a new one', function()
+            {
+
+            })
+
+            xit('should focus on existing one', function()
+            {
+
+            })
+          });
+
+
+          describe('no', function()
+          {
+            xit('create a new entry and focus', function()
+            {
+              // focus on newly created
+              var first = $('#list-container .task-input').first()
+              first.focus()
+
+              // press Enter
+              var tasks = window.App.collections.Tasks
+              // TODO(hbt) replace \r\n by \r -- check other tests
+              Keyboard.simulateTyping(first.val() + '\r', 'keydown')
+
+              // verify new input is created under + has focus
+              var newinput = $('#list-container .task-input')[1]
+              assert.is(tasks.at(1).get('content'), '')
+              assert.is(newinput.value, '')
+              assert.is(document.activeElement, newinput)
+
+
+              // no new empty entries are created if there is already one
+              first.focus()
+              var length = tasks.length
+              Keyboard.simulateTyping('\r', 'keydown')
+              assert.is(tasks.length, length)
+            })
+          });
+
+        })
         it('should create new one under current and focus unless there is already an empty entry', function()
         {
           // focus on newly created

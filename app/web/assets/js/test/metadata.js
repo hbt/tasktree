@@ -1,59 +1,51 @@
 define([], function()
 {
-  describe('Metadata | information about data', function()
+  describe('Model | tests data & metadata', function()
   {
-    // TODO(hbt) implement metadata tests
-    describe('when adding metada', function()
+    describe('addMetadata | when adding metadata to data', function()
     {
-      describe('data metadata relationship', function()
+      describe('supports multiple metadata formats', function()
       {
-        var model, metadata
-
-        it('data should have metadata', function()
+        xit('json', function()
         {
-          // add metadata as json
-          model = window.App.collections.Data.create({content: 'new task'}, {silent: true})
-          var added = model.addMetadata({content: 'some meta'})
-
-          assert.is(added, true)
-          assert.is(model.get('metadata').length, 1, 'adds metadata')
-          assert.is(model.hasMetadata(model.getMetadata().at(0)), true)
-          assert.is(model.getMetadata().chain().pluck('attributes').pluck('content').contains('some meta').value(), true, 'accessible via helper')
-
-          assert.is(model.getMetadata().at(0).get('isMetadata'), true, 'differentiates data from metadata')
-          assert.is(model.get('isMetadata'), false, 'differentiates data from metadata')
-
-          // add metadata as object
-          metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
-          model.addMetadata(metadata)
-
-          assert.is(model.get('metadata').length, 2, 'adds new metadata')
-          assert.is(model.getMetadata().at(1).get('content'), 'new meta', 'helper')
-          assert.is(model.getMetadata().length, 2, 'check meta collection')
-
-          // backbone defaults use a function to prevent issue with references
-          assert.is(model.getMetadata().at(1).get('metadata').length, 0, 'defaults references')
-          assert.is(model.get('children').length, 0, 'defaults references')
-          assert.is(model.getMetadata().at(0).get('metadata').length, 0, 'defaults references')
         })
 
-        it('metadata should track data as a child', function()
+        xit('metadata model', function()
         {
-          assert.is(model.getMetadata().at(0).getChildren().length, 1, 'metadata has data')
-          assert.is(model.getMetadata().at(0).getChildren().at(0).get('id'), model.get('id'), 'getChildren returns collection of data')
+
         })
 
-        it('metadata + data should point to the same references', function()
+        xit('arrays', function()
         {
-          assert.is(model, metadata.getChildren().at(0))
-          assert.is(metadata, model.getMetadata().at(1))
 
+        })
+
+        xit('string', function()
+        {
+
+        })
+      })
+
+      describe('basics', function()
+      {
+        xit('metadata is different from data', function()
+        {
+        })
+
+        xit('should not use old references | check defaults returns new references', function()
+        {
+
+        })
+
+        xit('metadata and data should point to the same references', function()
+        {
         })
       });
 
+
       describe('uniqueness', function()
       {
-        it('metadata is tracked by content which is unique', function()
+        xit('metadata is tracked by content which is unique', function()
         {
           var length = window.App.collections.Metadata.length
 
@@ -64,7 +56,7 @@ define([], function()
           assert.is(window.App.collections.Metadata.length, length + 1)
         })
 
-        it('metadata and data collections both contain unique id references', function()
+        xit('metadata and data collections both contain unique id references', function()
         {
           var metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
           var metadataLength = metadata.getChildren().length
@@ -76,9 +68,79 @@ define([], function()
           assert.is(metadata.getChildren().length, metadataLength + 1)
         })
       });
+
     });
 
-    describe('when removing medata', function()
+    describe('addChild', function()
+    {
+
+      describe('is metadata involved?', function()
+      {
+        describe('yes', function()
+        {
+
+          xit('metadata tracks data as a child', function()
+          {
+
+          })
+
+        })
+
+        describe('no', function()
+        {
+          xit('child (data) should know his direct parent (data)', function()
+          {
+
+          })
+        });
+      })
+    })
+
+
+//        it('data should have metadata', function()
+//        {
+//          // add metadata as json
+//          model = window.App.collections.Data.create({content: 'new task'}, {silent: true})
+//          var added = model.addMetadata({content: 'some meta'})
+//
+//          assert.is(added, true)
+//          assert.is(model.get('metadata').length, 1, 'adds metadata')
+//          assert.is(model.hasMetadata(model.getMetadata().at(0)), true)
+//          assert.is(model.getMetadata().chain().pluck('attributes').pluck('content').contains('some meta').value(), true, 'accessible via helper')
+//
+//          assert.is(model.getMetadata().at(0).get('isMetadata'), true, 'differentiates data from metadata')
+//          assert.is(model.get('isMetadata'), false, 'differentiates data from metadata')
+//
+//          // add metadata as object
+//          metadata = window.App.collections.Metadata.createUnique({content: 'new meta'})
+//          model.addMetadata(metadata)
+//
+//          assert.is(model.get('metadata').length, 2, 'adds new metadata')
+//          assert.is(model.getMetadata().at(1).get('content'), 'new meta', 'helper')
+//          assert.is(model.getMetadata().length, 2, 'check meta collection')
+//
+//          // backbone defaults use a function to prevent issue with references
+//          assert.is(model.getMetadata().at(1).get('metadata').length, 0, 'defaults references')
+//          assert.is(model.get('children').length, 0, 'defaults references')
+//          assert.is(model.getMetadata().at(0).get('metadata').length, 0, 'defaults references')
+//        })
+//
+//        it('metadata should track data as a child', function()
+//        {
+//          assert.is(model.getMetadata().at(0).getChildren().length, 1, 'metadata has data')
+//          assert.is(model.getMetadata().at(0).getChildren().at(0).get('id'), model.get('id'), 'getChildren returns collection of data')
+//        })
+//
+//        it('metadata + data should point to the same references', function()
+//        {
+//          assert.is(model, metadata.getChildren().at(0))
+//          assert.is(metadata, model.getMetadata().at(1))
+//
+//        })
+//      });
+//    });
+
+    describe('removeMetadata', function()
     {
       it('data should no longer have metadata', function()
       {
@@ -137,6 +199,11 @@ define([], function()
     {
 
     })
+
+    describe('addChild', function()
+    {
+
+    });
   });
 
 });
