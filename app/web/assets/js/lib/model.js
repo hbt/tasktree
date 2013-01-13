@@ -15,6 +15,8 @@ define(['backboneStore'], function()
 
     initialize: function(attrs, opts)
     {
+      opts = opts || {}
+
       if(!opts.silent)
       {
         _.events.trigger('model-info-init', this)

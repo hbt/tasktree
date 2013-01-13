@@ -1,4 +1,4 @@
-define(['lib/collection', 'lib/collections/metadata'], function(DataCollection, MetadataCollection)
+define(['lib/collection', 'lib/collections/metadata', 'lib/utils/test-utils'], function(DataCollection, MetadataCollection, TestUtils)
 {
   describe('Model | tests data & metadata', function()
   {
@@ -14,12 +14,7 @@ define(['lib/collection', 'lib/collections/metadata'], function(DataCollection, 
 
     afterEach(function()
     {
-      // reset global references
-      _.each(window.App.collectionClasses, function(Coll)
-      {
-        Coll.prototype.global = null;
-        Coll.prototype.createGlobalCollection()
-      })
+      TestUtils.clearGlobalCollections()
     })
 
     describe('addMetadata | when adding metadata to data', function()

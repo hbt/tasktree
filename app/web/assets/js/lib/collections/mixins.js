@@ -4,6 +4,7 @@ define([], function()
   var exports = {}
 
 
+  // TODO(hbt) modify this to work like getByIds
   exports.getById = function(id)
   {
     var ret = null
@@ -19,7 +20,7 @@ define([], function()
       // TODO(hbt) make sure metadata is fully initialized as this will created new references
       var json = this.localStorage.find({id: id})
       var model = new this.model(json)
-      this.add(model)
+      this.global.add(model)
       ret = model
     }
 
@@ -71,6 +72,7 @@ define([], function()
     }
 
     // add it to the current collection
+    // Note(hbt) this will not add it twice to the global collection -- backbone collections contain unique references
     this.add(ret, options)
 
     return ret

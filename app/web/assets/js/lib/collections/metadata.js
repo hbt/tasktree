@@ -7,31 +7,40 @@ define(['lib/model', './mixins'], function(Model, Mixins)
 
     createUnique: function(json)
     {
-      var coll = this.global
+      var globalCollection = this.global
       var ret = null
 
-      // check collection by id
-      if(json.id && coll._byId[json.id])
+      // look up by id
+      if(json.id)
       {
-        ret = coll._byId[json.id]
-        return ret
+        ret = this.create(json)
       }
 
+      // look up by content
       // Note(hbt) metadata content is unique. look it up first before creating
-      // TODO(hbt) add index by content to accelerate look ups
-      json.content = json.content.trim()
-      ret = coll.find(function(v)
+      if(!ret)
       {
-        return v.get('content') === json.content
-      })
+        // TODO(hbt) add index by content to accelerate look ups
+        json.content = json.content.trim()
+        ret = globalCollection.find(function(v)
+        {
+          return v.get('content') === json.content
+        })
+      }
 
-      // still nothing? create
+      // still nothing? then create it
       if(!ret)
       {
         json.isMetadata = true
         ret = this.create(json)
       }
 
+//      // check collection by id
+//      if(json.id && globalCollection._byId[json.id])
+//      {
+//        ret = globalCollection._byId[json.id]
+//        return ret
+//      }
 
       return ret
     }
