@@ -149,9 +149,11 @@ define(['lib/collection', 'lib/collections/metadata'], function(DataCollection, 
         ])
         assert.is(model.getMetadata().length, 4)
 
-        model.removeMetadata({content: 'some meta to be removed'})
+        // remove object
+        model.removeMetadata(model.getMetadata().at(0))
         assert.is(model.getMetadata().length, 3)
 
+        // remove array of json
         model.removeMetadata([
           {content: 'meta gone'},
           {content: 'meta out'}
