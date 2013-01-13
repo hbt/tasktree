@@ -33,7 +33,7 @@ define(['require'], function(require)
 
         // TODO(hbt) rename /test to /tests -- directory to match modules
         // TODO(hbt) add loop through module tests
-        require(['test/metadata', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
+        require(['test/metadata', 'test/collection', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
           'modules/status/tests/init', 'modules/capture/tests/init', 'modules/list/tests/init'], function()
         {
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
@@ -65,6 +65,10 @@ define(['require'], function(require)
             // TODO(hbt) add one-liner link i.e if the one test fails -- display "FAILURE"
 
             // TODO(hbt) add link to hide pending and only show passed/failures
+
+            // TODO(hbt) detect when tests has no assert i.e "it" but empty function -- check duration
+
+            // TODO(hbt) add link start -- check *s
 
 
             // TODO(hbt) abstract
