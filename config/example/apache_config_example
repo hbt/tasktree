@@ -2,8 +2,10 @@ NameVirtualHost *:9093
 Listen 9093
 <VirtualHost *:9093>
    
+    # COPY changes to example file
     DocumentRoot "/home/hassen/workspace/tasktree/app/web"
 
+    Header set Access-Control-Allow-Origin "*"
     <Directory />
         Options FollowSymLinks
         AllowOverride None
