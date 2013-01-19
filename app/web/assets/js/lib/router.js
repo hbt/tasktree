@@ -33,8 +33,16 @@ define(['require'], function(require)
 
         // TODO(hbt) rename /test to /tests -- directory to match modules
         // TODO(hbt) add loop through module tests
-        require(['test/metadata', 'test/collection', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
-          'modules/status/tests/init', 'modules/capture/tests/init', 'modules/list/tests/init'], function()
+//        var files = ['test/metadata', 'test/collection', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
+//          'modules/status/tests/init', 'modules/capture/tests/init', 'modules/list/tests/init']
+
+        var workflows = ['capture', 'list', 'tag']
+        workflows = _.map(workflows, function(moduleName)
+        {
+          return 'modules/' + moduleName + '/tests/init'
+        })
+
+        require(workflows, function()
         {
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
           mocha.run(function()

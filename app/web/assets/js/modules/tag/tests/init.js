@@ -40,7 +40,7 @@ define([], function()
       });
     });
 
-    describe('Tagging', function()
+    describe('Tagging workflow', function()
     {
 //      // TODO(hbt) skipping the tests on this for now until I clear the structure in my head as to have indices for tags or not
 //      describe('general', function()
@@ -86,26 +86,29 @@ define([], function()
 //          })
 //        });
 
-      describe('using text input | inline tagging: user can tag data using # in text input', function()
+      describe('inline tagging workflow | user can tag data using # in text input', function()
       {
-        it('tags are extracted from content', function()
+        describe('capture content with tags starting by #', function()
         {
-          var task = window.App.collections.Tasks.create({content: '#new new task with #tag tagged as #errands #test'})
-          assert.is(_.contains(task.getTags().pluck('content'), 'new', 'tag', 'errands', 'test'), true)
+          xit('task is tagged', function()
+          {
 
-          var duptag = 'something-in-list'
-          window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
-          window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
-          window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
-        })
+            var task = window.App.collections.Tasks.create({content: '#new new task with #tag tagged as #errands #test'})
+            assert.is(_.contains(task.getTags().pluck('content'), 'new', 'tag', 'errands', 'test'), true)
 
-        xit('content does not include tags inline after save', function()
-        {
-          var task = window.App.collections.Tasks.last()
-          assert.is(task.get('content'), 'new task with tagged as')
+            var duptag = 'something-in-list'
+            window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+            window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+            window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+          })
         })
       });
 
+
+      describe('sidebar tagging workflow', function()
+      {
+
+      });
     });
   });
 })
