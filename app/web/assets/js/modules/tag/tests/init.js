@@ -2,91 +2,101 @@ define([], function()
 {
   describe('tag | tag management', function()
   {
-    // TODO(hbt) move into its own file
-    describe('Listing tags in the filter/tag sidebar', function()
+
+    describe('Sidebar', function()
     {
-      describe('when tag is added', function()
+      describe('List', function()
       {
-        describe('is new?', function()
+        xit('should list existing tags', function()
         {
-          describe('yes', function()
+
+        })
+      });
+
+      describe('Tagging/Filtering', function()
+      {
+        describe('is a task selected?', function()
+        {
+          describe('yes | Tagging mode', function()
           {
-
-            it('should appear in the list', function()
+            xit('should display the tags associated to the current task', function()
             {
-              var tag = 'something-in-list'
+            })
 
-              window.App.collections.Tasks.create({content: 'new #' + tag})
-              var html = $('#tags-container').html()
-              assert.isnt(html.indexOf(tag), -1)
+            xit('toggling a tag would tag the selected task', function()
+            {
+
             })
           });
 
-          describe('no', function()
+          describe('no | Filtering mode', function()
           {
-
-            xit('count of tasks should be updated', function()
+            xit('should display the current filter', function()
             {
-              var duptag = 'something-in-list'
-              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
-              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
-              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
 
-              // TODO(hbt) once UI is finalized
-              // extract number in () and add assert
+            })
+
+            xit('toggling a tag would filter the results in the list further', function()
+            {
+
             })
           });
         });
       });
     });
 
+    // TODO(hbt) move into its own file
+//    describe('Listing tags in the filter/tag sidebar', function()
+//    {
+//      describe('when tag is added', function()
+//      {
+//        describe('is new?', function()
+//        {
+//          describe('yes', function()
+//          {
+//
+//            it('should appear in the list', function()
+//            {
+//              var tag = 'something-in-list'
+//
+//              window.App.collections.Tasks.create({content: 'new #' + tag})
+//              var html = $('#tags-container').html()
+//              assert.isnt(html.indexOf(tag), -1)
+//            })
+//          });
+//
+//          describe('no', function()
+//          {
+//
+//            xit('count of tasks should be updated', function()
+//            {
+//              var duptag = 'something-in-list'
+//              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+//              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+//              window.App.collections.Tasks.create({content: 'duplicate #' + duptag})
+//
+//              // TODO(hbt) once UI is finalized
+//              // extract number in () and add assert
+//            })
+//          });
+//        });
+//      });
+//    });
+
     describe('Tagging workflow', function()
     {
-//      // TODO(hbt) skipping the tests on this for now until I clear the structure in my head as to have indices for tags or not
-//      describe('general', function()
-//      {
-//        xit('tags have __module__ tag as their metadata', function()
-//        {
-//        })
-//
-//        xit('tag content starts with #', function()
-//        {
-//
-//        })
-//      });
-//      describe('using the UI', function()
-//      {
-//
-//      });
+      describe('Tagging with the sidebar', function()
+      {
+        describe('when a task is selected (focus on) and user clicks tags in the sidebar', function()
+        {
+          xit('should add tags to selected task', function()
+          {
 
-//        describe('when adding a tag using the UI', function()
-//        {
-//          xit('should only accept alphanumerical characters with - and _ as separators | keeps parsing simple', function()
-//          {
-//
-//          })
-//
-//          xit('should have __module__ tag as its metadata and be listed as a child | all tags are tracked', function()
-//          {
-//
-//          })
-//
-//
-//          xit('should have the tagged content as a child and the child have the data as its metadata', function()
-//          {
-//
-//          })
-//        });
-//
-//        describe('when removing a tag', function()
-//        {
-//          xit('data no longer has the tag as its metadata and tag no longer has data as its child', function()
-//          {
-//
-//          })
-//        });
+          })
+        });
+      });
 
-      describe('inline tagging workflow | user can tag data using # in text input', function()
+      describe('inline tagging | user can tag data using # in text input', function()
       {
         describe('capture content with tags starting by #', function()
         {

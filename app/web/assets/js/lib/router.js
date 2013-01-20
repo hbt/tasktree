@@ -36,7 +36,7 @@ define(['require'], function(require)
 //        var files = ['test/metadata', 'test/collection', 'test/sanity', 'modules/tag/tests/init', 'modules/status/tests/init',
 //          'modules/status/tests/init', 'modules/capture/tests/init', 'modules/list/tests/init']
 
-        var workflows = ['capture', 'list', 'tag']
+        var workflows = ['capture', 'list', 'tag', 'sync']
         workflows = _.map(workflows, function(moduleName)
         {
           return 'modules/' + moduleName + '/tests/init'

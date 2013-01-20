@@ -14,3 +14,6 @@ define([], function()
 
   });
 })
+
+
+// sync, priority, auth, offline, checklist, process, do, modes
