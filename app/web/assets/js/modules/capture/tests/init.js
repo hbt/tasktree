@@ -1,7 +1,7 @@
 // TODO(hbt) move to its own module
 define(['keyboardSimulator'], function(Keyboard)
 {
-  describe('capture | saves new tasks', function()
+  describe('capture workflow | saves new tasks', function()
   {
 
     describe('focus', function()
@@ -16,11 +16,12 @@ define(['keyboardSimulator'], function(Keyboard)
       })
     });
 
-    describe('capturing', function()
+    describe('capture', function()
     {
       var input
       var value = 'new task from capture'
 
+      // TODO(hbt) change to before
       it('type in input', function()
       {
         input = $('#capture-container').find('input')
@@ -33,61 +34,45 @@ define(['keyboardSimulator'], function(Keyboard)
         assert.is(window.App.collections.Tasks.at(0).get('content'), value)
       })
 
-      it('input is cleared', function()
-      {
-        assert.is(input.val(), '')
-      })
-
 
       xit('task is tagged as #unprocessed', function()
       {
 
       })
 
-
-      it('task is added to the top of the list | to edit in case user presses Enter by mistake', function()
+      describe('exceptions', function()
       {
-        var nvalue = 'second from capture'
-        input.focus()
-        Keyboard.simulateTyping(nvalue + '\r\n', 'keydown')
-
-        var first = $('#list-container .task-input')[0]
-        assert.is(window.App.collections.Tasks.at(0).get('content'), nvalue)
-        assert.is(first.value, nvalue)
-      })
-
-      xit('task fades away after 20 seconds', function()
-      {
-
-      })
-
-      xit('should not save empty content', function()
-      {
-
-      })
-    });
-
-    describe('is the newly captured task in the list in edit mode?', function()
-    {
-      describe('yes', function()
-      {
-        xit('should disable fade away timer while focus is on | allow user to edit', function()
+        xit('should not save empty content', function()
         {
 
         })
+      });
+    })
 
-        describe('is focus removed?', function()
+    describe('clear', function()
+    {
+      xit('input is cleared', function()
+      {
+        assert.is(input.val(), '')
+      })
+    });
+
+    describe('display newly captured at the top of the list', function()
+    {
+      describe('does the list have no filters active?', function()
+      {
+        xit('task is added to the top of the list | to edit in case user presses Enter by mistake', function()
         {
-          describe('yes', function()
-          {
-            xit('should restore fade away timer', function()
-            {
+          var nvalue = 'second from capture'
+          input.focus()
+          Keyboard.simulateTyping(nvalue + '\r\n', 'keydown')
 
-            })
-          });
-        });
-
+          var first = $('#list-container .task-input')[0]
+          assert.is(window.App.collections.Tasks.at(0).get('content'), nvalue)
+          assert.is(first.value, nvalue)
+        })
       });
     });
   })
-});
+})
+;

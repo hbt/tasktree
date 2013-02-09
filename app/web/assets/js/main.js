@@ -35,6 +35,12 @@ require(['require', 'jquery', 'lib/core',
   {
     _.events = {}
     _.extend(_.events, Backbone.Events);
+    // TODO(hbt) abstract in utils
+    _.mixin({
+      copy: function(object) {
+       return jQuery.extend(true, {}, object)
+      }
+    })
 
     App.init(function()
     {

@@ -4,14 +4,15 @@ define([], function()
   var exports = {}
 
 
+  // TODO(hbt) modify this to work like getByIds
   exports.getById = function(id)
   {
     var ret = null
 
     // check collection
-    if(this._byId[id])
+    if(this.global._byId[id])
     {
-      ret = this._byId[id]
+      ret = this.global._byId[id]
     }
     else
     {
@@ -19,7 +20,7 @@ define([], function()
       // TODO(hbt) make sure metadata is fully initialized as this will created new references
       var json = this.localStorage.find({id: id})
       var model = new this.model(json)
-      this.add(model)
+      this.global.add(model)
       ret = model
     }
 
@@ -57,11 +58,11 @@ define([], function()
 
     // get by id if model or json with an id
     // TODO(hbt) check instanceof is not comparing functions but backbone model. otherwise use backbone model name
-    var isModel = model instanceof this.model && model.get('id');
-    var isJSON = _.isObject(model) && model.id
-    if(model && (isModel || isJSON))
+    var isModelWithId = model instanceof this.model && model.get('id');
+    var isJSONWithId = _.isObject(model) && model.id
+    if(model && (isModelWithId || isJSONWithId))
     {
-      var id = (isModel && model.get('id')) || (isJSON && model.id)
+      var id = (isModelWithId && model.get('id')) || (isJSONWithId && model.id)
       ret = this.global.getById(id)
     }
     else
@@ -71,20 +72,29 @@ define([], function()
     }
 
     // add it to the current collection
+    // Note(hbt) this will not add it twice to the global collection -- backbone collections contain unique references
     this.add(ret, options)
 
     return ret
   }
 
 
+  /**
+   * create a global reference for all collections
+   * @param CollClass (optional)
+   * @return {*}
+   */
   exports.createGlobalCollection = function(CollClass)
   {
-    if(!CollClass.prototype.global)
+    var prototype = (CollClass && CollClass.prototype) || this
+    var Constructor = CollClass || this.constructor
+
+    if(!prototype.global)
     {
-      CollClass.prototype.global = new CollClass()
+      prototype.global = new Constructor()
     }
 
-    return CollClass.prototype.global
+    return prototype.global
   }
 
   return exports

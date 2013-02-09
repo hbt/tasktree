@@ -8,6 +8,8 @@ define(['backboneStore'], function()
         metadata:   [],
         children:   [],
         isMetadata: false
+        // TODO(hbt) NEXT 9
+        // TODO(hbt) NEXT add parent attribute
       }
     },
 
@@ -58,7 +60,7 @@ define(['backboneStore'], function()
       this.save({metadata: _.unique(metadataIds)})
       ret.addChild(this)
 
-      return this.hasMetadata(ret)
+      return ret
     },
 
     removeMetadata: function(metadata, collectionName)
@@ -69,7 +71,6 @@ define(['backboneStore'], function()
 
       if(_.isArray(metadata))
       {
-        // TODO(hbt) add test when removing multiple tags and verify it enters
         for(var i = 0; i < metadata.length; i++)
         {
           this.removeMetadata(metadata[i], collectionName)
@@ -86,13 +87,16 @@ define(['backboneStore'], function()
       // // TODO(hbt) then refactor
       var existingMeta = (metadata instanceof Model && metadata) || (_.isObject(metadata) && collMetadata.createUnique(metadata))
 
-      // remove id from array
-      metadataIds = _.without(metadataIds, existingMeta.get('id'))
-      this.save({metadata: _.unique(metadataIds)})
+      if(existingMeta && this.hasMetadata(existingMeta))
+      {
+        // remove id from array
+        metadataIds = _.without(metadataIds, existingMeta.get('id'))
+        this.save({metadata: _.unique(metadataIds)})
 
-      existingMeta.removeChild(this)
+        existingMeta.removeChild(this)
+      }
 
-      return !this.hasMetadata(existingMeta)
+      return existingMeta
     },
 
     hasMetadata: function(metadata)
@@ -104,7 +108,7 @@ define(['backboneStore'], function()
     {
       var collName = collectionName || 'Metadata'
       var coll = window.App.collections[collName]
-      var metadata = coll.getByIds(this.get('metadata')) || []
+      var metadata = coll.getByIds(this.get('metadata'))
 
       return new window.App.collectionClasses[collName](metadata)
     },
@@ -112,7 +116,7 @@ define(['backboneStore'], function()
     getChildren: function()
     {
       var coll = window.App.collections.Data
-      var children = coll.getByIds(this.get('children')) || []
+      var children = coll.getByIds(this.get('children'))
 
       return new window.App.collectionClasses['Data'](children)
     },
