@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd app/web/assets/js
+cat bower-packages.txt | xargs -L1 -I package-name bower install package-name

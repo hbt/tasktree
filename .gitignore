@@ -12,3 +12,4 @@
 # custom configuration
 /config/custom_constants.txt
 /html-report/
+/app/web/assets/js/components
