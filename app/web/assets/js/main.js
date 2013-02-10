@@ -1,26 +1,27 @@
 require({
   baseUrl: 'assets/js',
   paths:   {
-    angular:             'components/angular/angular',
-    chai:                'components/chai/chai',
-    jquery:              'components/jquery/jquery',
-    mocha:               'components/mocha/mocha',
-    underscore:          'components/underscore/underscore',
-    'underscore-string': 'components/underscore.string/lib/underscore.string'
+    angular:              'components/angular/angular',
+    chai:                 'components/chai/chai',
+    jquery:               'components/jquery/jquery',
+    'keyboard-simulator': 'utils/keyboard-simulator',
+    mocha:                'components/mocha/mocha',
+    underscore:           'components/underscore/underscore',
+    'underscore-string':  'components/underscore.string/lib/underscore.string'
   },
 
   shim: {
-
-    'app':           {
+    'app':                    {
       deps: ['angular']
     },
-    'lib/bootstrap': {
+    'services/configuration': {
       deps: ['app']
     }
   }
-}, ['require', 'jquery', 'underscore', 'underscore-string', 'app'], function(require)
+}, ['require', 'jquery', 'underscore', 'underscore-string', 'app', 'services/configuration'], function(require)
 {
-  require(['controllers/main'], function()
+  // TODO(hbt) add a generator to list and load all controllers
+  require(['controllers/main', 'controllers/capture'], function()
   {
     return require(['bootstrap']);
   })

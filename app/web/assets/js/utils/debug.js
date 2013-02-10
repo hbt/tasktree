@@ -27,7 +27,8 @@ define(['require'], function(require)
             ui:          'bdd'
           })
 
-          require(['tests/init'], function()
+          // TODO(hbt) generate
+          require(['tests/functional/capture'], function()
           {
             mocha.run(function()
             {

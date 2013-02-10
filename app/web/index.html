@@ -17,6 +17,12 @@
 
 
 <div ng-controller="Main">
+    <div id="capture-container" ng-controller="Capture">
+        <form ng-submit="save()">
+            <input ng-model="task.content" placeholder="What's on your mind?"/>
+        </form>
+
+    </div>
 </div>
 
 </body>
