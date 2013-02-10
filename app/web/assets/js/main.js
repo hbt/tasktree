@@ -2,7 +2,7 @@ require({
   baseUrl: 'assets/js',
   paths:   {
     angular:              'components/angular/angular',
-    chai:                 'components/chai/chai',
+    chai:                 'libs/chai/chai',
     jquery:               'components/jquery/jquery',
     'keyboard-simulator': 'utils/keyboard-simulator',
     mocha:                'components/mocha/mocha',
