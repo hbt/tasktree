@@ -1,10 +1,12 @@
 require({
   baseUrl: 'assets/js',
   paths:   {
+    angular:             'components/angular/angular',
+    chai:                'components/chai/chai',
     jquery:              'components/jquery/jquery',
+    mocha:               'components/mocha/mocha',
     underscore:          'components/underscore/underscore',
-    'underscore-string': 'components/underscore.string/lib/underscore.string',
-    'angular':           'components/angular/angular'
+    'underscore-string': 'components/underscore.string/lib/underscore.string'
   },
 
   shim: {
@@ -16,7 +18,7 @@ require({
       deps: ['app']
     }
   }
-}, ['require', 'jquery', 'app'], function(require)
+}, ['require', 'jquery', 'underscore', 'underscore-string', 'app'], function(require)
 {
   require(['controllers/main'], function()
   {
