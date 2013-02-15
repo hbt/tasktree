@@ -1,0 +1,9 @@
+{
+  "name": "backbone.localStorage",
+  "version": "0.0.0",
+  "commit": "7579615a928f44a133b8253c1405f0a286796d50",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/jeromegn/Backbone.localStorage.git"
+  }
+}
