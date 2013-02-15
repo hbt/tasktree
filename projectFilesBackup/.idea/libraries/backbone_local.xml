@@ -1,0 +1,8 @@
+<component name="libraryTable">
+  <library name="backbone-local" type="javaScript">
+    <CLASSES />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/app/web/assets/js/components/backbone.localStorage/backbone.localStorage.js" />
+    </SOURCES>
+  </library>
+</component>

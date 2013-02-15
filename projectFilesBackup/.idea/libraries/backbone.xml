@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="backbone" type="javaScript">
+    <CLASSES />
+    <DOCUMENTATION>
+      <root url="http://backbonejs.org/" />
+    </DOCUMENTATION>
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/app/web/assets/js/components/backbone-amd/backbone.js" />
+    </SOURCES>
+  </library>
+</component>
