@@ -1,1 +1,3 @@
-  angular.bootstrap(document, ['tasktree']);
+angular.bootstrap(document, ['tasktree']);
+localStorage['ww'] = 'nnww'
+

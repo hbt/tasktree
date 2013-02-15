@@ -25,5 +25,7 @@ define(['libs/jquery-plugins/send-keys/send-keys'], function()
     }
   }
 
+  window.sim = simulator
+
   return simulator
 })

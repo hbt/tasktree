@@ -1,4 +1,6 @@
 angular#1.0.4
+angular-ui#0.3.2
+backbone#0.9.10
 jquery#1.9.1
 mocha#1.8.1
 require#2.1.4
