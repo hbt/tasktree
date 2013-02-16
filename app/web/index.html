@@ -4,6 +4,63 @@
 <head>
     <meta charset="utf-8">
 
+    <script type="text/javascript">__reloadServerUrl = "ws://localhost:35729";</script>
+    <script type="text/javascript">
+        /*
+ * grunt-reload
+ * https://github.com/webxl/grunt-reload
+ *
+ * Copyright (c) 2012 webxl
+ * Licensed under the MIT license.
+ */
+
+(function(window) {
+
+    'use strict';
+
+    var reloader = (function Reloader() {
+
+		var l = window.location, url;
+
+        if (window.__reloadServerUrl) {
+            url = window.__reloadServerUrl;
+        } else {
+            url = 'ws://' + l.host;
+        }
+
+		return {
+			isSocketConnected:function () {
+				return this.socket && this.socket.readyState === WebSocket.OPEN;
+			},
+			connect:function () {
+				if (this.isSocketConnected()) {
+					return;
+				}
+				if (this.connectTimeout) {
+					clearTimeout(this.connectTimeout);
+				}
+				this.socket = new WebSocket(url);
+
+				this.socket.onmessage = function (msg) {
+					this.close();
+					console.log(msg.data);
+					window.document.location.reload();
+				};
+
+				// Todo: reconnect support
+			}
+		};
+
+	}());
+
+	setTimeout(function() { reloader.connect(); }, 100);
+
+}(this));
+    </script>
+
+
+    <script type="text/javascript" src="assets/js/vendor/knockback/knockback.js"></script>
+
     <script language="javascript" data-main="assets/js/main.js" src="assets/js/components/requirejs/require.js"
             type="text/javascript"></script>
 
@@ -13,7 +70,11 @@
 
 
 <!-- TODO(hbt) add reference to module namespace -->
-
-
+asdsssfd
+isod
+sss
+<div>
+    asqaasasdsd
+</div>
 </body>
 </html>
