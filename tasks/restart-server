@@ -27,7 +27,7 @@ shift $(( OPTIND - 1 ))
 
 
 # start watcher to reload browser when files change
-grunt watch 1> /dev/null &
+./tasks/watch-and-reload 1> /dev/null &
 
 # show logs
 tail -f log/app.log -f log/app-err.log &
