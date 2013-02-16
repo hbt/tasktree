@@ -1,7 +1,10 @@
+// TODO(hbt) clean up imports and remove unused stuff
+// TODO(hbt) add bower-packages + ignore or move to customized-vendor
 require.config({
   baseUrl: 'assets/js',
   paths:   {
-    jquery:              'components/jquery/jquery',
+//    jquery:              'components/jquery/jquery',
+//    underscore:          'components/underscore-amd/underscore',
     'underscore_string': 'components/underscore.string/lib/underscore.string',
     text:                'components/requirejs-text/text',
     backboneStore:       'components/backbone.localStorage/backbone.localStorage',
@@ -22,30 +25,30 @@ require.config({
 });
 
 
-require(['require', 'jquery'
+require(['require', 'lib/core',
 
   // not used in params
-//  'backbone', 'underscore', 'lib/utils/global', 'underscore_string',
-//  'css!components/mocha/mocha'
+//  'underscore',
+  'lib/utils/global', 'underscore_string',
+  'css!components/mocha/mocha'
 ],
 
-  function(require, $)
+  function(require, App)
   {
-    console.log(kb,ko)
-//    _.events = {}
-//    _.extend(_.events, Backbone.Events);
-//    // TODO(hbt) abstract in utils
-//    _.mixin({
-//      copy: function(object) {
-//       return jQuery.extend(true, {}, object)
-//      }
-//    })
-//
-//    App.init(function()
-//    {
-//      $(document).ready(function()
-//      {
-//        Backbone.history.start()
-//      })
-//    })
+    _.events = {}
+    _.extend(_.events, Backbone.Events);
+    // TODO(hbt) abstract in utils
+    _.mixin({
+      copy: function(object) {
+       return jQuery.extend(true, {}, object)
+      }
+    })
+
+    App.init(function()
+    {
+      $(document).ready(function()
+      {
+        Backbone.history.start()
+      })
+    })
   })

@@ -8,6 +8,7 @@
 
         // TODO(hbt) abstract and improve + remove dependency on jquery
         // TODO(hbt) update scripts to trigger watch and remove debug-version -- inotifywait is faster
+        // TODO(hbt) update readme
         (function(window)
         {
             var ReloadModule = {
@@ -46,6 +47,7 @@
     </script>
 
 
+    <script type="text/javascript" src="assets/js/components/jquery/jquery.js"></script>
     <script type="text/javascript" src="assets/js/vendor/knockback/knockback.js"></script>
 
     <script language="javascript" data-main="assets/js/main.js" src="assets/js/components/requirejs/require.js"
@@ -57,7 +59,11 @@
 
 
 <!-- TODO(hbt) add reference to module namespace -->
-<div>
+<div id="capture-container">
+    <!-- TODO(hbt) make it a form -->
+    <form data-bind="submit: create">
+        <input type="text" data-bind="value: content"/>
+    </form>
 </div>
 </body>
 </html>

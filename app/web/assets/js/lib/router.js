@@ -1,3 +1,4 @@
+// TODO(hbt) refactor
 define(['require'], function(require)
 {
   var Router = Backbone.Router.extend({
@@ -42,7 +43,7 @@ define(['require'], function(require)
           return 'modules/' + moduleName + '/tests/init'
         })
 
-        require(workflows, function()
+        require(['tests/functional/fn-capture'], function()
         {
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
           mocha.run(function()

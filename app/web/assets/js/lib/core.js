@@ -13,10 +13,10 @@ define(['require'], function(require)
         if(environmentName === 'dev')
         {
           // enable auto-reload when files change in dev mode
-          require(['lib/utils/debug/reload'], function(ReloadUtils)
-          {
-            ReloadUtils.init()
-          })
+//          require(['lib/utils/debug/reload'], function(ReloadUtils)
+//          {
+//            ReloadUtils.init()
+//          })
 
 
           // add shortcuts to run tests
@@ -31,24 +31,6 @@ define(['require'], function(require)
       }
     }
 
-    function getFiles()
-    {
-      var map = {
-        'lib/%string%':          'model,collection,collections/metadata',
-        'modules/%string%/main': 'tag,capture,list,status'
-      }
-
-      var ret = _.chain(map).map(function(list, prefix)
-      {
-        return _.map(list.split(','), function(v)
-        {
-          var str = prefix
-          return str.replace('%string%', v)
-        })
-      }).flatten().value()
-
-      return ret
-    }
 
     function initialize(callback)
     {
@@ -64,15 +46,17 @@ define(['require'], function(require)
         new Router()
         App.config = config
 
+        // TODO(hbt) refactor
         CustomEnvironment.configure(App.config.envName)
-
-        require(getFiles(), function()
+        require(['models/task'], function()
         {
+          require(['view-model/vm-capture'], function(CaptureView)
+          {
+            new CaptureView()
+            callback()
+          })
+        })
 
-          // TODO(hbt) consider adding _.after to execute callback after all modules are done initializing
-          _.events.trigger('app-init')
-          callback()
-        });
       })
     }
 
