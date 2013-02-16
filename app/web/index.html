@@ -4,58 +4,50 @@
 <head>
     <meta charset="utf-8">
 
-    <script type="text/javascript">__reloadServerUrl = "ws://localhost:35729";</script>
     <script type="text/javascript">
         /*
- * grunt-reload
- * https://github.com/webxl/grunt-reload
- *
- * Copyright (c) 2012 webxl
- * Licensed under the MIT license.
- */
+         * grunt-reload
+         * https://github.com/webxl/grunt-reload
+         *
+         * Copyright (c) 2012 webxl
+         * Licensed under the MIT license.
+         */
 
-(function(window) {
+        (function(window)
+        {
+            var ReloadModule = {
 
-    'use strict';
+                lastVersion: -1,
 
-    var reloader = (function Reloader() {
+                reloadIfNewVersion: function()
+                {
+                    if(typeof $ === 'undefined')
+                    {
+                        return;
+                    }
+                    $.ajax({
+                        url:     './debug-version.txt?bustCache=' + (+new Date()),
+                        context: document.body,
+                        success: function(data)
+                        {
+                            if(ReloadModule.lastVersion !== -1 && data > ReloadModule.lastVersion)
+                            {
+                                window.location.reload(true)
+                            }
 
-		var l = window.location, url;
+                            ReloadModule.lastVersion = data
+                        }
+                    });
+                },
 
-        if (window.__reloadServerUrl) {
-            url = window.__reloadServerUrl;
-        } else {
-            url = 'ws://' + l.host;
-        }
+                init: function()
+                {
+                    window.setInterval(ReloadModule.reloadIfNewVersion, 300)
+                }
+            }
 
-		return {
-			isSocketConnected:function () {
-				return this.socket && this.socket.readyState === WebSocket.OPEN;
-			},
-			connect:function () {
-				if (this.isSocketConnected()) {
-					return;
-				}
-				if (this.connectTimeout) {
-					clearTimeout(this.connectTimeout);
-				}
-				this.socket = new WebSocket(url);
-
-				this.socket.onmessage = function (msg) {
-					this.close();
-					console.log(msg.data);
-					window.document.location.reload();
-				};
-
-				// Todo: reconnect support
-			}
-		};
-
-	}());
-
-	setTimeout(function() { reloader.connect(); }, 100);
-
-}(this));
+            ReloadModule.init()
+        }(this));
     </script>
 
 
@@ -70,11 +62,7 @@
 
 
 <!-- TODO(hbt) add reference to module namespace -->
-asdsssfd
-isod
-sss
 <div>
-    asqaasasdsd
 </div>
 </body>
 </html>
