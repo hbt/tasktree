@@ -2,9 +2,7 @@ require.config({
   baseUrl: 'assets/js',
   paths:   {
     jquery:              'components/jquery/jquery',
-    underscore:          'components/underscore-amd/underscore',
     'underscore_string': 'components/underscore.string/lib/underscore.string',
-    backbone:            'components/backbone-amd/backbone',
     text:                'components/requirejs-text/text',
     backboneStore:       'components/backbone.localStorage/backbone.localStorage',
     keyboardSimulator:   'lib/utils/keyboard-simulator',
@@ -24,29 +22,30 @@ require.config({
 });
 
 
-require(['require', 'jquery', 'lib/core',
+require(['require', 'jquery'
 
   // not used in params
-  'backbone', 'underscore', 'lib/utils/global', 'underscore_string',
-  'css!components/mocha/mocha'
+//  'backbone', 'underscore', 'lib/utils/global', 'underscore_string',
+//  'css!components/mocha/mocha'
 ],
 
-  function(require, $, App)
+  function(require, $)
   {
-    _.events = {}
-    _.extend(_.events, Backbone.Events);
-    // TODO(hbt) abstract in utils
-    _.mixin({
-      copy: function(object) {
-       return jQuery.extend(true, {}, object)
-      }
-    })
-
-    App.init(function()
-    {
-      $(document).ready(function()
-      {
-        Backbone.history.start()
-      })
-    })
+    console.log(kb,ko)
+//    _.events = {}
+//    _.extend(_.events, Backbone.Events);
+//    // TODO(hbt) abstract in utils
+//    _.mixin({
+//      copy: function(object) {
+//       return jQuery.extend(true, {}, object)
+//      }
+//    })
+//
+//    App.init(function()
+//    {
+//      $(document).ready(function()
+//      {
+//        Backbone.history.start()
+//      })
+//    })
   })
