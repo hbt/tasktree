@@ -1,38 +1,52 @@
-Backbone.GSModel = Backbone.Model.extend({
+(function()
+{
+  var setFunction = Backbone.Model.prototype.set
+  var getFunction = Backbone.Model.prototype.get
 
-	get: function(attr) {
-		// Call the getter if available
-		if (_.isFunction(this.getters[attr])) {
-			return this.getters[attr].call(this);
-		}
+  _.extend(Backbone.Model.prototype, {
 
-		return Backbone.Model.prototype.get.call(this, attr);
-	},
+    get: function(attr)
+    {
+      // Call the getter if available
+      if(_.isFunction(this.getters[attr]))
+      {
+        return this.getters[attr].call(this);
+      }
 
-	set: function(key, value, options) {
-		var attrs, attr;
+      return getFunction.call(this, attr);
+    },
 
-		// Normalize the key-value into an object
-		if (_.isObject(key) || key == null) {
-			attrs = key;
-			options = value;
-		} else {
-			attrs = {};
-			attrs[key] = value;
-		}
+    set: function(key, value, options)
+    {
+      var attrs, attr;
 
-		// Go over all the set attributes and call the setter if available
-		for (attr in attrs) {
-			if (_.isFunction(this.setters[attr])) {
-				attrs[attr] = this.setters[attr].call(this, attrs[attr]);
-			}
-		}
+      // Normalize the key-value into an object
+      if(_.isObject(key) || key == null)
+      {
+        attrs = key;
+        options = value;
+      }
+      else
+      {
+        attrs = {};
+        attrs[key] = value;
+      }
 
-		return Backbone.Model.prototype.set.call(this, attrs, options);
-	},
+      // Go over all the set attributes and call the setter if available
+      for(attr in attrs)
+      {
+        if(_.isFunction(this.setters[attr]))
+        {
+          attrs[attr] = this.setters[attr].call(this, attrs[attr]);
+        }
+      }
 
-	getters: {},
+      return setFunction.call(this, attrs, options);
+    },
 
-	setters: {}
+    getters: {},
 
-});
+    setters: {}
+
+  })
+}())
