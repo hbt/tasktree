@@ -50,9 +50,8 @@ define(['require'], function(require)
         CustomEnvironment.configure(App.config.envName)
         require(['models/task'], function()
         {
-          require(['view-model/vm-capture'], function(CaptureView)
+          require(['view-model/vm-capture'], function()
           {
-            new CaptureView()
             callback()
           })
         })

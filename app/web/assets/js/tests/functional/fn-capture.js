@@ -1,3 +1,6 @@
+define(['keyboardSimulator'], function(Keyboard)
+{
+
   describe('Capture | saves new tasks', function()
   {
 
@@ -24,7 +27,7 @@
         {
           input = $('#capture-container input')
           input.focus()
-          input.val('new task')
+          Keyboard.simulateTyping('new task \r\n', 'keyup')
           input.closest('form').submit()
         })
 
@@ -106,3 +109,4 @@
 //      });
 //    });
   })
+})
