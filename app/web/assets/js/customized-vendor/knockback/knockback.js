@@ -1841,17 +1841,18 @@ kb.Inject = (function() {
 
 kb.injectViewModels = kb.Inject.injectViewModels;
 
-if (this.$) {
-  this.$(function() {
-    return kb.injectViewModels();
-  });
-} else {
-  (onReady = function() {
-    if (document.readyState !== "complete") {
-      return setTimeout(onReady, 0);
-    }
-    return kb.injectViewModels();
-  })();
-}
+//if (this.$) {
+//  this.$(function() {
+//    return kb.injectViewModels();
+//  });
+//} else {
+//  (onReady = function() {
+//    if (document.readyState !== "complete") {
+//      return setTimeout(onReady, 0);
+//    }
+//    return kb.injectViewModels();
+//  })();
+//}
+
 ; return kb;});
 }).call(this);
