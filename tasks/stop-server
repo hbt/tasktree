@@ -2,11 +2,15 @@
 
 # stop server
 forever -d -v stop app/server/app.js &> /dev/null
+ps aux | grep "TaskTree" |  grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
 
 # kill watchers
-ps aux | grep "./tasks/watch-and-reload" |  grep -v grep | awk '{print $2}' | xargs kill -9
+ps aux | grep "./tasks/watch-and-reload" |  grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
+
+# seems to run separately than the watch-and-reload
+ps aux | grep "inotifywait" |  grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
 
 # kill tails
-ps aux | grep "tail -f log/app.log" | grep -v grep | awk '{print $2}' | xargs kill -9
+ps aux | grep "tail -f log/app.log" | grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null
 
 exit 0
