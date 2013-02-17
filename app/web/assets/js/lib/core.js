@@ -39,6 +39,8 @@ define(['require'], function(require)
       App.collectionClasses = App.collectionClasses || {}
       App.models = App.models || {}
       App.views = App.views || {}
+      App.vm = App.vm || {}
+      App.services = App.services || {}
 
       require(['config/config', './router'], function(config, Router)
       {
@@ -48,7 +50,7 @@ define(['require'], function(require)
 
         // TODO(hbt) refactor
         CustomEnvironment.configure(App.config.envName)
-        require(['models/task'], function()
+        require(['models/task', 'collections/tasks'], function()
         {
           require(['view-model/vm-capture'], function()
           {

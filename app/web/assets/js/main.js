@@ -29,31 +29,37 @@ require.config({
   shim: {
     'knockback-lib': {
       deps: ['jquery']
+    },
+    'backbone':      {
+      deps: ['underscore', 'jquery']
     }
   }
 });
 
 require(['require', 'jquery',
   // not in arguments
-  'lib/utils/global', 'underscore_string', 'knockback-lib',
+  'lib/utils/global', 'underscore_string', 'knockback-lib', 'backbone',
   // TODO(hbt) move to test
   'css!components/mocha/mocha'],
   function(require, $)
   {
-    require(['knockback', 'knockout'], function(kb, ko)
+    require(['knockback', 'knockout', 'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore'], function(kb, ko)
     {
       window.ko = ko
+
+      // TODO(hbt) abstract in utils
+      _.events = {}
+      _.extend(_.events, Backbone.Events);
+      _.mixin({
+        copy: function(object)
+        {
+          return jQuery.extend(true, {}, object)
+        }
+      })
+
+      // TODO(hbt) move core and everything out of lib
       require(['lib/core'], function(App)
       {
-        // TODO(hbt) abstract in utils
-        _.events = {}
-        _.extend(_.events, Backbone.Events);
-        _.mixin({
-          copy: function(object)
-          {
-            return jQuery.extend(true, {}, object)
-          }
-        })
 
         App.init(function()
         {
