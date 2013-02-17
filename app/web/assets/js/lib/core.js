@@ -25,7 +25,7 @@ define(['require'], function(require)
             var div = document.createElement('div')
             div.innerHTML = '<a href="?#tests">Run tests</a>'
             div.id = 'mocha'
-            $(div).insertBefore($('#capture-container'))
+            $(div).insertBefore($('#messages-container'))
           })
         }
       }

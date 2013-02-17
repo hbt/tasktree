@@ -43,7 +43,8 @@ define(['require'], function(require)
           return 'modules/' + moduleName + '/tests/init'
         })
 
-        require(['tests/functional/fn-capture'], function()
+        // TODO(hbt) generate by looping through dir
+        require(['tests/functional/view-model/fn-capture', 'tests/unit/mixins/unit-backbone-collections', 'tests/functional/services/fn-msg'], function()
         {
           // TODO(hbt) change all links and add #tests + remove route '' => #tests
           mocha.run(function()

@@ -13,40 +13,71 @@ define(['keyboardSimulator'], function(Keyboard)
 
         })
       });
-
-      // TODO(hbt) add /capture URL
     });
 
-    // TODO(hbt) implement the tests
     describe('capture', function()
     {
       describe('on Enter', function()
       {
-        var input
+        var input, coll
         beforeEach(function()
         {
           input = $('#capture-container input')
           input.focus()
-          Keyboard.simulateTyping('new task \r\n', 'keyup')
-          input.closest('form').submit()
+          coll = App.collections.Tasks
         })
 
-        it('should save', function()
+        describe('is invalid? | empty', function()
         {
-        })
+          describe('yes', function()
+          {
+            beforeEach(function()
+            {
+              Keyboard.simulateTyping(' ', 'keyup')
+            })
 
-        it('should clear input', function()
-        {
-//          assert.is(input.val(), '')
-        })
+            it('should display error message', function(done)
+            {
+              _.events.on('on-msg-show', function()
+              {
+                done()
+              })
+              input.closest('form').submit()
+            })
+
+            it('should not save', function()
+            {
+              assert.is(coll.global.length, 0)
+            })
+          });
+
+          describe('no', function()
+          {
+            beforeEach(function()
+            {
+              Keyboard.simulateTyping('new task', 'keyup')
+              input.closest('form').submit()
+            })
+
+            it('should save', function()
+            {
+              assert.is(coll.global.length, 1)
+            })
+
+            it('should clear input', function()
+            {
+              assert.is(input.val(), '')
+            })
+          });
+        });
       });
 
-      it('type in input', function()
-      {
+//      it('type in input', function()
+//      {
 //        var input = $('#capture-container').find('input')
 //        input.focus()
 //        Keyboard.simulateTyping('new task yep\r\n', 'keydown')
-      })
+//      })
 
 
     });

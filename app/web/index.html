@@ -54,12 +54,18 @@
 
 <body>
 
+<div id="messages-container">
+    <span data-bind="text: message, visible: show"></span>
+</div>
 
 <!-- TODO(hbt) add reference to module namespace -->
-<div id="capture-container" kb-inject="CaptureViewModel">
+<div id="capture-container" kb-inject="App.vm.Capture">
     <!-- TODO(hbt) add validation empty -->
     <form data-bind="submit: create">
-        <input type="text" data-bind="value: content, valueUpdate: 'keyup'"/>
+        <input type="text" data-bind="
+            value: content,
+            valueUpdate: 'keyup'"
+                />
     </form>
 </div>
 </body>

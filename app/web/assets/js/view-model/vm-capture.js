@@ -1,10 +1,9 @@
-define([], function()
+define(['models/task', 'services/msg'], function(Task, Msg)
 {
   var CaptureViewModel = kb.ViewModel.extend({
-    constructor: function(model)
+    constructor: function()
     {
-      var Model = window.App.models['Task']
-      model = new Model({content: ''})
+      var model = new Task()
 
       kb.ViewModel.prototype.constructor.call(this, model);
       return this;
@@ -12,15 +11,28 @@ define([], function()
 
     create: function()
     {
-      // TODO(hbt) implement
-      console.log(this.model().get('content'))
+      var model = this.model()
+
+
+      // empty string?
+      if(model.get('content').trim() === '')
+      {
+        return Msg.error('Nothing to capture -- empty content')
+      }
+
+
+      // create
+      model.global.create(model.toJSON())
+
+
+      // clear
       this.model().set('content', '')
-      console.log('ss', arguments, this)
-    }
+    },
+
+    hasFocus: true
   });
 
-  // TODO(hbt) refactor to use App.vm
-  window.CaptureViewModel = CaptureViewModel
 
+  window.App.vm.Capture = CaptureViewModel
   return CaptureViewModel
 })
