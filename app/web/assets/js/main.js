@@ -29,7 +29,7 @@ require.config({
 
   shim: {
     'knockback-lib': {
-      deps: ['jquery']
+      deps: ['jquery', 'backbone']
     },
     'backbone':      {
       deps: ['underscore', 'jquery']
@@ -39,11 +39,12 @@ require.config({
 
 require(['require', 'jquery',
   // not in arguments
-  'lib/utils/global', 'underscore_string', 'knockback-lib', 'backbone',
+  'underscore_string', 'knockback-lib', 'backbone',
   // TODO(hbt) move to test
   'css!components/mocha/mocha'],
   function(require, $)
   {
+    // load knockback + knockout + backbone deps
     require(['knockback', 'knockout', 'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore'], function(kb, ko)
     {
       window.ko = ko
@@ -59,7 +60,7 @@ require(['require', 'jquery',
       })
 
       // TODO(hbt) move core and everything out of lib
-      require(['lib/core'], function(App)
+      require(['core/app'], function(App)
       {
 
         App.init(function()

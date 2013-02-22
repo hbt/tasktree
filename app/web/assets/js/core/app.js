@@ -19,6 +19,7 @@ define(['require'], function(require)
 //          })
 
 
+          // TODO(hbt) in test runner
           // add shortcuts to run tests
           $(document).ready(function()
           {
@@ -38,11 +39,10 @@ define(['require'], function(require)
       App.collections = App.collections || {}
       App.collectionClasses = App.collectionClasses || {}
       App.models = App.models || {}
-      App.views = App.views || {}
       App.vm = App.vm || {}
       App.services = App.services || {}
 
-      require(['config/config', './router'], function(config, Router)
+      require(['config/config', 'core/router'], function(config, Router)
       {
         // TODO(hbt) add global router
         new Router()
