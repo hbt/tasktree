@@ -4,6 +4,8 @@ define(['models/task', 'services/msg', 'view-model/vm-list-one'], function(Task,
     constructor: function()
     {
       var tasks = App.collections.Tasks.global
+      tasks.fetch()
+
       this.tasks = kb.collectionObservable(tasks, {
         view_model: ListOneViewModel
       })

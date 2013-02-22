@@ -5,8 +5,7 @@ define([], function()
     'debugVersionURL': '%%debug_version_url%%',
     'envName':         '%%environment_name%%',
     'skipCrashTests':  '%%skip_crash_tests%%' === 'true',
-    // TODO(hbt) only generate timestamp on if location has #tests
-    'namespace':       'tasktree-' + (+new Date())
+    'namespace':       window.location.hash.indexOf('tests') !== -1 ? 'tasktree-' + (+new Date()) : 'tasktree'
   }
 
   // TODO(hbt) make namespace a function and loop through it

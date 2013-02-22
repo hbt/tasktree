@@ -1,6 +1,10 @@
 define([], function()
 {
   var ListOneViewModel = kb.ViewModel.extend({
+    save: function()
+    {
+      this.model().save()
+    }
 
   })
 

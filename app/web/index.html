@@ -58,11 +58,11 @@
     <span data-bind="text: message, visible: show"></span>
 </div>
 
-<!-- TODO(hbt) add reference to module namespace -->
+<!-- TODO(hbt) add label -->
 <div id="capture-container" kb-inject="App.vm.Capture">
-    <!-- TODO(hbt) add validation empty -->
     <form data-bind="submit: create">
-        <input type="text" data-bind="
+        <label for="capture-input">Capture</label>
+        <input id="capture-input" type="text" data-bind="
             value: content,
             valueUpdate: 'keyup'"
                 />
@@ -72,7 +72,12 @@
 <div id="list-container" kb-inject="App.vm.List" data-bind="visible: hasTasks" style="display: none;">
     <div data-bind="foreach: tasks">
         <div>
-            <input type="text" data-bind="value: content"/>
+            <form data-bind="submit: save">
+                <input type="text" data-bind="
+                    value: content,
+                    valueUpdate: 'keyup'"
+                        />
+            </form>
         </div>
     </div>
 </div>

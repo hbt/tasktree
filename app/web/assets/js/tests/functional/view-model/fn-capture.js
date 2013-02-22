@@ -1,4 +1,4 @@
-define(['keyboardSimulator'], function(Keyboard)
+define(['keyboardSimulator', 'utils/tests/test-helpers'], function(Keyboard, TestUtils)
 {
 
   describe('Capture | saves new tasks', function()
@@ -53,6 +53,7 @@ define(['keyboardSimulator'], function(Keyboard)
             afterEach(function()
             {
               input.val('')
+              TestUtils.reset()
             })
           });
 
@@ -80,6 +81,11 @@ define(['keyboardSimulator'], function(Keyboard)
             {
               var val = $('#list-container input').first().val()
               assert.is(val, content)
+            })
+
+            afterEach(function()
+            {
+              TestUtils.reset()
             })
           });
         });
