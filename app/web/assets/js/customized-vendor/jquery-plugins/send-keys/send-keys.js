@@ -28,7 +28,7 @@
 // custom changes include keyup/keypress + requirejs support
 
 
-define(['jquery', 'components/jquery/plugins/send-keys-utils'], function($, bililiteRange) {
+define(['jquery', 'customized-vendor/jquery-plugins/send-keys/send-keys-utils'], function($, bililiteRange) {
     $.fn.sendkeys = function(x, opts) {
         return this.each(function() {
             var localkeys = $.extend({}, opts, $(this).data('sendkeys')); // allow for element-specific key functions

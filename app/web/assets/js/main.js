@@ -11,7 +11,7 @@ require.config({
     'underscore_string': 'components/underscore.string/lib/underscore.string',
     text:                'components/requirejs-text/text',
     backboneStore:       'components/backbone.localStorage/backbone.localStorage',
-    keyboardSimulator:   'lib/utils/keyboard-simulator',
+    keyboardSimulator:   'customized-vendor/jquery-plugins/send-keys/keyboard-simulator',
     handlebars:          'components/require-handlebars-plugin/Handlebars',
     hbs:                 'components/require-handlebars-plugin/hbs',
     i18nprecompile:      'components/require-handlebars-plugin/hbs/i18nprecompile',
