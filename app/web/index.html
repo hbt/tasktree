@@ -4,48 +4,7 @@
 <head>
     <meta charset="utf-8">
 
-    <script type="text/javascript">
-
-        // TODO(hbt) abstract and improve + remove dependency on jquery
-        // TODO(hbt) update scripts to trigger watch and remove debug-version -- inotifywait is faster
-        // TODO(hbt) update readme
-        (function(window)
-        {
-            var ReloadModule = {
-
-                lastVersion: -1,
-
-                reloadIfNewVersion: function()
-                {
-                    if(typeof $ === 'undefined')
-                    {
-                        return;
-                    }
-                    $.ajax({
-                        url:     './debug-version.txt?bustCache=' + (+new Date()),
-                        context: document.body,
-                        success: function(data)
-                        {
-                            if(ReloadModule.lastVersion !== -1 && data > ReloadModule.lastVersion)
-                            {
-                                window.location.reload(true)
-                            }
-
-                            ReloadModule.lastVersion = data
-                        }
-                    });
-                },
-
-                init: function()
-                {
-                    window.setInterval(ReloadModule.reloadIfNewVersion, 300)
-                }
-            }
-
-            ReloadModule.init()
-        }(this));
-    </script>
-
+    <script type="text/javascript" src="assets/js/utils/debug/reload.js"></script>
 
     <script language="javascript" data-main="assets/js/main.js" src="assets/js/components/requirejs/require.js"
             type="text/javascript"></script>
