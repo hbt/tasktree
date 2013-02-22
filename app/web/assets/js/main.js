@@ -1,4 +1,5 @@
 // TODO(hbt) clean up imports and remove unused stuff
+
 // TODO(hbt) add bower-packages + ignore or move to customized-vendor
 require.config({
   baseUrl: 'assets/js',

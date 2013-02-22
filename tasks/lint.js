@@ -3,6 +3,11 @@ module.exports = function(grunt)
   var _ = require('underscore')
 
   var JSHintConfig = {
+
+    /**
+     * returns jshint configuration as JSON
+     * @returns {{options: *, globals: *}}
+     */
     getJSON: function()
     {
       var json = JSON.parse(JSHintConfig.cleanupJSON(JSHintConfig.readFile()))
@@ -12,6 +17,11 @@ module.exports = function(grunt)
       return {options: json, 'globals': globals}
     },
 
+    /**
+     * cleans up JSON by removing comments so it is parsable
+     * @param json
+     * @returns {string}
+     */
     cleanupJSON: function(json)
     {
       return _.map(json.split('\n'),function(line)
@@ -20,6 +30,11 @@ module.exports = function(grunt)
       }).join('\n')
     },
 
+
+    /**
+     * reads hintrc file
+     * @returns string
+     */
     readFile: function()
     {
       // TODO(hbt) use path + resolve
@@ -32,6 +47,10 @@ module.exports = function(grunt)
    */
   var VersionControl = {
 
+    /**
+     * returns list of modified files in git status
+     * @param callback
+     */
     getChangedFiles: function(callback)
     {
       var exec = require('child_process').exec;

@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Usage:  ./tasks/stop-server
+
 # stop server
 forever -d -v stop app/server/app.js &> /dev/null
 ps aux | grep "TaskTree" |  grep -v grep | awk '{print $2}' | xargs kill -9 &> /dev/null

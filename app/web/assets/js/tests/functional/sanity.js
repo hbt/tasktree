@@ -1,3 +1,4 @@
+// TODO(hbt) separate this file into its own directory i.e sanity
 define([], function()
 {
   describe('Sanity checks', function()
@@ -17,6 +18,7 @@ define([], function()
         });
       })
 
+      // TODO(hbt) separate crash tests into their own file
       if(!App.config.skipCrashTests)
       {
 

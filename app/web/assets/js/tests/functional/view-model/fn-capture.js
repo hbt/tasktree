@@ -1,4 +1,4 @@
-define(['keyboardSimulator', 'utils/tests/test-helpers'], function(Keyboard, TestUtils)
+define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtils)
 {
 
   describe('Capture | saves new tasks', function()

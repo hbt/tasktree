@@ -1,5 +1,7 @@
 #!/bin/bash
 
+# Used by the stop/restart-server
+
 rm log/app.log
 rm log/app-err.log
 
