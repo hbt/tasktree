@@ -52,7 +52,7 @@ define(['require'], function(require)
         CustomEnvironment.configure(App.config.envName)
         require(['models/task', 'collections/tasks'], function()
         {
-          require(['view-model/vm-capture'], function()
+          require(['view-model/vm-capture', 'view-model/vm-list'], function()
           {
             callback()
           })

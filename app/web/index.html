@@ -68,5 +68,13 @@
                 />
     </form>
 </div>
+
+<div id="list-container" kb-inject="App.vm.List" data-bind="visible: hasTasks" style="display: none;">
+    <div data-bind="foreach: tasks">
+        <div>
+            <input type="text" data-bind="value: content"/>
+        </div>
+    </div>
+</div>
 </body>
 </html>

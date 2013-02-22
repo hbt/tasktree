@@ -2,7 +2,9 @@ define([], function()
 {
 
   var Msg = {
-    model:       {
+    defaultDuration: 3000,
+
+    model: {
       message: ko.observable('hidden'),
       type:    ko.observable('error'),
       show:    ko.observable(false)
@@ -30,7 +32,7 @@ define([], function()
 
       if(!duration)
       {
-        duration = 3000
+        duration = this.defaultDuration
       }
 
       this.lastTimeout = window.setTimeout(this.afterMessageCallback, duration)

@@ -49,13 +49,20 @@ define(['keyboardSimulator'], function(Keyboard)
             {
               assert.is(coll.global.length, 0)
             })
+
+            afterEach(function()
+            {
+              input.val('')
+            })
           });
 
           describe('no', function()
           {
+            var content
             beforeEach(function()
             {
-              Keyboard.simulateTyping('new task', 'keyup')
+              content = 'new task ' + coll.global.length
+              Keyboard.simulateTyping(content, 'keyup')
               input.closest('form').submit()
             })
 
@@ -67,6 +74,12 @@ define(['keyboardSimulator'], function(Keyboard)
             it('should clear input', function()
             {
               assert.is(input.val(), '')
+            })
+
+            it('should display at the top of the list', function()
+            {
+              var val = $('#list-container input').first().val()
+              assert.is(val, content)
             })
           });
         });

@@ -27,9 +27,7 @@ define(['models/task', 'services/msg'], function(Task, Msg)
 
       // clear
       this.model().set('content', '')
-    },
-
-    hasFocus: true
+    }
   });
 
 
