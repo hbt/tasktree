@@ -42,21 +42,23 @@ define(['require'], function(require)
       App.vm = App.vm || {}
       App.services = App.services || {}
 
-      require(['config/config', 'core/router'], function(config, Router)
+      require(['config/config'], function(config)
       {
-        new Router()
         App.config = config
-
-        // TODO(hbt) Refactor (high):
-        CustomEnvironment.configure(App.config.envName)
-        require(['models/task', 'collections/tasks'], function()
+        require(['core/router'], function(Router)
         {
-          require(['view-model/vm-capture', 'view-model/vm-list'], function()
+          new Router()
+
+          // TODO(hbt) Refactor (high):
+          CustomEnvironment.configure(App.config.envName)
+          require(['models/task', 'collections/tasks'], function()
           {
-            callback()
+            require(['view-model/vm-capture', 'view-model/vm-list'], function()
+            {
+              callback()
+            })
           })
         })
-
       })
     }
 
