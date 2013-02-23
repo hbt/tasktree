@@ -63,8 +63,8 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
 
       // TODO(hbt) Feature: add link to hide pending and only show passed/failures
 
-      // TODO(hbt) Feature: detect when tests has no assert i.e "it" but empty function + mark it as pending -- check duration
-
+      
+      Runner.findFalsePositives(mocha.suite.suites)
 
 
       // send coverage if we are running grunt coverage
@@ -81,6 +81,36 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
           }
         });
       }
+    },
+
+
+    /**
+     * loops through the tests and looks for functions that are defined as it instead of xit
+     * i.e lack asserts but show up as "passed" when they should show up as "pending"
+     */
+    findFalsePositives: function(suites)
+    {
+      var self = this
+      _.each(suites, function(suite)
+      {
+        if(suite.tests.length)
+        {
+          _.each(suite.tests, function(test)
+          {
+            if(test.fn)
+            {
+              if(test.fn.toString().indexOf('assert') === -1)
+              {
+                console.error(['No asserts found', 'should be a xit and not it', test.title, test])
+              }
+            }
+          })
+        }
+        else
+        {
+          self.findFalsePositives(suite.suites)
+        }
+      })
     },
 
     /**

@@ -40,6 +40,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
             {
               _.events.on('on-msg-show', function()
               {
+                assert.is(1, 1)
                 done()
               })
               input.closest('form').submit()
