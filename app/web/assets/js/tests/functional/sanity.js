@@ -1,4 +1,5 @@
 // TODO(hbt) separate this file into its own directory i.e sanity
+// TODO(hbt) Refactor (low):
 define([], function()
 {
   describe('Sanity checks', function()

@@ -54,7 +54,6 @@ define(['services/msg'], function(Msg)
     {
       xit('should display an error message', function()
       {
-        // TODO(hbt) implement with bootstrap + check html
       })
     });
   });

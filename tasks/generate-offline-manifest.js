@@ -1,6 +1,7 @@
 module.exports = function(grunt)
 {
   // TODO(hbt) refactor this. it is messy but it works
+  // TODO(hbt) Refactor (low):
 
   grunt.registerTask('generate-offline-manifest',
     'oofff', function()
@@ -67,7 +68,7 @@ res=        _.map(res, function(v)
           return v.indexOf(' ') === -1;
 
         })
-        console.log(res.join("\n"))
+        console.log(res.join('\n'))
         done()
       })
 

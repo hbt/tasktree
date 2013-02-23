@@ -19,7 +19,7 @@ define(['require'], function(require)
 //          })
 
 
-          // TODO(hbt) in test runner
+          // TODO(hbt) Refactor (high): in test runner
           // add shortcuts to run tests
           $(document).ready(function()
           {
@@ -44,11 +44,10 @@ define(['require'], function(require)
 
       require(['config/config', 'core/router'], function(config, Router)
       {
-        // TODO(hbt) add global router
         new Router()
         App.config = config
 
-        // TODO(hbt) refactor
+        // TODO(hbt) Refactor (high):
         CustomEnvironment.configure(App.config.envName)
         require(['models/task', 'collections/tasks'], function()
         {

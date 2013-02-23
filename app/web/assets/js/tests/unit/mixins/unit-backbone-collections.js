@@ -2,7 +2,7 @@ define(['mixins/backbone-collections'], function(Mixins)
 {
   describe('Mixins backbone collections', function()
   {
-    // TODO(hbt) check two collections do not have the same global
+    // TODO(hbt) Feature: check two collections do not have the same global
     describe('extendCollection | modify backbone collections prototype', function()
     {
       var Collection, coll

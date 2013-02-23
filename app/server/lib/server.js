@@ -19,6 +19,7 @@
   });
 
   // TODO(hbt) organize url modules + calls i.e modules/controllers/controllerName/actionName
+  // TODO(hbt) Refactor (high):
   app.get('/tests/purpose_crash', function(req, res)
   {
     res.header('Access-Control-Allow-Origin', '*');
@@ -37,13 +38,15 @@
   })
 
   // TODO(hbt) abstract with other test functions
+  // TODO(hbt) Refactor (high):
   app.post('/tests/cov', function(req, res)
   {
     res.header('Access-Control-Allow-Origin', '*');
     if(config.envName === 'dev')
     {
       var fs = require('fs')
-      // TODO(hbt) use path resolve
+
+      // TODO(hbt) Refactor (low): use path resolve
       var dir = __dirname + '/../../'
 
       // write frontend + backend coverage results to file

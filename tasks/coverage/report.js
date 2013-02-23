@@ -5,6 +5,7 @@ module.exports = function(grunt)
   var fs = require('fs')
   var path = require('path')
 
+  // TODO(hbt) Refactor (low):
   // TODO(hbt) add desc
   grunt.registerTask('generate-report', 'instruments files +', function()
   {
@@ -18,6 +19,7 @@ module.exports = function(grunt)
 
     var done = this.async()
 
+    // TODO(hbt) Refactor (low):
     // TODO(hbt) clean code
 
     var c = new Collector()
@@ -26,6 +28,7 @@ module.exports = function(grunt)
     var files = ['frontend', 'backend']
     _.each(files, function(file)
     {
+      // TODO(hbt) Refactor (low):
       // TODO(hbt) use path resolve
       var filepath = __dirname + '/../../app/' + file + '-coverage.json'
       if(fs.existsSync(filepath))

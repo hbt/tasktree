@@ -122,6 +122,7 @@ module.exports = function(grunt)
   })
 
   // TODO(hbt) add desc
+  // TODO(hbt) Refactor (low):
   grunt.registerTask('coverage', 'instruments files +', function()
   {
     var asyncblock = require('asyncblock');
@@ -136,7 +137,7 @@ module.exports = function(grunt)
 
       grunt.helper('coverage:instrument', grunt.config('coverage').dirs, syncflow)
 
-      // TODO(hbt) get this bit working every time and without interrupting the process
+      // TODO(hbt) Feature: get this bit working every time and without interrupting the process
       exec('./tasks/restart-server -ss', function()
       {
         // run tests in the browser

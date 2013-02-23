@@ -8,6 +8,7 @@ define([], function()
     'namespace':       window.location.hash.indexOf('tests') !== -1 ? 'tasktree-' + (+new Date()) : 'tasktree'
   }
 
+  // TODO(hbt) Refactor (low):
   // TODO(hbt) make namespace a function and loop through it
   // TODO(hbt) abstract code in ConfigurationUtils
 

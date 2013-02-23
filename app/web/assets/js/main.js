@@ -1,4 +1,5 @@
 // TODO(hbt) clean up imports and remove unused stuff
+// TODO(hbt) Refactor (high):
 
 // TODO(hbt) add bower-packages + ignore or move to customized-vendor
 require.config({
@@ -40,7 +41,7 @@ require.config({
 require(['require', 'jquery',
   // not in arguments
   'underscore_string', 'knockback-lib', 'backbone',
-  // TODO(hbt) move to test
+  // TODO(hbt) Refactor (low): move to test
   'css!components/mocha/mocha'],
   function(require, $)
   {
@@ -49,7 +50,7 @@ require(['require', 'jquery',
     {
       window.ko = ko
 
-      // TODO(hbt) abstract in utils
+      // TODO(hbt) Refactor (low): abstract in utils
       _.events = {}
       _.extend(_.events, Backbone.Events);
       _.mixin({
@@ -59,7 +60,6 @@ require(['require', 'jquery',
         }
       })
 
-      // TODO(hbt) move core and everything out of lib
       require(['core/app'], function(App)
       {
 

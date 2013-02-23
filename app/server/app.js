@@ -19,7 +19,7 @@ function configure()
   //You have been warned.
   process.on('uncaughtException', function(error)
   {
-    // TODO(hbt) send email (with delay) when it crashes on production #13
+    // TODO(hbt) Feature: send email (with delay) when it crashes on production #13
     util.error(util.format('\n\n-----------\n\n%s\n\n%s', new Date(), error.stack))
   });
 }

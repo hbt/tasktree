@@ -37,7 +37,7 @@ module.exports = function(grunt)
      */
     readFile: function()
     {
-      // TODO(hbt) use path + resolve
+      // TODO(hbt) Refactor (low): use path + resolve
       return grunt.file.read(__dirname + '/../config/hintrc.json')
     }
   }
@@ -74,7 +74,7 @@ module.exports = function(grunt)
               return;
             }
 
-            // TODO(hbt) move this up -- should not be in the loop
+            // TODO(hbt) Refactor (low): move this up -- should not be in the loop
             var path = require('path')
             var filename = file.trim().split(' ').pop()
 

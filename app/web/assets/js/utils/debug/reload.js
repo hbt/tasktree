@@ -1,4 +1,4 @@
-// TODO(hbt) abstract and improve + remove dependency on jquery
+// TODO(hbt) Refactor (high): abstract and improve + remove dependency on jquery
 
 (function(window)
 {

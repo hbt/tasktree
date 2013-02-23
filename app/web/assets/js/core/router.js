@@ -1,4 +1,4 @@
-// TODO(hbt) refactor
+// TODO(hbt) Refactor (high):
 define(['require'], function(require)
 {
   var Router = Backbone.Router.extend({
