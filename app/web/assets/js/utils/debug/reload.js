@@ -1,5 +1,7 @@
 // TODO(hbt) Refactor (high): abstract and improve + remove dependency on jquery
 
+// TODO(hbt) Feature: only run when in dev mode
+
 (function(window)
 {
   var ReloadModule = {

@@ -1,4 +1,4 @@
-define(['models/task', 'services/msg', 'view-model/vm-list-one'], function(Task, Msg, ListOneViewModel)
+define(['view-model/vm-list-one'], function(ListOneViewModel)
 {
   var ListViewModel = kb.ViewModel.extend({
     constructor: function()

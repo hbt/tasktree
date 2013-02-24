@@ -3,9 +3,12 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
   window.assert = chai.assert;
 
   var Runner = {
-    init: function()
+
+    /**
+     * add link to run mocha tests
+     */
+    insertLink: function()
     {
-      // add link to run mocha tests
       $(document).ready(function()
       {
         var div = document.createElement('div')
@@ -13,6 +16,11 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
         div.id = 'mocha'
         $(div).insertBefore($('#messages-container'))
       })
+    },
+
+    init:       function()
+    {
+      this.insertLink()
 
 
       // config Mocha
@@ -63,7 +71,7 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
 
       // TODO(hbt) Feature: add link to hide pending and only show passed/failures
 
-      
+
       Runner.findFalsePositives(mocha.suite.suites)
 
 
