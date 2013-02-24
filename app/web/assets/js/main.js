@@ -1,7 +1,3 @@
-// TODO(hbt) clean up imports and remove unused stuff
-// TODO(hbt) Refactor (high):
-
-// TODO(hbt) add bower-packages + ignore or move to customized-vendor
 require.config({
   baseUrl: 'assets/js',
   paths:   {
@@ -38,9 +34,8 @@ require.config({
 
 require(['require', 'jquery',
   // not in arguments
-  'underscore_string', 'knockback-lib', 'backbone',
-  // TODO(hbt) Refactor (low): move to test
-  'css!components/mocha/mocha'],
+  'underscore_string', 'knockback-lib', 'backbone'
+  ],
   function(require, $)
   {
     // load knockback + knockout + backbone deps

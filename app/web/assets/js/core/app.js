@@ -18,7 +18,7 @@ define(['require'], function(require)
         {
           new Router()
 
-          // TODO(hbt) Refactor (high): generate / get list
+          // TODO(hbt) Refactor (low): generate / get list
           require(['models/task', 'collections/tasks'], function()
           {
             require(['view-model/vm-capture', 'view-model/vm-list'], function()
