@@ -18,8 +18,7 @@
     res.send('up');
   });
 
-  // TODO(hbt) organize url modules + calls i.e modules/controllers/controllerName/actionName
-  // TODO(hbt) Refactor (high):
+  // TODO(hbt) Refactor (low): organize url modules + calls i.e modules/controllers/controllerName/actionName
   app.get('/tests/purpose_crash', function(req, res)
   {
     res.header('Access-Control-Allow-Origin', '*');
@@ -37,8 +36,7 @@
     exports.start()
   })
 
-  // TODO(hbt) abstract with other test functions
-  // TODO(hbt) Refactor (high):
+  // TODO(hbt) Refactor (low): abstract with other test functions
   app.post('/tests/cov', function(req, res)
   {
     res.header('Access-Control-Allow-Origin', '*');
