@@ -1,0 +1,13 @@
+#!/bin/bash
+
+# previous path
+pp=`pwd`
+
+
+# install/update
+cd app/web/assets/js
+cat ../../../../config/bower-packages.txt | xargs -L1 -I package-name bower install package-name
+
+
+# restore path
+cd $pp

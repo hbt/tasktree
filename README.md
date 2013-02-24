@@ -1,8 +1,9 @@
 ## Developers
 
 - clone project
-- install npm packages defined in package.json `npm install`
+- install npm packages defined in package.json `npm install` -- you may have to use `sudo npm install -g`
+- install bower packages using ./tasks/install-bower-packages
 - create configuration file based on example in config/example/custom_constants.txt and put it in config/custom_constants.txt
 - start developing `./tasks/restart-server`
-- run tests in browser using #tests
+- run tests in browser using #tests hash in URL
 - run coverage using `grunt coverage`
