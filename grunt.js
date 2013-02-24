@@ -8,7 +8,9 @@ module.exports = function(grunt)
   // Project configuration.
   grunt.initConfig({
     coverage: {
-      dirs: ['app/server/lib', 'app/web/assets/js/lib', 'app/web/assets/js/modules']
+      dirs: ['app/server/lib', 'app/web/assets/js/collections', 'app/web/assets/js/models', 'app/web/assets/js/mixins',
+        'app/web/assets/js/services', 'app/web/assets/js/view-model', 'app/web/assets/js/core'
+      ]
     }
   });
 };

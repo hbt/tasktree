@@ -121,9 +121,7 @@ module.exports = function(grunt)
     })
   })
 
-  // TODO(hbt) add desc
-  // TODO(hbt) Refactor (low):
-  grunt.registerTask('coverage', 'instruments files +', function()
+  grunt.registerTask('coverage', 'run code coverage (main)', function()
   {
     var asyncblock = require('asyncblock');
 

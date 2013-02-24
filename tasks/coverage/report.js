@@ -5,9 +5,12 @@ module.exports = function(grunt)
   var fs = require('fs')
   var path = require('path')
 
-  // TODO(hbt) Refactor (low):
-  // TODO(hbt) add desc
-  grunt.registerTask('generate-report', 'instruments files +', function()
+
+  /**
+   * reads coverage  json files created by the server with information sent from the browser after running the tests
+   * uses the coverage.json to generate the coverage-report
+   */
+  grunt.registerTask('generate-report', 'generates coverage report', function()
   {
     var Report = require('istanbul').Report,
       Collector = new require('istanbul').Collector;
@@ -17,30 +20,28 @@ module.exports = function(grunt)
       dir: path.resolve(process.cwd(), 'app/web/coverage-report')
     })
 
+
     var done = this.async()
+    var collector = new Collector()
+    var files = ['frontend', 'backend']
 
-    // TODO(hbt) Refactor (low):
-    // TODO(hbt) clean code
-
-    var c = new Collector()
 
     // read json and append to collector
-    var files = ['frontend', 'backend']
     _.each(files, function(file)
     {
-      // TODO(hbt) Refactor (low):
-      // TODO(hbt) use path resolve
-      var filepath = __dirname + '/../../app/' + file + '-coverage.json'
+      var filepath = path.resolve(process.cwd(), 'app/' + file + '-coverage.json')
+
       if(fs.existsSync(filepath))
       {
         var json = JSON.parse(fs.readFileSync(filepath, 'utf8'))
-        c.add(json)
+        collector.add(json)
 
         fs.unlinkSync(filepath)
       }
     })
 
-    report.writeReport(c, function()
+
+    report.writeReport(collector, function()
     {
       done()
     })
