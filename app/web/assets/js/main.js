@@ -6,20 +6,19 @@ require.config({
   baseUrl: 'assets/js',
   paths:   {
 
-    jquery:              'components/jquery/jquery',
-    underscore:          'components/underscore/underscore',
-    backbone:            'components/backbone/backbone',
-    backboneStore:       'components/backbone.localStorage/backbone.localStorage',
-    // TODO(hbt) fix
-    'underscore_string': 'components/underscore.string/lib/underscore.string',
-    css:                 'components/require-css/css',
-    normalize:           'components/require-css/normalize',
-    'css-builder':       'components/require-css/css-builder',
+    jquery:        'components/jquery/jquery',
+    underscore:    'components/underscore/underscore',
+    backbone:      'components/backbone/backbone',
+    css:           'components/require-css/css',
+    normalize:     'components/require-css/normalize',
+    'css-builder': 'components/require-css/css-builder',
 
     knockout:            'vendor/knockout/knockout',
+    'underscore_string': 'vendor/underscore.string/underscore.string',
+    backboneStore:       'vendor/backbone-localstorage/backbone.localStorage',
 
-    keyboardSimulator:   'customized-vendor/jquery-plugins/send-keys/keyboard-simulator',
-    'knockback-lib':     'customized-vendor/knockback/knockback'
+    keyboardSimulator: 'customized-vendor/jquery-plugins/send-keys/keyboard-simulator',
+    'knockback-lib':   'customized-vendor/knockback/knockback'
   },
   map:     {
     '*': {
