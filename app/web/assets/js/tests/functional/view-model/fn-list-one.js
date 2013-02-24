@@ -19,7 +19,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
         Keyboard.simulateTyping(str, 'keyup')
 
         // save & check
-        input.form.submit()
+        $(input).closest('form').submit()
         assert.is(newContent, task.get('content'))
       })
 
