@@ -1,5 +1,17 @@
 define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
 {
+
+  // add custom asserts
+  chai.Assertion.includeStack = true
+  chai.assert.is = function(act, exp, msg)
+  {
+    new chai.Assertion(act, msg).to.equal(exp)
+  };
+
+  chai.assert.isnt = function(act, exp, msg)
+  {
+    new chai.Assertion(act, msg).to.not.equal(exp);
+  };
   window.assert = chai.assert;
 
   var Runner = {
@@ -18,7 +30,7 @@ define(['components/chai/chai', 'components/mocha/mocha'], function(chai)
       })
     },
 
-    init:       function()
+    init: function()
     {
       this.insertLink()
 
