@@ -21,6 +21,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
         // save & check
         $(input).closest('form').submit()
         assert.is(newContent, task.get('content'))
+        // TODO(hbt) Refactor (high): add updated_at to verify it is saved
       })
 
       afterEach(function()
