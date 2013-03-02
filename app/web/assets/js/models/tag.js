@@ -2,6 +2,7 @@ define([], function()
 {
   var Model = Backbone.Model.extend({
     modelName: 'Tag',
+
     defaults:  function()
     {
       return {
