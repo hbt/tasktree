@@ -9,7 +9,7 @@ define([], function()
   exports.generateGettersSetters = function(ModelClass)
   {
     var defaults = ModelClass.prototype.defaults
-    defaults = (_.isFunction(defaults) && defaults()) || defaults
+    defaults = (_.isFunction(defaults) && defaults()) || defaults || {}
 
 
     _.each(_.keys(defaults), function(field)

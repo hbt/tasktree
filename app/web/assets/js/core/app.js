@@ -21,6 +21,7 @@ define(['require'], function(require)
           // TODO(hbt) Refactor (low): generate / get list
           require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
           {
+            Backbone.Model.Relation.setup(_.values(App.models))
             require(['view-model/vm-capture', 'view-model/vm-list'], function()
             {
               callback()
