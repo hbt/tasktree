@@ -182,11 +182,11 @@ define([], function()
       // link the global collection into the model for easier referencing
       prototype.model.prototype.global = prototype.global
 
-      prototype.global.on('add', UniqueConstraint.refreshIndex)
-      prototype.global.on('change', UniqueConstraint.refreshIndex)
-      prototype.global.on('destroy', UniqueConstraint.refreshIndex)
-      prototype.global.on('reset', UniqueConstraint.refreshIndex)
-      prototype.global.on('remove', UniqueConstraint.refreshIndex)
+
+      _.each(['add', 'change', 'destroy', 'reset', 'remove'], function(eventName)
+      {
+        prototype.global.on(eventName, UniqueConstraint.refreshIndex)
+      })
     }
   }
 
