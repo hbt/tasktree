@@ -1,4 +1,4 @@
-define([], function()
+define(['mixins/backbone-model-getters-setters'], function(GetSetMixins)
 {
   var Model = Backbone.Model.extend({
     modelName: 'Task',
@@ -39,9 +39,9 @@ define([], function()
 
   })
 
+  GetSetMixins.generateGettersSetters(Model)
+
 
   window.App.models['Task'] = window.App.models['Task'] || Model
-
   return window.App.models['Task']
-
 })
