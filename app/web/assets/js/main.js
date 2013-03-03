@@ -38,8 +38,11 @@ require(['require', 'jquery',
   ],
   function(require, $)
   {
-    // load knockback + knockout + backbone deps
-    require(['knockback', 'knockout', 'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore'], function(kb, ko)
+    // load knockback + knockout
+    require(['knockback', 'knockout',
+      // not in arguments
+      'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore', 'mixins/backbone-models'
+    ], function(kb, ko)
     {
       window.ko = ko
 

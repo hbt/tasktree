@@ -39,99 +39,99 @@ define(['mixins/backbone-collections', 'utils/tests/helpers'], function(Mixins, 
       })
     });
 
-    describe('helpers', function()
+    describe('unique fields', function()
     {
-      describe('Backbone.Collection.create', function()
+      var tag, tags
+      before(function()
       {
-        describe('unique fields', function()
+        TestUtils.reset()
+        tags = App.collections.Tags
+        tags.fetch()
+        assert.is(tags.length, 0)
+        assert.is(tags.global.length, 0)
+
+        tag = tags.create({content: 'project'})
+        assert.is(tags.length, 1)
+        assert.is(tags.global.length, 1)
+      })
+
+      describe('when creating a model', function()
+      {
+        it('should look up the model by unique value and use that reference instead', function()
         {
-          var tag, tags
-          before(function()
-          {
-            TestUtils.reset()
-            tags = App.collections.Tags
-            tags.fetch()
-            assert.is(tags.length, 0)
-            assert.is(tags.global.length, 0)
-
-            tag = tags.create({content: 'project'})
-            assert.is(tags.length, 1)
-            assert.is(tags.global.length, 1)
-          })
-
-          describe('when creating a model', function()
-          {
-            it('should look up the model by unique value and use that reference instead', function()
-            {
-              var tag2 = tags.create({content: 'project'})
-              assert.is(tag, tag2)
-            })
+          var tag2 = tags.create({content: 'project'})
+          assert.is(tag, tag2)
+        })
 
 
-            it('should fetch when the model is not found', function()
-            {
-              // reset the collection
-              var id = tag.get('id')
-              tags.reset()
-              tags.global.reset()
-              assert.is(tags.global.length, 0)
-              assert.is(_.size(tags.global._byUnique[tags.unique]), 0)
+        it('should fetch when the model is not found', function()
+        {
+          // reset the collection
+          var id = tag.get('id')
+          tags.reset()
+          tags.global.reset()
+          assert.is(tags.global.length, 0)
+          assert.is(_.size(tags.global._byUnique[tags.unique]), 0)
 
 
-              // will run a fetch and not create a new one
-              var ntag = tags.create({content: 'project'})
-              assert.is(ntag.get('id'), id)
-              assert.isnt(ntag, tag)
-              tag = ntag
-            })
+          // will run a fetch and not create a new one
+          var ntag = tags.create({content: 'project'})
+          assert.is(ntag.get('id'), id)
+          assert.isnt(ntag, tag)
+          tag = ntag
+        })
 
 
-            it('should not create a new model', function()
-            {
-              assert.is(tags.length, 1)
-              assert.is(tags.global.length, 1)
-            })
-          });
+        it('should not create a new model', function()
+        {
+          assert.is(tags.length, 1)
+          assert.is(tags.global.length, 1)
+        })
+      });
 
-          describe('when destroying a model', function()
-          {
-            it('should return undefined when doing a look up', function()
-            {
-              // create & destroy
-              var dtag = tags.create({content: 'gone'})
-              assert.is(dtag, tags.global._byUnique[tags.unique]['gone'])
-              dtag.destroy()
-              assert.is(tags.length, tags.global.length)
+      describe('when destroying a model', function()
+      {
+        beforeEach(function()
+        {
+          TestUtils.reset()
+        })
 
-
-              // look up by value
-              assert.is(undefined, tags.global._byUnique[tags.unique]['gone'])
-            })
-          });
-
-          describe('when updating a model', function()
-          {
-            beforeEach(function()
-            {
-              TestUtils.reset()
-            })
-            it('should update the index + keep the same references', function()
-            {
-              var tag = tags.create({content: 'project'})
-              var ntag = tags.create({content: 'project'})
-              assert.is(tags.length, 1)
-              assert.is(ntag, tag)
+        it('should return undefined when doing a look up', function()
+        {
+          // create & destroy
+          var dtag = tags.create({content: 'gone'})
+          assert.is(dtag, tags.global._byUnique[tags.unique]['gone'])
+          dtag.destroy()
+          assert.is(tags.length, tags.global.length)
 
 
-              // update
-              ntag.save({content: 'new-project'})
-              assert.is(tag.get('content'), 'new-project')
-              var utag = tags.create({content: 'new-project'})
-              assert.is(utag, ntag)
-              assert.is(ntag, tag)
-            })
-          });
-        });
+          // look up by value
+          assert.is(undefined, tags.global._byUnique[tags.unique]['gone'])
+        })
+      });
+
+      describe('when updating a model', function()
+      {
+        beforeEach(function()
+        {
+          TestUtils.reset()
+        })
+
+        it('should update the index + keep the same references', function()
+        {
+          var tag = tags.create({content: 'project'})
+          var ntag = tags.create({content: 'project'})
+          assert.is(tags.length, 1)
+          assert.is(ntag, tag)
+
+
+          // update
+          ntag.save({content: 'new-project'})
+          assert.is(tag.get('content'), 'new-project')
+          var utag = tags.create({content: 'new-project'})
+          assert.is(utag, ntag)
+          assert.is(ntag, tag)
+        })
       });
     });
   });
