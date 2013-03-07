@@ -25,10 +25,22 @@ define([], function()
 
 
       // set
-      ModelClass.prototype[setMethod] = function(value, options)
+      ModelClass.prototype[setMethod] = function(key, value, options)
       {
-        var attrs = {}
-        attrs[field] = value
+        var attrs
+
+        // Normalize the key-value into an object
+        if(_.isObject(key) || key == null)
+        {
+          attrs = key;
+          options = value;
+        }
+        else
+        {
+          attrs = {};
+          attrs[key] = value;
+        }
+
         return Backbone.Model.prototype.set.call(this, attrs, options);
       }
 
