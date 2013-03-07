@@ -7,54 +7,6 @@ define([], function()
       ManyMany: 'many_to_many'
     },
 
-//    addHelpers: function(Model)
-//    {
-//      var bset = Backbone.Model.prototype.set
-//      var bget = Backbone.Model.prototype.get
-//
-//      Model.prototype.set = function(attrs, options)
-//      {
-//        // are we trying to set a relational value?
-//        if(1)
-//        {
-//          // throw error if not saved -- must have an id
-//
-//
-//          // parse value
-//
-//          // is array
-//          if(1)
-//          {
-//            // loop
-//            {
-//              // is a Model?
-//              {
-//
-//              }
-//
-//            }
-//          }
-//
-//
-//          // collection of saved models where models are parsed value
-//
-//          // verify models have this object as a relation i.e call add or set depending on relation
-//
-//          // pluck ids
-//
-//
-//          // set tags = ids
-//
-//
-//        }
-//
-//        // normal call
-//      }
-//
-//      console.log(Model)
-//    },
-//
-
     setDefaults: function(Model, key, type, isReverse)
     {
       // get existing defaults -- must be a function
@@ -84,6 +36,106 @@ define([], function()
       }
     },
 
+
+    parseValue: function(Model, value)
+    {
+      var self = this
+      var ret = null
+
+      var CollectionConstructor = Model.prototype.global.constructor
+
+      if(value instanceof Backbone.Model)
+      {
+        ret = value.global._byId[value.get('id')]
+      }
+//      else if (value instanceof Backbone.Collection)
+//      {
+//
+//      }
+      else if(_.isArray(value))
+      {
+        var values = []
+        _.each(value, function(v)
+        {
+          var obj = self.parseValue(Model, v)
+
+          // throw error if not a model
+          if(!(obj instanceof Backbone.Model))
+          {
+            throw new Error('Could not parse ' + v + ' expected Backbone.Model and got ' + obj)
+          }
+          values.push(obj)
+        })
+
+        ret = new CollectionConstructor(values)
+      }
+
+      return ret
+    },
+
+
+    overwriteGetSet: function(Model, name, reverseName)
+    {
+      // get/set prototype bak ori
+      var bSetFunc = Model.prototype.set
+      var self = this
+
+
+      Model.prototype.set = function(key, value, options)
+      {
+        var attrs
+
+        // Handle both `'key', value` and `{key: value}` -style arguments.
+        if(_.isObject(key) || key == null)
+        {
+          attrs = key;
+          options = value;
+        }
+        else
+        {
+          attrs = {};
+          attrs[key] = value;
+        }
+
+        options = options || {}
+
+
+        // extract opts
+        var ignoreRelated = options.ignoreRelated
+
+        // are we trying to set a relational value?
+        if(!_.isUndefined(attrs[name]))
+        {
+          // collection of saved models where models are parsed value
+          var val = self.parseValue(Model, attrs[name])
+
+          // verify models have this object as a relation i.e call add or set depending on relation
+          var _this = this
+          if(val instanceof Backbone.Collection)
+          {
+            var coll = val
+            if(!ignoreRelated)
+            {
+              coll.each(function(v)
+              {
+                v.save(reverseName, [_this.global._byId[_this.get('id')]], {ignoreRelated: true, success: null})
+              })
+
+            }
+
+            // TODO(hbt) Feature: unique
+            var ids = coll.pluck('id')
+            attrs[name] = ids
+          }
+        }
+
+
+        // call original
+        bSetFunc.call(this, attrs, options)
+      }
+
+    },
+
     setup: function(models)
     {
       var self = this
@@ -95,12 +147,15 @@ define([], function()
           _.each(Model.prototype.relations(), function(relation)
           {
             self.setDefaults(Model, relation.key, relation.type, false)
-            self.setDefaults(relation.model, relation.reverse_relation.key, relation.type, true)
+            self.setDefaults(relation.model, relation.reverseRelation.key, relation.type, true)
+
+            self.overwriteGetSet(Model, relation.key, relation.reverseRelation.key)
+            self.overwriteGetSet(relation.model, relation.reverseRelation.key, relation.key)
           })
-
-          // generate setters/getters
-
         }
+
+
+        // TODO(hbt) Feature: generate setters/getters
       })
     }
 

@@ -11,7 +11,7 @@ define([], function()
           key:              'children',
           model:            App.models.Task,
           collection:       App.collectionClasses.Tasks,
-          reverse_relation: {
+          reverseRelation: {
             key: 'parent'
           }
         },
@@ -21,7 +21,7 @@ define([], function()
           key:              'tags',
           model:            App.models.Tag,
           collection:       App.collectionClasses.Tags,
-          reverse_relation: {
+          reverseRelation: {
             key: 'tasks'
           }
         }
