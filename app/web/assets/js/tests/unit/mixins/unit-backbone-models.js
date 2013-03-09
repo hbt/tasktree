@@ -26,23 +26,48 @@ define(['mixins/backbone-models', 'utils/tests/helpers', 'models/tag', 'models/t
             })
           });
         });
-        describe('on destroy', function()
-        {
 
-        });
-        describe('one to many', function()
+        describe('set', function()
         {
-          xit('asdw', function()
+          before(function()
           {
-
+            TestUtils.reset()
           })
-        });
 
-        describe('many to many', function()
-        {
-          describe('adding', function()
+          describe('can parse values in multiple formats', function()
           {
+            var task, tag
+            beforeEach(function()
+            {
+              TestUtils.reset()
+              task = App.collections.Tasks.global.create({content: 'new'})
+              tag = App.collections.Tags.global.create({content: 'tag1'})
+            })
+            describe('using unique field', function()
+            {
 
+            });
+
+            describe('json', function()
+            {
+
+            });
+
+            it('model', function()
+            {
+              task.save({tags: [tag]})
+
+              assert.is(task.get('tags')[0], tag.get('id'))
+              assert.is(task.get('tags').length, 1)
+
+              assert.is(tag.get('tasks')[0], task.get('id'))
+              assert.is(tag.get('tasks').length, 1)
+            });
+
+            describe('collection', function()
+            {
+
+            });
           });
         });
       });

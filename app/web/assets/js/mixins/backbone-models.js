@@ -7,6 +7,13 @@ define([], function()
       ManyMany: 'many_to_many'
     },
 
+    /**
+     * sets the default value using the defined relations
+     * @param Model
+     * @param key
+     * @param type
+     * @param isReverse
+     */
     setDefaults: function(Model, key, type, isReverse)
     {
       // get existing defaults -- must be a function
@@ -37,6 +44,9 @@ define([], function()
     },
 
 
+    /**
+     * @returns collection of parsed models
+     */
     parseValue: function(Model, value)
     {
       var self = this
@@ -48,10 +58,6 @@ define([], function()
       {
         ret = value.global._byId[value.get('id')]
       }
-//      else if (value instanceof Backbone.Collection)
-//      {
-//
-//      }
       else if(_.isArray(value))
       {
         var values = []
@@ -106,14 +112,12 @@ define([], function()
         // are we trying to set a relational value?
         if(!_.isUndefined(attrs[name]))
         {
-          // collection of saved models where models are parsed value
-          var val = self.parseValue(Model, attrs[name])
+          var coll = self.parseValue(Model, attrs[name])
 
           // verify models have this object as a relation i.e call add or set depending on relation
           var _this = this
-          if(val instanceof Backbone.Collection)
+          if(coll instanceof Backbone.Collection)
           {
-            var coll = val
             if(!ignoreRelated)
             {
               coll.each(function(v)
@@ -123,8 +127,8 @@ define([], function()
 
             }
 
-            // TODO(hbt) Feature: unique
-            var ids = coll.pluck('id')
+
+            var ids = _.unique(coll.pluck('id'))
             attrs[name] = ids
           }
         }
@@ -154,62 +158,9 @@ define([], function()
           })
         }
 
-
         // TODO(hbt) Feature: generate setters/getters
       })
     }
-
-//    setup: function(models)
-//    {
-//      _.each(models, function(model)
-//      {
-//        // create add/remove functions
-//
-//        // is one to many?
-//        if(true)
-//        {
-//          // create add/remove collection helpers in one direction
-//        }
-//
-//
-//        // is many to many?
-//        if(true)
-//        {
-//          // create add/remove in both directions
-//        }
-//
-//        //
-//        console.log(model.prototype.modelName)
-//
-//        // write flexible parser to handle
-//        /**
-//         * - array
-//           * - unique
-//           * - json
-//           * - models
-//         * - collection
-//         */
-//
-//        // overwrite set/get
-//
-//
-//        // set
-//
-//        // is special field?
-//        if(true)
-//        {
-//          // parse
-//
-//          // extract ids
-//
-//          // call backbone set
-//        }
-//
-//        // task.set('tags', [model1, model2])
-//
-//        //
-//      })
-//    }
   }
 
   Backbone.Model.Relation = Relation
