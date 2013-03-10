@@ -41,7 +41,8 @@ require(['require', 'jquery',
     // load knockback + knockout
     require(['knockback', 'knockout',
       // not in arguments
-      'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore', 'mixins/backbone-models'
+      'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore',
+      'vendor/backbone/backbone-relational'
     ], function(kb, ko)
     {
       window.ko = ko

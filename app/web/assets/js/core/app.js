@@ -21,7 +21,15 @@ define(['require'], function(require)
           // TODO(hbt) Refactor (low): generate / get list
           require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
           {
-            Backbone.Model.Relation.setup(_.values(App.models))
+            App.models.Task.setup()
+            var t = App.models.Task.prototype.global.create({content: 'new'})
+            var c1 = App.models.Task.prototype.global.create({content: 'child 2'})
+            t.get('children').add(c1)
+            console.log(t.get('children'), t)
+            t.save()
+            c1.save()
+            console.log(c1 instanceof Backbone.Model)
+//            Backbone.Model.Relation.setup(_.values(App.models))
             require(['view-model/vm-capture', 'view-model/vm-list'], function()
             {
               callback()
