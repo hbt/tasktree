@@ -5,7 +5,7 @@ define(['mixins/backbone-models', 'utils/tests/helpers', 'models/tag', 'models/t
     {
       describe('relations', function()
       {
-        describe('setup', function()
+        describe('setup | when initializing the relations', function()
         {
           describe('defaults', function()
           {
@@ -27,33 +27,20 @@ define(['mixins/backbone-models', 'utils/tests/helpers', 'models/tag', 'models/t
           });
         });
 
-        describe('set', function()
-        {
-          before(function()
-          {
-            TestUtils.reset()
-          })
 
-          describe('can parse values in multiple formats', function()
+        describe('Backbone.Model.set', function()
+        {
+          describe('many to many', function()
           {
             var task, tag
-            beforeEach(function()
+            before(function()
             {
               TestUtils.reset()
               task = App.collections.Tasks.global.create({content: 'new'})
               tag = App.collections.Tags.global.create({content: 'tag1'})
             })
-            describe('using unique field', function()
-            {
 
-            });
-
-            describe('json', function()
-            {
-
-            });
-
-            it('model', function()
+            it('should save ids both ways', function()
             {
               task.save({tags: [tag]})
 
@@ -62,12 +49,83 @@ define(['mixins/backbone-models', 'utils/tests/helpers', 'models/tag', 'models/t
 
               assert.is(tag.get('tasks')[0], task.get('id'))
               assert.is(tag.get('tasks').length, 1)
+            })
+
+            describe('when adding a new element', function()
+            {
+              it('should update both entitites | should not overwrite', function()
+              {
+                var ntag = App.collections.Tags.global.create({content: 'tag2'})
+                ntag.save('tasks', task)
+
+                console.log(ntag, tag, task)
+
+                assert.is(task.get('tags').length, 2)
+                assert.is(task.get('tags')[0], tag.get('id'))
+                assert.is(task.get('tags')[1], ntag.get('id'))
+
+                assert.is(ntag.get('tasks')[0], task.get('id'))
+                assert.is(ntag.get('tasks').length, 1)
+              })
             });
 
-            describe('collection', function()
+
+            describe('when removing an element', function()
+            {
+              xit('should update both entitites', function()
+              {
+
+              })
+            })
+
+
+            // TODO(hbt) remove
+            xit('should replace value when doing direct set', function()
+            {
+              var ntag = App.collections.Tags.global.create({content: 'tag2'})
+              ntag.save('tasks', task)
+
+              console.log(ntag, tag, task)
+
+              assert.is(task.get('tags').length, 2)
+              assert.is(task.get('tags')[0], tag.get('id'))
+              assert.is(task.get('tags')[1], ntag.get('id'))
+
+              assert.is(ntag.get('tasks')[0], task.get('id'))
+              assert.is(ntag.get('tasks').length, 1)
+            })
+          });
+
+
+          describe('one to many', function()
+          {
+            var task
+            before(function()
+            {
+              TestUtils.reset()
+              task = App.collections.Tasks.global.create({content: 'parent'})
+            })
+
+            xit('should save ids both ways', function()
+            {
+              var children = []
+              _.times(3, function(i)
+              {
+                children.push(App.collections.Tasks.global.create({content: 'child ' + i}))
+              })
+              task.save({children: children})
+
+//              assert.is(task.get('tags')[0], tag.get('id'))
+//              assert.is(task.get('tags').length, 1)
+//
+//              assert.is(tag.get('tasks')[0], task.get('id'))
+//              assert.is(tag.get('tasks').length, 1)
+            })
+
+            xit('should replace value when doing direct set', function()
             {
 
-            });
+            })
           });
         });
       });
