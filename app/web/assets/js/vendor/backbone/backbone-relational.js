@@ -132,7 +132,6 @@
 		 * @param {Object} [options]
 		 */
 		initializeRelation: function( model, relation, options ) {
-      relation = (_.isFunction(relation) && relation()) || relation
 			var type = !_.isString( relation.type ) ? relation.type : Backbone[ relation.type ] || this.getObjectByName( relation.type );
 			if ( type && type.prototype instanceof Backbone.Relation ) {
 				new type( model, relation, options ); // Also pushes the new Relation into `model._relations`
@@ -520,6 +519,7 @@
 
 			// When 'relatedModel' are created or destroyed, check if it affects this relation.
 			this.listenTo( this.instance, 'destroy', this.destroy )
+        .listenTo( this.instance, 'pre-save', this.save )
 				.listenTo( this.relatedCollection, 'relational:add', this.tryAddRelated )
 				.listenTo( this.relatedCollection, 'relational:remove', this.removeRelated )
 		}
@@ -571,10 +571,10 @@
 				return false;
 			}
 			// Check if this is not a HasMany, and the reverse relation is HasMany as well
-			if ( this instanceof Backbone.HasMany && this.reverseRelation.type === Backbone.HasMany ) {
-				warn && console.warn( 'Relation=%o: relation is a HasMany, and the reverseRelation is HasMany as well.', this );
-				return false;
-			}
+//			if ( this instanceof Backbone.HasMany && this.reverseRelation.type === Backbone.HasMany ) {
+//				warn && console.warn( 'Relation=%o: relation is a HasMany, and the reverseRelation is HasMany as well.', this );
+//				return false;
+//			}
 			// Check if we're not attempting to create a relationship on a `key` that's already used.
 //      console.log(_.copy(i))
 			if ( i && _.keys( i._relations ).length ) {
@@ -654,7 +654,22 @@
 			_.each( this.getReverseRelations(), function( relation ) {
 				relation.removeRelated( this.instance );
 			}, this );
-		}
+		},
+
+
+    save: function()
+    {
+      if(this.changed)
+      {
+        _.each(this.getReverseRelations(), function(rel)
+        {
+          if(rel.instance.changed)
+          {
+            rel.instance.save(null, {silent: true})
+          }
+        })
+      }
+    }
 	});
 
 	Backbone.HasOne = Backbone.Relation.extend({
@@ -786,6 +801,7 @@
 				var oldRelated = this.related || null;
 				this.setRelated( null );
 				this.onChange( this.instance, model, _.defaults( { __related: oldRelated }, options ) );
+        this.instance.save(null, {silent: true})
 			}
 		}
 	});
@@ -1016,6 +1032,7 @@
 		removeRelated: function( model, coll, options ) {
 			if ( this.related.get( model ) ) {
 				this.related.remove( model, options );
+        this.instance.save(null, {silent: true})
 			}
 		}
 	});
@@ -1142,6 +1159,7 @@
 			this._relations = {};
 
 			_.each( this.relations || [], function( rel ) {
+        rel = (_.isFunction(rel) && rel()) || rel
 				Backbone.Relational.store.initializeRelation( this, rel, options );
 			}, this );
 
@@ -1304,6 +1322,39 @@
 
 			return originalResult || result;
 		},
+
+    save: function( key, val, options )
+    {
+      var attrs
+
+      // Handle both `"key", value` and `{key: value}` -style arguments.
+      if(key == null || typeof key === 'object')
+      {
+        attrs = key;
+        options = val;
+      }
+      else
+      {
+        (attrs = {})[key] = val;
+      }
+
+      options = options || {}
+
+      if(!options.silent)
+      {
+        this.trigger('pre-save')
+      }
+
+
+      var ofn = Backbone.Model.prototype.save
+      ofn.call(this, key, val, options)
+
+
+      if(!options.silent)
+      {
+        this.trigger('post-save')
+      }
+    },
 
 		set: function( key, value, options ) {
 			Backbone.Relational.eventQueue.block();
@@ -1770,6 +1821,7 @@
 			return trigger.apply( this, arguments );
 		}
 
+//    eventName === 'sync' && console.trace()
 		if ( eventName === 'add' || eventName === 'remove' || eventName === 'reset' ) {
 			var dit = this,
 				args = arguments;

@@ -9,39 +9,30 @@ define([], function()
         key:             'children',
         relatedModel:    App.models.Task,
         collectionType:  App.collectionClasses.Tasks,
-        includeInJSON: 'id',
+        includeInJSON:   'id',
         reverseRelation: {
           key:           'parent',
-          includeInJSON: 'id'
+          includeInJSON: 'id',
+          type:          Backbone.HasOne,
         }
       }
-    }
+    },
+      function()
+      {
+        return {
+          type:            Backbone.HasMany,
+          key:             'tags',
+          relatedModel:    App.models.Tag,
+          collectionType:  App.collectionClasses.Tags,
+          includeInJSON:   'id',
+          reverseRelation: {
+            key:           'tasks',
+            includeInJSON: 'id',
+            type:          Backbone.HasMany
+          }
+        }
+      }
     ],
-//    relations2: function()
-//    {
-//      return [
-//        {
-//          // one task has many children tasks
-//          type:            Backbone.Model.Relation.types.OneMany,
-//          key:             'children',
-//          model:           App.models.Task,
-//          collection:      App.collectionClasses.Tasks,
-//          reverseRelation: {
-//            key: 'parent'
-//          }
-//        },
-//        {
-//          // one task has many tags and vice-versa
-//          type:            Backbone.Model.Relation.types.ManyMany,
-//          key:             'tags',
-//          model:           App.models.Tag,
-//          collection:      App.collectionClasses.Tags,
-//          reverseRelation: {
-//            key: 'tasks'
-//          }
-//        }
-//      ];
-//    },
     defaults:  function()
     {
       return {

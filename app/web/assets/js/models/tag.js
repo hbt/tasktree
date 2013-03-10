@@ -1,16 +1,15 @@
 define([], function()
 {
-  var Model = Backbone.Model.extend({
+  var Model = Backbone.RelationalModel.extend({
     modelName: 'Tag',
 
-    defaults:  function()
+    defaults: function()
     {
       return {
         content: ''
       }
     }
   })
-
 
 
   window.App.models['Tag'] = window.App.models['Tag'] || Model
