@@ -2,6 +2,7 @@ define([], function()
 {
   var Model = Backbone.RelationalModel.extend({
     modelName: 'Tag',
+    localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tags'),
 
     defaults: function()
     {

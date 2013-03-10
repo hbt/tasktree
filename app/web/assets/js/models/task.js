@@ -2,6 +2,7 @@ define([], function()
 {
   var Model = Backbone.RelationalModel.extend({
     modelName: 'Task',
+    localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tasks'),
     relations: [function()
     {
       return {
@@ -10,9 +11,11 @@ define([], function()
         relatedModel:    App.models.Task,
         collectionType:  App.collectionClasses.Tasks,
         includeInJSON:   'id',
+        autoFetch: true,
         reverseRelation: {
           key:           'parent',
           includeInJSON: 'id',
+          autoFetch: true,
           type:          Backbone.HasOne,
         }
       }
@@ -25,6 +28,7 @@ define([], function()
           relatedModel:    App.models.Tag,
           collectionType:  App.collectionClasses.Tags,
           includeInJSON:   'id',
+          autoFetch: true,
           reverseRelation: {
             key:           'tasks',
             includeInJSON: 'id',

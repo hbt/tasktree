@@ -12,6 +12,8 @@ define([], function()
       {
         v.global.reset(null)
       })
+
+      Backbone.Relational.store.reset()
     }
   }
 

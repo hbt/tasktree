@@ -113,6 +113,23 @@ define([], function()
 
   var oBackboneCollectionCreate = Backbone.Collection.prototype.create
 
+  helpers.findBy = function(id)
+  {
+    var ret = null
+    if(this.global._byId[id])
+    {
+     ret = this.global._byId[id]
+    }
+    else
+    {
+      var model = this.localStorage.find({id: id})
+      this.global.add(model)
+      ret = this.global.findBy(model.id)
+    }
+
+    return ret
+  }
+
   /**
    * overwrites Backbone.Collection.prototype.create
    *

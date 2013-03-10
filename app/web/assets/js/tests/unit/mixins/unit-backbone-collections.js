@@ -72,6 +72,7 @@ define(['mixins/backbone-collections', 'utils/tests/helpers'], function(Mixins, 
           tags.global.reset()
           assert.is(tags.global.length, 0)
           assert.is(_.size(tags.global._byUnique[tags.unique]), 0)
+          Backbone.Relational.store.reset()
 
 
           // will run a fetch and not create a new one

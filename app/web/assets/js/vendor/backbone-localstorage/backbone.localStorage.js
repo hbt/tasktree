@@ -135,6 +135,11 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
 
   var resp, errorMessage, syncDfd = $.Deferred && $.Deferred(); //If $ is having Deferred - use it.
 
+
+  // get ids
+  var ids = store.localStorage().getItem(store.name);
+  store.records = (ids && ids.split(",")) || [];
+
   try {
 
     switch (method) {
@@ -157,6 +162,8 @@ Backbone.LocalStorage.sync = window.Store.sync = Backbone.localSync = function(m
       errorMessage = "Private browsing is unsupported";
     else
       errorMessage = error.message;
+
+    console && console.error && console.error(errorMessage)
   }
 
   if (resp) {
