@@ -1,3 +1,7 @@
+/**
+ * @deprecated
+ */
+
 define(['mixins/backbone-models', 'utils/tests/helpers', 'models/tag', 'models/task'],
   function(Mixins, TestUtils, Tag, Task)
   {

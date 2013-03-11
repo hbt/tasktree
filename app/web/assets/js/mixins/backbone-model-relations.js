@@ -1,3 +1,10 @@
+
+/**
+ * @deprecated
+ * using backbone relational for now
+ * look into git://github.com/dhruvaray/backbone-associations.git -- apparently it is more optimal
+ */
+
 define([], function()
 {
 
@@ -178,9 +185,9 @@ define([], function()
           var _this = this
           if(parsedValue instanceof Backbone.Collection)
           {
-            var cids = this.getRaw(name)
+//            var cids = this.getRaw(name)
             var coll = parsedValue
-            console.log(cids, coll.pluck('id'))
+//            console.log(cids, coll.pluck('id'))
 
             if(!ignoreRelated)
             {
