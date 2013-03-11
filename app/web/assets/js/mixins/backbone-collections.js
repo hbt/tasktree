@@ -123,8 +123,11 @@ define([], function()
     else
     {
       var model = this.localStorage.find({id: id})
-      this.global.add(model)
-      ret = this.global.findBy(model.id)
+      if(model)
+      {
+        this.global.add(model)
+        ret = this.global.findBy(model.id)
+      }
     }
 
     return ret
