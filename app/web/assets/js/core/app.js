@@ -23,7 +23,7 @@ define(['require'], function(require)
           {
             App.models.Task.setup()
 
-            require(['view-model/vm-capture', 'view-model/vm-list'], function()
+            require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
             {
               callback()
             })

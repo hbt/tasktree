@@ -25,6 +25,15 @@
     </form>
 </div>
 
+
+<div id="tags-container" kb-inject="App.vm.TagsList" data-bind="visible: hasTags" style="display: none;">
+    <div data-bind="foreach: tags">
+        <div>
+            <span data-bind="text: content"></span>
+        </div>
+    </div>
+</div>
+
 <div id="list-container" kb-inject="App.vm.List" data-bind="visible: hasTasks" style="display: none;">
     <div data-bind="foreach: tasks">
         <div>

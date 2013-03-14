@@ -157,7 +157,7 @@ define(['components/chai/chai', 'components/mocha/mocha', 'css!components/mocha/
       // TODO(hbt) Feature: have parameters to run sanity vs crash vs unit vs functional or all (crash will require special perms)
       return ['tests/functional/view-model/fn-list-one', 'tests/functional/view-model/fn-capture',
         'tests/unit/mixins/unit-backbone-collections', 'tests/functional/services/fn-msg', 'tests/sanity/sanity',
-        'tests/unit/mixins/unit-backbone-relations'
+        'tests/unit/mixins/unit-backbone-relations', 'tests/functional/view-model/tag/fn-list'
       ]
     }
 
