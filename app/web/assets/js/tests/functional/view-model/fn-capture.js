@@ -60,11 +60,12 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 
           describe('no', function()
           {
-            var content
+            var taggedContent, content
             beforeEach(function()
             {
-              content = 'new task ' + coll.global.length
-              Keyboard.simulateTyping(content, 'keyup')
+              taggedContent = 'new task ' + coll.global.length + ' #tag1 #tag2 #tag1 #invalid+tag'
+              content = 'new task ' + coll.global.length + '  #invalid+tag'
+              Keyboard.simulateTyping(taggedContent, 'keyup')
               input.closest('form').submit()
             })
 
@@ -84,6 +85,18 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
               assert.is(val, content)
             })
 
+            describe('has inline tags', function()
+            {
+              it('should create + associate tags to task', function()
+              {
+                var task = coll.global.at(0)
+
+                assert.is(task.get('tags').length, 2)
+                assert.is(task.get('tags').at(0).get('content'), 'tag1')
+                assert.is(task.get('tags').at(1).get('content'), 'tag2')
+              })
+            });
+
             afterEach(function()
             {
               TestUtils.reset()
@@ -91,73 +104,6 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
           });
         });
       });
-
-//      it('type in input', function()
-//      {
-//        var input = $('#capture-container').find('input')
-//        input.focus()
-//        Keyboard.simulateTyping('new task yep\r\n', 'keydown')
-//      })
-
-
     });
-
-//    describe('does it have tags?', function()
-//    {
-//      describe('no', function()
-//      {
-//        xit('should be tagged as unprocessed', function()
-//        {
-//        })
-//
-//        xit('message should appear that the task was tagged as unprocessed', function()
-//        {
-//
-//        })
-//      });
-//
-//      describe('yes', function()
-//      {
-//        xit('message should appear that the task was tagged as #[tag-name]', function()
-//        {
-//
-//        })
-//      });
-//    });
-//
-//    describe('is a filter on?', function()
-//    {
-//      describe('yes', function()
-//      {
-//        xit('should not have the current filter as tags | enter tasks without having to change/clear filters', function()
-//        {
-//        })
-//
-//        xit('should appear under the capture input', function()
-//        {
-//        })
-//
-//        xit('should limit the number of new tasks under capture to the last three', function()
-//        {
-//        })
-//
-//        xit('should fade after 10secs', function()
-//        {
-//
-//        })
-//      })
-//
-//      describe('no', function()
-//      {
-//        xit('append to the top of the list, limit to 5', function()
-//        {
-//        })
-//
-//        xit('should fade after 20secs', function()
-//        {
-//
-//        })
-//      });
-//    });
   })
 })

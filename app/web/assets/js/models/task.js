@@ -1,4 +1,4 @@
-define([], function()
+define(['utils/tags'], function(TagUtils)
 {
   var Model = Backbone.RelationalModel.extend({
     modelName:    'Task',
@@ -45,9 +45,43 @@ define([], function()
       }
     },
 
-    setters: {
-    }
+    initialize: function()
+    {
+      this.on('pre-save', this.handleInlineTags)
+    },
 
+    /**
+     * converts inline tags in the content to actual tags then removes them from the content
+     */
+    handleInlineTags: function()
+    {
+      // extract inline tags
+      var content = this.get('content')
+      var cleanContent = content
+      var tags = TagUtils.extract(content)
+
+
+      // clear the content of tags -- why? when tags are removed using UI, they are not added again when saving the content
+      _.each(tags, function(tag)
+      {
+        // tags in the middle
+        cleanContent = cleanContent.replace('#' + tag + ' ', '')
+
+        // remove tags at the end
+        cleanContent = cleanContent.replace('#' + tag, '')
+      })
+
+      this.set('content', cleanContent)
+      tags = _.unique(tags)
+
+
+      // associate tags
+      _.each(tags, function(tag)
+      {
+        var otag = App.models.Tag.prototype.global.create({content: tag});
+        this.get('tags').add(otag)
+      }, this)
+    }
   })
 
 
