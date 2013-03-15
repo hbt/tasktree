@@ -97,7 +97,6 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
                 assert.is(task.get('tags').length, 2)
                 assert.is(task.get('tags').at(0).get('content'), 'tag1')
                 assert.is(task.get('tags').at(1).get('content'), 'tag2')
-                assert.is(task.get('tags').at(0).get('tasks').at(0), task)
 
                 assert.is(tag1.get('tasks').at(0), task)
                 assert.is(tag2.get('tasks').at(0), task)

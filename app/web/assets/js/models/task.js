@@ -33,7 +33,6 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
           reverseRelation: {
             key:           'tasks',
             includeInJSON: 'id',
-            autoFetch:     true,
             type:          Backbone.HasMany
           }
         }
