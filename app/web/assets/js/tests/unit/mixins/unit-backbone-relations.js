@@ -207,7 +207,7 @@ define(['utils/tests/helpers'], function(TestUtils)
 
 
           // reset
-          TestUtils.reset()
+          TestUtils.resetCollections()
 
           // get by parent id and compare reference
           p = App.models.Task.prototype.global.findBy(parent.get('id'))

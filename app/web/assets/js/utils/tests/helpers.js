@@ -4,17 +4,31 @@ define([], function()
     reset: function()
     {
       // reset local storage
-      App.config.namespace = 'tasktree-' + (new Date())
+      _.each(App.models, function(Model)
+      {
+        Model.prototype.localStorage._clear()
+      })
 
+
+      this.resetCollections()
+
+      Backbone.Relational.store.reset()
+    },
+
+    resetCollections: function()
+    {
 
       // reset global collections
       _.each(App.collections, function(v)
       {
         v.global.reset(null)
+        v.reset(null)
       })
+
 
       Backbone.Relational.store.reset()
     }
+
   }
 
   return Helpers
