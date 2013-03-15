@@ -1,7 +1,7 @@
-define([], function()
+define(['mixins/backbone-model-helpers'], function(ModelHelpers)
 {
   var Model = Backbone.RelationalModel.extend({
-    modelName: 'Tag',
+    modelName:    'Tag',
     localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tags'),
 
     defaults: function()
@@ -11,6 +11,8 @@ define([], function()
       }
     }
   })
+
+  _.extend(Model.prototype, ModelHelpers)
 
 
   window.App.models['Tag'] = window.App.models['Tag'] || Model

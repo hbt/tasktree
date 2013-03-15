@@ -14,45 +14,78 @@ define(['utils/tests/helpers'], function(TestUtils)
       })
 
       // TODO(hbt) Refactor (low): split into smaller tests like the many to many -- too many assertions
-      it('should add', function()
+      describe('when adding', function()
       {
-        // add child
-        parent.get('children').add(child)
-        parent.save()
+        beforeEach(function()
+        {
+          // add child
+          parent.get('children').add(child)
+          parent.save()
+        })
 
-        // verify relations are updated
-        assert.is(parent.get('children').pluck('id')[0], child.get('id'))
-        assert.is(child.get('parent').get('id'), parent.get('id'))
+        it('should update the related model', function()
+        {
+          // verify relations are updated
+          assert.is(parent.get('children').pluck('id')[0], child.get('id'))
+          assert.is(child.get('parent').get('id'), parent.get('id'))
 
-        // same reference
-        assert.is(child.get('parent'), parent)
+          // verify data is saved
+          assert.is(parent.getRawJSON().children[0], child.get('id'))
+          assert.is(child.getRawJSON().parent, parent.get('id'))
+        })
 
-        // add another child
-        var child2 = App.models.Task.prototype.global.create({content: 'child 2'})
-        parent.get('children').add(child2)
-        parent.save()
+        it('should use the same reference in related model', function()
+        {
+          // same reference
+          assert.is(child.get('parent'), parent)
+        })
 
-        // verify nothing is overwritten
-        assert.is(parent.get('children').pluck('id')[1], child2.get('id'))
-        assert.is(child2.get('parent').get('id'), parent.get('id'))
-        assert.is(child.get('parent').get('id'), parent.get('id'))
-      })
+        it('should not overwrite when adding another model', function()
+        {
+          // add another child
+          var child2 = App.models.Task.prototype.global.create({content: 'child 2'})
+          parent.get('children').add(child2)
+          parent.save()
+
+          // verify nothing is overwritten
+          assert.is(parent.get('children').pluck('id')[1], child2.get('id'))
+          assert.is(child2.get('parent').get('id'), parent.get('id'))
+          assert.is(child.get('parent').get('id'), parent.get('id'))
 
 
-      it('should remove', function()
+          // verify data is saved
+          assert.is(parent.getRawJSON().children[0], child.get('id'))
+          assert.is(parent.getRawJSON().children[1], child2.get('id'))
+          assert.is(child.getRawJSON().parent, parent.get('id'))
+          assert.is(child2.getRawJSON().parent, parent.get('id'))
+
+        })
+      });
+
+      describe('when removing', function()
       {
-        assert.is(parent.get('children').length, 2)
-        var first = parent.get('children').first()
-        assert.is(first.get('parent').get('id'), parent.get('id'))
+        it('should remove', function()
+        {
+          assert.is(parent.get('children').length, 2)
+          var first = parent.get('children').first()
+          assert.is(first.get('parent').get('id'), parent.get('id'))
 
-        // delete
-        parent.get('children').remove(first)
-        parent.save()
+          // delete
+          parent.get('children').remove(first)
+          parent.save()
 
-        // verify
-        assert.is(parent.get('children').length, 1)
-        assert.is(first.get('parent'), null)
-      })
+          // verify
+          assert.is(parent.get('children').length, 1)
+          assert.is(first.get('parent'), null)
+
+
+          // verify data is saved
+          assert.isnt(parent.getRawJSON().children[0], child.get('id'))
+          assert.is(child.getRawJSON().parent, null)
+
+        })
+
+      });
     });
 
     describe('many to many', function()
@@ -79,6 +112,13 @@ define(['utils/tests/helpers'], function(TestUtils)
           assert.is(task1.get('tags').length, 2)
           assert.is(tag1.get('tasks').length, 1)
           assert.is(tag2.get('tasks').length, 1)
+
+          // verify data is saved
+          assert.is(task1.getRawJSON().tags[0], tag1.get('id'))
+          assert.is(task1.getRawJSON().tags[1], tag2.get('id'))
+          assert.is(tag1.getRawJSON().tasks[0], task1.get('id'))
+          assert.is(tag2.getRawJSON().tasks[0], task1.get('id'))
+
         })
 
         it('should share the same reference', function()
@@ -99,6 +139,19 @@ define(['utils/tests/helpers'], function(TestUtils)
           assert.is(tag1.get('tasks').length, 2)
           assert.is(tag2.get('tasks').length, 2)
 
+
+          // verify data is saved
+          assert.is(task1.getRawJSON().tags[0], tag1.get('id'))
+          assert.is(task1.getRawJSON().tags[1], tag2.get('id'))
+          assert.is(tag1.getRawJSON().tasks[0], task1.get('id'))
+          assert.is(tag2.getRawJSON().tasks[0], task1.get('id'))
+
+
+          assert.is(tag1.getRawJSON().tasks[1], task2.get('id'))
+          assert.is(tag2.getRawJSON().tasks[1], task2.get('id'))
+          assert.is(task2.getRawJSON().tags[0], tag1.get('id'))
+          assert.is(task2.getRawJSON().tags[1], tag2.get('id'))
+
         })
       });
 
@@ -107,6 +160,7 @@ define(['utils/tests/helpers'], function(TestUtils)
       {
         it('should remove', function()
         {
+          // remove tag1 from task1
           var first = task1.get('tags').first()
           task1.get('tags').remove(first)
           task1.save()
@@ -116,6 +170,11 @@ define(['utils/tests/helpers'], function(TestUtils)
           assert.is(task2.get('tags').length, 2)
           assert.is(tag1.get('tasks').length, 1)
           assert.is(tag2.get('tasks').length, 2)
+
+          assert.is(tag1.getRawJSON().tasks[0], task2.get('id'))
+          assert.is(tag2.getRawJSON().tasks[1], task2.get('id'))
+          assert.is(task2.getRawJSON().tags[0], tag1.get('id'))
+          assert.is(task2.getRawJSON().tags[1], tag2.get('id'))
 
         })
       });

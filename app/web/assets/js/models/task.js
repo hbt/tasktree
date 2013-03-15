@@ -1,4 +1,4 @@
-define(['utils/tags'], function(TagUtils)
+define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, ModelHelpers)
 {
   var Model = Backbone.RelationalModel.extend({
     modelName:    'Task',
@@ -47,7 +47,7 @@ define(['utils/tags'], function(TagUtils)
 
     initialize: function()
     {
-      this.on('pre-save', this.handleInlineTags)
+//      this.on('pre-save', this.handleInlineTags)
     },
 
     /**
@@ -83,6 +83,9 @@ define(['utils/tags'], function(TagUtils)
       }, this)
     }
   })
+
+
+  _.extend(Model.prototype, ModelHelpers)
 
 
   window.App.models['Task'] = window.App.models['Task'] || Model
