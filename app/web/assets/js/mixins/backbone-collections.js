@@ -151,6 +151,7 @@ define([], function()
     var obj = null
 
     // lookup by unique field
+    // TODO(hbt) Refactor (low): should customize the _.prepareModel instead and lookup by unique there
     if(UniqueConstraint.isDefined(this))
     {
       obj = UniqueConstraint.lookup(this, model, true)

@@ -27,9 +27,9 @@
 
 
 <div id="tags-container" kb-inject="App.vm.TagsList" data-bind="visible: hasTags" style="display: none;">
-    <div data-bind="foreach: tags">
+    <div data-bind="foreach: {data: tags, as: 'tag'}">
         <div>
-            <span data-bind="text: content"></span>
+            <span data-bind="text: content"></span>(<span data-bind="text: tag.tasks().length"></span>)
         </div>
     </div>
 </div>

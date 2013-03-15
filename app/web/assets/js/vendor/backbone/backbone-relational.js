@@ -519,7 +519,6 @@
 
 			// When 'relatedModel' are created or destroyed, check if it affects this relation.
 			this.listenTo( this.instance, 'destroy', this.destroy )
-        .listenTo( this.instance, 'pre-save', this.save )
 				.listenTo( this.relatedCollection, 'relational:add', this.tryAddRelated )
 				.listenTo( this.relatedCollection, 'relational:remove', this.removeRelated )
 		}
@@ -1325,6 +1324,11 @@
 
     save: function( key, val, options )
     {
+      if(this.isLocked())
+      {
+        return;
+      }
+
       var attrs
 
       // Handle both `"key", value` and `{key: value}` -style arguments.
@@ -1339,6 +1343,15 @@
       }
 
       options = options || {}
+
+      // save related -- lock to prevent recursive calls
+      this.acquire()
+      _.each(this._relations, function(relation)
+      {
+        relation.save()
+      })
+      this.release()
+
 
       if(!options.silent)
       {

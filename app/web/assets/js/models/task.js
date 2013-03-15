@@ -33,6 +33,7 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
           reverseRelation: {
             key:           'tasks',
             includeInJSON: 'id',
+            autoFetch:     true,
             type:          Backbone.HasMany
           }
         }
@@ -47,7 +48,7 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
 
     initialize: function()
     {
-//      this.on('pre-save', this.handleInlineTags)
+      this.on('post-save', this.handleInlineTags, this)
     },
 
     /**
@@ -81,6 +82,8 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
         var otag = App.models.Tag.prototype.global.create({content: tag});
         this.get('tags').add(otag)
       }, this)
+
+      this.save(null, {silent: true})
     }
   })
 

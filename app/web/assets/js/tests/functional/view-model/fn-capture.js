@@ -91,9 +91,22 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
               {
                 var task = coll.global.at(0)
 
+                var tag1 = task.get('tags').at(0)
+                var tag2 = task.get('tags').at(1)
+
                 assert.is(task.get('tags').length, 2)
                 assert.is(task.get('tags').at(0).get('content'), 'tag1')
                 assert.is(task.get('tags').at(1).get('content'), 'tag2')
+                assert.is(task.get('tags').at(0).get('tasks').at(0), task)
+
+                assert.is(tag1.get('tasks').at(0), task)
+                assert.is(tag2.get('tasks').at(0), task)
+
+
+                // data is saved -- verify due to post-save
+                assert.is(task.getRawJSON().tags.length, 2)
+                assert.is(tag1.getRawJSON().tasks.length, 1)
+                assert.is(tag2.getRawJSON().tasks.length, 1)
               })
             });
 
