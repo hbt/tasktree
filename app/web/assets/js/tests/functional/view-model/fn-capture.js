@@ -60,12 +60,11 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 
           describe('no', function()
           {
-            var taggedContent, content
+            var content
             beforeEach(function()
             {
-              taggedContent = 'new task ' + coll.global.length + ' #tag1 #tag2 #tag1 #invalid+tag'
-              content = 'new task ' + coll.global.length + '  #invalid+tag'
-              Keyboard.simulateTyping(taggedContent, 'keyup')
+              content = 'new task ' + coll.global.length + ' #tag1 #tag2 #tag1 #invalid+tag'
+              Keyboard.simulateTyping(content, 'keyup')
               input.closest('form').submit()
             })
 

@@ -1353,17 +1353,20 @@
       this.release()
 
 
-      if(!options.silent)
+      // pre-save
+      if(!options.silent && !options.skipPreSave)
       {
         this.trigger('pre-save')
       }
 
 
+      // actual save
       var ofn = Backbone.Model.prototype.save
       ofn.call(this, key, val, options)
 
 
-      if(!options.silent)
+      // post-save
+      if(!options.silent && !options.skipPostSave)
       {
         this.trigger('post-save')
       }
