@@ -21,11 +21,17 @@ define(['require'], function(require)
           // TODO(hbt) Refactor (low): generate / get list
           require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
           {
+            // initialize backbone relations after every has been loaded
             App.models.Task.setup()
 
-            require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
+            require(['customized-vendor/backbone-plugins/backbone-offline-sync'], function(SyncModule)
             {
-              callback()
+              SyncModule.init()
+
+              require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
+              {
+                callback()
+              })
             })
           })
         })
