@@ -13,6 +13,7 @@ define([], function()
       this.resetCollections()
 
       Backbone.Relational.store.reset()
+      Backbone.Relational.eventQueue = new Backbone.BlockingQueue();
     },
 
     resetCollections: function()

@@ -16,6 +16,7 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
           reverseRelation: {
             key:           'parent',
             includeInJSON: 'id',
+            // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
             autoFetch:     true,
             type:          Backbone.HasOne
           }
