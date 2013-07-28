@@ -1,8 +1,7 @@
-/* vim: set tabstop=4 softtabstop=4 shiftwidth=4 noexpandtab: */
 /**
- * Backbone-relational.js 0.8.0
+ * Backbone-relational.js 0.8.5
  * (c) 2011-2013 Paul Uithol and contributors (https://github.com/PaulUithol/Backbone-relational/graphs/contributors)
- *
+ * 
  * Backbone-relational may be freely distributed under the MIT license; see the accompanying LICENSE.txt.
  * For details and documentation: https://github.com/PaulUithol/Backbone-relational.
  * Depends on Backbone (and thus on Underscore as well): https://github.com/documentcloud/backbone.
@@ -150,6 +149,14 @@
 		},
 
 		/**
+		 * Remove a scope.
+		 * @param {Object} scope
+		 */
+		removeModelScope: function( scope ) {
+			this._modelScopes = _.without( this._modelScopes, scope );
+		},
+
+		/**
 		 * Add a set of subModelTypes to the store, that can be used to resolve the '_superModel'
 		 * for a model later in 'setupSuperModel'.
 		 *
@@ -203,7 +210,7 @@
 					return val === rel[ key ];
 				});
 			});
-
+			
 			if ( !exists && relation.model && relation.type ) {
 				this._reverseRelations.push( relation );
 				this._addRelation( relation.model, relation );
@@ -284,18 +291,18 @@
 			if ( type instanceof Backbone.RelationalModel ) {
 				type = type.constructor;
 			}
-
+			
 			var rootModel = type;
 			while ( rootModel._superModel ) {
 				rootModel = rootModel._superModel;
 			}
-
+			
 			var coll = _.findWhere( this._collections, { model: rootModel } );
-
+			
 			if ( !coll && create !== false ) {
 				coll = this._createCollection( rootModel );
 			}
-
+			
 			return coll;
 		},
 
@@ -323,20 +330,20 @@
 
 		_createCollection: function( type ) {
 			var coll;
-
+			
 			// If 'type' is an instance, take its constructor
 			if ( type instanceof Backbone.RelationalModel ) {
 				type = type.constructor;
 			}
-
+			
 			// Type should inherit from Backbone.RelationalModel.
 			if ( type.prototype instanceof Backbone.RelationalModel ) {
 				coll = new Backbone.Collection();
 				coll.model = type;
-
+				
 				this._collections.push( coll );
 			}
-
+			
 			return coll;
 		},
 
@@ -367,14 +374,14 @@
 		},
 
 		/**
-		 *
+		 * Find a specific model of a certain `type` in the store
 		 * @param type
 		 * @param {String|Number|Object|Backbone.RelationalModel} item
 		 */
 		find: function( type, item ) {
 			var id = this.resolveIdForItem( type, item );
 			var coll = this.getCollection( type );
-
+			
 			// Because the found object could be of any of the type's superModel
 			// types, only return it if it's actually of the type asked for.
 			if ( coll ) {
@@ -396,13 +403,6 @@
 			var coll = this.getCollection( model );
 
 			if ( coll ) {
-				if ( coll.get( model ) ) {
-					if ( Backbone.Relational.showWarnings && typeof console !== 'undefined' ) {
-						console.warn( 'Duplicate id! Old RelationalModel=%o, new RelationalModel=%o', coll.get( model ), model );
-					}
-					throw new Error( "Cannot instantiate more than one Backbone.RelationalModel with the same id per type!" );
-				}
-
 				var modelColl = model.collection;
 				coll.add( model );
 				this.listenTo( model, 'destroy', this.unregister, this );
@@ -411,12 +411,34 @@
 		},
 
 		/**
+		 * Check if the given model may use the given `id`
+		 * @param model
+		 * @param [id]
+		 */
+		checkId: function( model, id ) {
+			var coll = this.getCollection( model ),
+				duplicate = coll && coll.get( id );
+
+			if ( duplicate && model !== duplicate ) {
+				if ( Backbone.Relational.showWarnings && typeof console !== 'undefined' ) {
+					console.warn( 'Duplicate id! Old RelationalModel=%o, new RelationalModel=%o', duplicate, model );
+				}
+
+				throw new Error( "Cannot instantiate more than one Backbone.RelationalModel with the same id per type!" );
+			}
+		},
+
+		/**
 		 * Explicitly update a model's id in its store collection
 		 * @param {Backbone.RelationalModel} model
-		*/
+		 */
 		update: function( model ) {
 			var coll = this.getCollection( model );
+			// This triggers updating the lookup indices kept in a collection
 			coll._onModelEvent( 'change:' + model.idAttribute, model, coll );
+
+			// Trigger an event on model so related models (having the model's new id in their keyContents) can add it.
+			model.trigger( 'relational:change:id', model, coll );
 		},
 
 		/**
@@ -519,7 +541,7 @@
 
 			// When 'relatedModel' are created or destroyed, check if it affects this relation.
 			this.listenTo( this.instance, 'destroy', this.destroy )
-				.listenTo( this.relatedCollection, 'relational:add', this.tryAddRelated )
+				.listenTo( this.relatedCollection, 'relational:add relational:change:id', this.tryAddRelated )
 				.listenTo( this.relatedCollection, 'relational:remove', this.removeRelated )
 		}
 	};
@@ -554,7 +576,6 @@
 				rm = this.relatedModel,
 				warn = Backbone.Relational.showWarnings && typeof console !== 'undefined';
 
-
 			if ( !m || !k || !rm ) {
 				warn && console.warn( 'Relation=%o: missing model, key or relatedModel (%o, %o, %o).', this, m, k, rm );
 				return false;
@@ -570,23 +591,21 @@
 				return false;
 			}
 			// Check if this is not a HasMany, and the reverse relation is HasMany as well
-//			if ( this instanceof Backbone.HasMany && this.reverseRelation.type === Backbone.HasMany ) {
-//				warn && console.warn( 'Relation=%o: relation is a HasMany, and the reverseRelation is HasMany as well.', this );
-//				return false;
-//			}
+			if ( this instanceof Backbone.HasMany && this.reverseRelation.type === Backbone.HasMany ) {
+				warn && console.warn( 'Relation=%o: relation is a HasMany, and the reverseRelation is HasMany as well.', this );
+				return false;
+			}
 			// Check if we're not attempting to create a relationship on a `key` that's already used.
-//      console.log(_.copy(i))
 			if ( i && _.keys( i._relations ).length ) {
 				var existing = _.find( i._relations, function( rel ) {
 					return rel.key === k;
 				}, this );
 
-        // TODO(hbt) review
-//				if ( existing ) {
-//					warn && console.warn( 'Cannot create relation=%o on %o for model=%o: already taken by relation=%o.',
-//						this, k, i, existing );
-//					return false;
-//				}
+				if ( existing ) {
+					warn && console.warn( 'Cannot create relation=%o on %o for model=%o: already taken by relation=%o.',
+						this, k, i, existing );
+					return false;
+				}
 			}
 
 			return true;
@@ -632,7 +651,7 @@
 						}
 					}, this );
 			}, this );
-
+			
 			return reverseRelations;
 		},
 
@@ -649,26 +668,11 @@
 			else if ( this instanceof Backbone.HasMany ) {
 				this.setRelated( this._prepareCollection() );
 			}
-
+			
 			_.each( this.getReverseRelations(), function( relation ) {
 				relation.removeRelated( this.instance );
 			}, this );
-		},
-
-
-    save: function()
-    {
-      if(this.changed)
-      {
-        _.each(this.getReverseRelations(), function(rel)
-        {
-          if(rel.instance.changed)
-          {
-            rel.instance.save(null, {silent: true})
-          }
-        })
-      }
-    }
+		}
 	});
 
 	Backbone.HasOne = Backbone.Relation.extend({
@@ -706,6 +710,11 @@
 				related = this.relatedModel.findOrCreate( this.keyContents, opts );
 			}
 
+			// Nullify `keyId` if we have a related model; in case it was already part of the relation
+			if ( this.related ) {
+				this.keyId = null;
+			}
+
 			return related;
 		},
 
@@ -729,19 +738,19 @@
 			}
 			this.acquire();
 			options = options ? _.clone( options ) : {};
-
+			
 			// 'options.__related' is set by 'addRelated'/'removeRelated'. If it is set, the change
-			// is the result of a call from a relation. If it's not, the change is the result of
+			// is the result of a call from a relation. If it's not, the change is the result of 
 			// a 'set' call on this.instance.
 			var changed = _.isUndefined( options.__related ),
 				oldRelated = changed ? this.related : options.__related;
-
+			
 			if ( changed ) {
 				this.setKeyContents( attr );
 				var related = this.findRelated( options );
 				this.setRelated( related );
 			}
-
+			
 			// Notify old 'related' object of the terminated relation
 			if ( oldRelated && this.related !== oldRelated ) {
 				_.each( this.getReverseRelations( oldRelated ), function( relation ) {
@@ -755,7 +764,7 @@
 			_.each( this.getReverseRelations(), function( relation ) {
 				relation.addRelated( this.instance, options );
 			}, this );
-
+			
 			// Fire the 'change:<key>' event if 'related' was updated
 			if ( !options.silent && this.related !== oldRelated ) {
 				var dit = this;
@@ -795,12 +804,11 @@
 			if ( !this.related ) {
 				return;
 			}
-
+			
 			if ( model === this.related ) {
 				var oldRelated = this.related || null;
 				this.setRelated( null );
 				this.onChange( this.instance, model, _.defaults( { __related: oldRelated }, options ) );
-        this.instance.save(null, {silent: true})
 			}
 		}
 	});
@@ -817,13 +825,13 @@
 
 		initialize: function( opts ) {
 			this.listenTo( this.instance, 'relational:change:' + this.key, this.onChange );
-
+			
 			// Handle a custom 'collectionType'
 			this.collectionType = this.options.collectionType;
 			if ( _.isString( this.collectionType ) ) {
 				this.collectionType = Backbone.Relational.store.getObjectByName( this.collectionType );
 			}
-			if ( !this.collectionType.prototype instanceof Backbone.Collection ){
+			if ( this.collectionType !== Backbone.Collection && !( this.collectionType.prototype instanceof Backbone.Collection ) ) {
 				throw new Error( '`collectionType` must inherit from Backbone.Collection' );
 			}
 
@@ -850,10 +858,10 @@
 			}
 
 			collection.model = this.relatedModel;
-
+			
 			if ( this.options.collectionKey ) {
 				var key = this.options.collectionKey === true ? this.options.reverseRelation.key : this.options.collectionKey;
-
+				
 				if ( collection[ key ] && collection[ key ] !== this.instance ) {
 					if ( Backbone.Relational.showWarnings && typeof console !== 'undefined' ) {
 						console.warn( 'Relation=%o; collectionKey=%s already exists on collection=%o', this, key, this.options.collectionKey );
@@ -867,7 +875,7 @@
 			this.listenTo( collection, 'relational:add', this.handleAddition )
 				.listenTo( collection, 'relational:remove', this.handleRemoval )
 				.listenTo( collection, 'relational:reset', this.handleReset );
-
+			
 			return collection;
 		},
 
@@ -897,7 +905,9 @@
 					}
 					else {
 						// If `merge` is true, update models here, instead of during update.
-						model = this.relatedModel.findOrCreate( attributes, _.extend( { merge: true }, options, { create: this.options.createModels } ) );
+						model = this.relatedModel.findOrCreate( attributes,
+							_.extend( { merge: true }, options, { create: this.options.createModels } )
+						);
 					}
 
 					model && toAdd.push( model );
@@ -910,8 +920,13 @@
 					related = this._prepareCollection();
 				}
 
-				related.update( toAdd, _.defaults( { merge: false, parse: false }, options ) );
+				// By now, both `merge` and `parse` will already have been executed for models if they were specified.
+				// Disable them to prevent additional calls.
+				related.set( toAdd, _.defaults( { merge: false, parse: false }, options ) );
 			}
+
+			// Remove entries from `keyIds` that were already part of the relation (and are thus 'unchanged')
+			this.keyIds = _.difference( this.keyIds, _.pluck( related.models, 'id' ) );
 
 			return related;
 		},
@@ -969,7 +984,7 @@
 			//console.debug('handleAddition called; args=%o', arguments);
 			options = options ? _.clone( options ) : {};
 			this.changed = true;
-
+			
 			_.each( this.getReverseRelations( model ), function( relation ) {
 				relation.addRelated( this.instance, options );
 			}, this );
@@ -989,11 +1004,11 @@
 			//console.debug('handleRemoval called; args=%o', arguments);
 			options = options ? _.clone( options ) : {};
 			this.changed = true;
-
+			
 			_.each( this.getReverseRelations( model ), function( relation ) {
 				relation.removeRelated( this.instance, null, options );
 			}, this );
-
+			
 			var dit = this;
 			!options.silent && Backbone.Relational.eventQueue.add( function() {
 				 dit.instance.trigger( 'remove:' + dit.key, model, dit.related, options );
@@ -1023,7 +1038,7 @@
 			var dit = this;
 			model.queue( function() {
 				if ( dit.related && !dit.related.get( model ) ) {
-					dit.related.add( model, options );
+					dit.related.add( model, _.defaults( { parse: false }, options ) );
 				}
 			});
 		},
@@ -1031,7 +1046,6 @@
 		removeRelated: function( model, coll, options ) {
 			if ( this.related.get( model ) ) {
 				this.related.remove( model, options );
-        this.instance.save(null, {silent: true})
 			}
 		}
 	});
@@ -1062,7 +1076,7 @@
 				var dit = this,
 					collection = this.collection =  options.collection;
 
-				// Prevent this option from cascading down to related models; they shouldn't go into this `if` clause.
+				// Prevent `collection` from cascading down to nested models; they shouldn't go into this `if` clause.
 				delete options.collection;
 
 				this._deferProcessing = true;
@@ -1083,7 +1097,7 @@
 			}
 
 			Backbone.Relational.store.processOrphanRelations();
-
+			
 			this._queue = new Backbone.BlockingQueue();
 			this._queue.block();
 			Backbone.Relational.eventQueue.block();
@@ -1158,7 +1172,6 @@
 			this._relations = {};
 
 			_.each( this.relations || [], function( rel ) {
-        rel = (_.isFunction(rel) && rel()) || rel
 				Backbone.Relational.store.initializeRelation( this, rel, options );
 			}, this );
 
@@ -1230,17 +1243,24 @@
 			var setUrl,
 				requests = [],
 				rel = this.getRelation( key ),
-				keys = rel && ( rel.keyIds || [ rel.keyId ] ),
-				toFetch = keys && _.select( keys || [], function( id ) {
-					return ( id || id === 0 ) && ( refresh || !Backbone.Relational.store.find( rel.relatedModel, id ) );
-				}, this );
+				idsToFetch = rel && ( rel.keyIds || ( ( rel.keyId || rel.keyId === 0 ) ? [ rel.keyId ] : [] ) );
 
-			if ( toFetch && toFetch.length ) {
+			// On `refresh`, add the ids for current models in the relation to `idsToFetch`
+			if ( refresh ) {
+				var models = rel.related instanceof Backbone.Collection ? rel.related.models : [ rel.related ];
+				_.each( models, function( model ) {
+					if ( model.id || model.id === 0 ) {
+						idsToFetch.push( model.id );
+					}
+				});
+			}
+
+			if ( idsToFetch && idsToFetch.length ) {
 				// Find (or create) a model for each one that is to be fetched
 				var created = [],
-					models = _.map( toFetch, function( id ) {
+					models = _.map( idsToFetch, function( id ) {
 						var model = Backbone.Relational.store.find( rel.relatedModel, id );
-
+						
 						if ( !model ) {
 							var attrs = {};
 							attrs[ rel.relatedModel.prototype.idAttribute ] = id;
@@ -1250,7 +1270,7 @@
 
 						return model;
 					}, this );
-
+				
 				// Try if the 'collection' can provide a url to fetch a set of models in one request.
 				if ( rel.related instanceof Backbone.Collection && _.isFunction( rel.related.url ) ) {
 					setUrl = rel.related.url( models );
@@ -1293,7 +1313,7 @@
 					}, this );
 				}
 			}
-
+			
 			return requests;
 		},
 
@@ -1322,56 +1342,6 @@
 			return originalResult || result;
 		},
 
-    save: function( key, val, options )
-    {
-      if(this.isLocked())
-      {
-        return;
-      }
-
-      var attrs
-
-      // Handle both `"key", value` and `{key: value}` -style arguments.
-      if(key == null || typeof key === 'object')
-      {
-        attrs = key;
-        options = val;
-      }
-      else
-      {
-        (attrs = {})[key] = val;
-      }
-
-      options = options || {}
-
-      // save related -- lock to prevent recursive calls
-      this.acquire()
-      _.each(this._relations, function(relation)
-      {
-        relation.save()
-      })
-      this.release()
-
-
-      // pre-save
-      if(!options.silent && !options.skipPreSave)
-      {
-        this.trigger('pre-save')
-      }
-
-
-      // actual save
-      var ofn = Backbone.Model.prototype.save
-      ofn.call(this, key, val, options)
-
-
-      // post-save
-      if(!options.silent && !options.skipPostSave)
-      {
-        this.trigger('post-save')
-      }
-    },
-
 		set: function( key, value, options ) {
 			Backbone.Relational.eventQueue.block();
 
@@ -1386,19 +1356,23 @@
 				attributes[ key ] = value;
 			}
 
-			var result = Backbone.Model.prototype.set.apply( this, arguments );
-
-			// Ideal place to set up relations :)
 			try {
+				var id = this.id,
+					newId = attributes && this.idAttribute in attributes && attributes[ this.idAttribute ];
+
+				// Check if we're not setting a duplicate id before actually calling `set`.
+				Backbone.Relational.store.checkId( this, newId );
+
+				var result = Backbone.Model.prototype.set.apply( this, arguments );
+
+				// Ideal place to set up relations, if this is the first time we're here for this model
 				if ( !this._isInitialized && !this.isLocked() ) {
 					this.constructor.initializeModelHierarchy();
-
 					Backbone.Relational.store.register( this );
-
 					this.initializeRelations( options );
 				}
-				// Update the 'idAttribute' in Backbone.store if; we don't want it to miss an 'id' update due to {silent:true}
-				else if ( attributes && this.idAttribute in attributes ) {
+				// The store should know about an `id` update asap
+				else if ( newId && newId !== id ) {
 					Backbone.Relational.store.update( this );
 				}
 
@@ -1410,7 +1384,7 @@
 				// Try to run the global queue holding external events
 				Backbone.Relational.eventQueue.unblock();
 			}
-
+			
 			return result;
 		},
 
@@ -1428,7 +1402,7 @@
 
 		clear: function( options ) {
 			Backbone.Relational.eventQueue.block();
-
+			
 			var result = Backbone.Model.prototype.clear.apply( this, arguments );
 			this.updateRelations( options );
 
@@ -1484,6 +1458,16 @@
 					else if ( related instanceof Backbone.Model ) {
 						value = related.get( includeInJSON );
 					}
+
+					// Add ids for 'unfound' models if includeInJSON is equal to (only) the relatedModel's `idAttribute`
+					if ( includeInJSON === rel.relatedModel.prototype.idAttribute ) {
+						if ( rel instanceof Backbone.HasMany ) {
+							value = value.concat( rel.keyIds );
+						}
+						else if  ( rel instanceof Backbone.HasOne ) {
+							value = value || rel.keyId;
+						}
+					}
 				}
 				else if ( _.isArray( includeInJSON ) ) {
 					if ( related instanceof Backbone.Collection ) {
@@ -1515,7 +1499,7 @@
 					delete json[ rel.key ];
 				}
 			});
-
+			
 			this.release();
 			return json;
 		}
@@ -1545,12 +1529,10 @@
 
 			// Initialize all reverseRelations that belong to this new model.
 			_.each( this.prototype.relations || [], function( rel ) {
-        rel = (_.isFunction(rel) && rel()) || rel
-
 				if ( !rel.model ) {
 					rel.model = this;
 				}
-
+				
 				if ( rel.reverseRelation && rel.model === this ) {
 					var preInitialize = true;
 					if ( _.isString( rel.relatedModel ) ) {
@@ -1575,7 +1557,7 @@
 					}
 				}
 			}, this );
-
+			
 			return this;
 		},
 
@@ -1600,7 +1582,7 @@
 					model = subModelType;
 				}
 			}
-
+			
 			return new model( attributes, options );
 		},
 
@@ -1616,17 +1598,15 @@
 				// inherited automatically (due to a redefinition of 'relations').
 				// Otherwise, make sure we don't get here again for this type by making '_superModel' false so we fail
 				// the isUndefined/isNull check next time.
-				if ( this._superModel ) {
-					//
-					if ( this._superModel.prototype.relations ) {
-						var supermodelRelationsExist = _.any( this.prototype.relations || [], function( rel ) {
-							return rel.model && rel.model !== this;
+				if ( this._superModel && this._superModel.prototype.relations ) {
+					// Find relations that exist on the `_superModel`, but not yet on this model.
+					var inheritedRelations = _.select( this._superModel.prototype.relations || [], function( superRel ) {
+						return !_.any( this.prototype.relations || [], function( rel ) {
+							return superRel.relatedModel === rel.relatedModel && superRel.key === rel.key;
 						}, this );
+					}, this );
 
-						if ( !supermodelRelationsExist ) {
-							this.prototype.relations = this._superModel.prototype.relations.concat( this.prototype.relations );
-						}
-					}
+					this.prototype.relations = inheritedRelations.concat( this.prototype.relations );
 				}
 				else {
 					this._superModel = false;
@@ -1666,6 +1646,9 @@
 			// If not, create an instance (unless 'options.create' is false).
 			if ( _.isObject( attributes ) ) {
 				if ( model && options.merge !== false ) {
+					// Make sure `options.collection` doesn't cascade to nested models
+					delete options.collection;
+
 					model.set( parsedAttributes, options );
 				}
 				else if ( !model && options.create !== false ) {
@@ -1687,7 +1670,7 @@
 	Backbone.Collection.prototype.__prepareModel = Backbone.Collection.prototype._prepareModel;
 	Backbone.Collection.prototype._prepareModel = function ( attrs, options ) {
 		var model;
-
+		
 		if ( attrs instanceof Backbone.Model ) {
 			if ( !attrs.collection ) {
 				attrs.collection = this;
@@ -1695,40 +1678,44 @@
 			model = attrs;
 		}
 		else {
-			options || (options = {});
+			options || ( options = {} );
 			options.collection = this;
-
+			
 			if ( typeof this.model.findOrCreate !== 'undefined' ) {
 				model = this.model.findOrCreate( attrs, options );
 			}
 			else {
 				model = new this.model( attrs, options );
 			}
-
+			
 			if ( model && model.isNew() && !model._validate( attrs, options ) ) {
 				this.trigger( 'invalid', this, attrs, options );
 				model = false;
 			}
 		}
-
+		
 		return model;
 	};
 
 
 	/**
-	 * Override Backbone.Collection.add, so we'll create objects from attributes where required,
+	 * Override Backbone.Collection.set, so we'll create objects from attributes where required,
 	 * and update the existing models. Also, trigger 'relational:add'.
 	 */
-	var add = Backbone.Collection.prototype.__add = Backbone.Collection.prototype.add;
-	Backbone.Collection.prototype.add = function( models, options ) {
+	var set = Backbone.Collection.prototype.__set = Backbone.Collection.prototype.set;
+	Backbone.Collection.prototype.set = function( models, options ) {
 		// Short-circuit if this Collection doesn't hold RelationalModels
 		if ( !( this.model.prototype instanceof Backbone.RelationalModel ) ) {
-			return add.apply( this, arguments );
+			return set.apply( this, arguments );
 		}
 
-		models = _.isArray( models ) ? models.slice() : [ models ];
-		// Set default options to the same values as `add` uses, so `findOrCreate` will also respect those.
-		options = _.extend( { merge: false }, options );
+		if ( options && options.parse ) {
+			models = this.parse( models, options );
+		}
+
+		if ( !_.isArray( models ) ) {
+			models = models ? [ models ] : [];
+		}
 
 		var newModels = [],
 			toAdd = [];
@@ -1754,7 +1741,8 @@
 		}, this );
 
 		// Add 'models' in a single batch, so the original add will only be called once (and thus 'sort', etc).
-		add.call( this, toAdd, options );
+		// If `parse` was specified, the collection and contained models have been parsed now.
+		set.call( this, toAdd, _.defaults( { parse: false }, options ) );
 
 		_.each( newModels, function( model ) {
 			// Fire a `relational:add` event for any model in `newModels` that has actually been added to the collection.
@@ -1762,7 +1750,7 @@
 				this.trigger( 'relational:add', model, this, options );
 			}
 		}, this );
-
+		
 		return this;
 	};
 
@@ -1794,7 +1782,7 @@
 				this.trigger('relational:remove', model, this, options);
 			}, this );
 		}
-
+		
 		return this;
 	};
 
@@ -1803,6 +1791,7 @@
 	 */
 	var reset = Backbone.Collection.prototype.__reset = Backbone.Collection.prototype.reset;
 	Backbone.Collection.prototype.reset = function( models, options ) {
+		options = _.extend( { merge: true }, options );
 		reset.call( this, models, options );
 
 		if ( this.model.prototype instanceof Backbone.RelationalModel ) {
@@ -1837,18 +1826,17 @@
 			return trigger.apply( this, arguments );
 		}
 
-//    eventName === 'sync' && console.trace()
 		if ( eventName === 'add' || eventName === 'remove' || eventName === 'reset' ) {
 			var dit = this,
 				args = arguments;
-
+			
 			if ( _.isObject( args[ 3 ] ) ) {
 				args = _.toArray( args );
 				// the fourth argument is the option object.
 				// we need to clone it, as it could be modified while we wait on the eventQueue to be unblocked
 				args[ 3 ] = _.clone( args[ 3 ] );
 			}
-
+			
 			Backbone.Relational.eventQueue.add( function() {
 				trigger.apply( dit, args );
 			});
@@ -1856,15 +1844,15 @@
 		else {
 			trigger.apply( this, arguments );
 		}
-
+		
 		return this;
 	};
 
 	// Override .extend() to automatically call .setup()
 	Backbone.RelationalModel.extend = function( protoProps, classProps ) {
 		var child = Backbone.Model.extend.apply( this, arguments );
-
-//		child.setup( this );
+		
+		child.setup( this );
 
 		return child;
 	};
