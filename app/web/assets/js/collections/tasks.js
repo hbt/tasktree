@@ -1,9 +1,10 @@
-define(['models/task', 'mixins/backbone-collections'], function(Task, Mixins)
+define(['models/task', 'mixins/backbone-collections', 'utils/schema'], function(Task, Mixins, schema)
 {
   var Tasks = Backbone.Collection.extend({
+    database: schema,
+    storeName: 'tasks',
     model:        Task,
-    modelName:    'Task',
-    localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tasks')
+    modelName:    'Task'
   });
 
   Mixins.extend(Tasks)

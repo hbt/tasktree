@@ -1,45 +1,43 @@
-define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, ModelHelpers)
+define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function(TagUtils, ModelHelpers, schema)
 {
   var Model = Backbone.RelationalModel.extend({
-    modelName:    'Task',
-    localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tasks'),
-    relations:    [
-      function()
-      {
-        return {
-          type:            Backbone.HasMany,
-          key:             'children',
-          relatedModel:    App.models.Task,
-          collectionType:  App.collectionClasses.Tasks,
-          includeInJSON:   'id',
-          autoFetch:       true,
-          reverseRelation: {
-            key:           'parent',
-            includeInJSON: 'id',
-            // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
-            autoFetch:     true,
-            type:          Backbone.HasOne
-          }
-        }
-      },
-      function()
-      {
-        return {
-          type:            Backbone.HasMany,
-          key:             'tags',
-          relatedModel:    App.models.Tag,
-          collectionType:  App.collectionClasses.Tags,
-          includeInJSON:   'id',
-          autoFetch:       true,
-          reverseRelation: {
-            key:           'tasks',
-            includeInJSON: 'id',
-            type:          Backbone.HasMany
-          }
-        }
-      }
+    database:  schema,
+    storeName: 'tasks',
+    modelName: 'Task',
+    // TODO(hbt) Refactor (high): add relations + lazy load them + handle many to many
+    relations: [
+//      {
+//        type:            Backbone.HasMany,
+//        key:             'children',
+//        relatedModel:    this,
+//        collectionType:  App.collectionClasses.Tasks,
+//        includeInJSON:   'id',
+//        autoFetch:       true,
+//        reverseRelation: {
+//          key:           'parent',
+//          includeInJSON: 'id',
+//          // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
+//          autoFetch:     true,
+//          type:          Backbone.HasOne
+//        }
+//      }
+
+//      {
+//        type:            Backbone.HasMany,
+//        key:             'tags',
+//        relatedModel:    Tag,
+//        collectionType:  Tags,
+//        includeInJSON:   'id',
+//        autoFetch:       true,
+//        reverseRelation: {
+//          key:           'tasks',
+//          includeInJSON: 'id',
+////          type:          Backbone.HasMany
+//        }
+//      }
+
     ],
-    defaults:     function()
+    defaults:  function()
     {
       return {
         content: ''
@@ -48,7 +46,7 @@ define(['utils/tags', 'mixins/backbone-model-helpers'], function(TagUtils, Model
 
     initialize: function()
     {
-      this.on('post-save', this.handleInlineTags, this)
+//      this.on('post-save', this.handleInlineTags, this)
     },
 
     /**

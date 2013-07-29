@@ -1,8 +1,9 @@
-define(['mixins/backbone-model-helpers'], function(ModelHelpers)
+define(['mixins/backbone-model-helpers', 'utils/schema'], function(ModelHelpers, schema)
 {
   var Model = Backbone.RelationalModel.extend({
-    modelName:    'Tag',
-    localStorage: new Backbone.LocalStorage(window.App.config.namespace + 'tags'),
+    database:  schema,
+    storeName: 'tags',
+    modelName: 'Tag',
 
     defaults: function()
     {

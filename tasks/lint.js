@@ -1,5 +1,6 @@
 module.exports = function(grunt)
 {
+  // TODO(hbt) Refactor (high): rewrite all scripts to use the local node_modules -- i.e modules installed from npm instead of global
   var _ = require('underscore')
 
   var JSHintConfig = {
