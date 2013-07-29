@@ -1,4 +1,4 @@
-backbone#0.9.10
+backbone#1.0.0
 chai#1.5.0
 jquery#1.9.1
 mocha#1.8.1

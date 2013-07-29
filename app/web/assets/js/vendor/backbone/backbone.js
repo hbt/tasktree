@@ -1,5 +1,5 @@
 //     Backbone.js 1.0.0
-
+// TODO(hbt) Refactor (low): create symbolic link to the components backbone instead of having a copy here
 //     (c) 2010-2011 Jeremy Ashkenas, DocumentCloud Inc.
 //     (c) 2011-2013 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 //     Backbone may be freely distributed under the MIT license.
