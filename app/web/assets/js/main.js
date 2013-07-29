@@ -41,7 +41,8 @@ require(['require', 'jquery',
     // load knockback + knockout
     require(['knockback', 'knockout',
       // not in arguments
-      'customized-vendor/backbone-plugins/backbone-getters-setters', 'backboneStore',
+      'customized-vendor/backbone-plugins/backbone-getters-setters',
+      'vendor/indexeddb-backbonejs-adapter/backbone-indexeddb',
       'vendor/backbone/backbone-relational'
     ], function(kb, ko)
     {
