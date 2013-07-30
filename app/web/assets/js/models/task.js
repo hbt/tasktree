@@ -6,32 +6,45 @@ define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function
     modelName: 'Task',
     // TODO(hbt) Refactor (high): add relations + lazy load them + handle many to many
     relations: [
+      {
+        type:            Backbone.HasMany,
+        key:             'children',
+        relatedModel:    'App.models.Task',
+        collectionType:  'App.collectionClasses.Tasks',
+        includeInJSON:   'id',
+        reverseRelation: {
+          key:           'parent',
+          includeInJSON: 'id',
+          // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
+          autoFetch:     true,
+          type:          Backbone.HasOne
+        }
+      },
+
 //      {
 //        type:            Backbone.HasMany,
-//        key:             'children',
-//        relatedModel:    this,
-//        collectionType:  App.collectionClasses.Tasks,
+//        key:             'tags',
+//        relatedModel:    'App.models.Tag',
+//        collectionType:  'App.collectionClasses.Tags',
 //        includeInJSON:   'id',
 //        autoFetch:       true,
 //        reverseRelation: {
-//          key:           'parent',
+//          key:           'tasks',
 //          includeInJSON: 'id',
-//          // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
-//          autoFetch:     true,
-//          type:          Backbone.HasOne
+//          type:          Backbone.HasMany
 //        }
 //      }
 
 //      {
 //        type:            Backbone.HasMany,
 //        key:             'tags',
-//        relatedModel:    Tag,
-//        collectionType:  Tags,
+//        relatedModel:    'App.models.TagTask',
 //        includeInJSON:   'id',
-//        autoFetch:       true,
+//        autoFetch: 1,
+////        autoFetch:       true,
 //        reverseRelation: {
 //          key:           'tasks',
-//          includeInJSON: 'id',
+////          includeInJSON: 'id',
 ////          type:          Backbone.HasMany
 //        }
 //      }

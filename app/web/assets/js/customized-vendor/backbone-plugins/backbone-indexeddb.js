@@ -499,6 +499,7 @@
                 this.execute(message);
             }.bind(this));
             this.next();
+          _.events.trigger('database-ready')
         },
 
         // Executes a given command on the driver. If not started, just stacks up one more element.

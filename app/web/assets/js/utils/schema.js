@@ -5,6 +5,8 @@ define([], function()
   {
     id:          'tasktree',
     description: 'Task Management',
+    // Note(hbt) set to false to see all indexedb operations
+    nolog:       0,
     migrations:  [
       {
         // create tables
@@ -13,6 +15,7 @@ define([], function()
         {
           transaction.db.createObjectStore('tasks');
           transaction.db.createObjectStore('tags');
+          transaction.db.createObjectStore('tagstasks');
           next();
         }
       },
@@ -36,18 +39,15 @@ define([], function()
 
         after: function(next)
         {
+
           // create default tags
           _.each(['completed', 'incomplete'], function(v)
           {
-            var tag = new App.models.Tag({
-              content: v
-            })
-            tag.save()
+            App.collections.Tags.create({content: v}, {wait: true})
           })
 
           next()
         }
-
       }
     ]
   }

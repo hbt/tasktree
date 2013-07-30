@@ -4,7 +4,9 @@ require.config({
 
     jquery:        'components/jquery/jquery',
     underscore:    'components/underscore/underscore',
-    backbone:      'components/backbone/backbone',
+//    backbone:      'components/backbone/backbone',
+    // TODO(hbt) Refactor (low): use components instead
+    backbone:      'vendor/backbone/backbone',
     css:           'components/require-css/css',
     normalize:     'components/require-css/normalize',
     'css-builder': 'components/require-css/css-builder',
@@ -38,25 +40,26 @@ require(['require', 'jquery',
   ],
   function(require, $)
   {
+
+    // TODO(hbt) Refactor (low): abstract in utils
+    _.events = {}
+    _.extend(_.events, Backbone.Events);
+    _.mixin({
+      copy: function(object)
+      {
+        return jQuery.extend(true, {}, object)
+      }
+    })
+
     // load knockback + knockout
     require(['knockback', 'knockout',
       // not in arguments
       'customized-vendor/backbone-plugins/backbone-getters-setters',
-      'vendor/indexeddb-backbonejs-adapter/backbone-indexeddb',
+      'customized-vendor/backbone-plugins/backbone-indexeddb',
       'vendor/backbone/backbone-relational'
     ], function(kb, ko)
     {
       window.ko = ko
-
-      // TODO(hbt) Refactor (low): abstract in utils
-      _.events = {}
-      _.extend(_.events, Backbone.Events);
-      _.mixin({
-        copy: function(object)
-        {
-          return jQuery.extend(true, {}, object)
-        }
-      })
 
       require(['core/app'], function(App)
       {

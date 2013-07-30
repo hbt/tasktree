@@ -30,11 +30,16 @@ define(['require'], function(require)
             // TODO(hbt) Refactor (high): initialize backbone relations after every has been loaded
             App.models.Task.setup()
 
-            require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
+            // trigger the migrations
+            // TODO(hbt) review the sequence of events + if this can be improved
+            App.collections.Tags.fetch()
+            _.events.once('database-ready', function()
             {
-              callback()
+              require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
+              {
+                callback()
+              })
             })
-
           })
         })
       })
