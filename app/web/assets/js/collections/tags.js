@@ -1,4 +1,4 @@
-define(['models/tag', 'mixins/backbone-collections', 'utils/schema'], function(Tag, Mixins, schema)
+define(['models/tag', 'utils/schema'], function(Tag, schema)
 {
   var Tags = Backbone.Collection.extend({
     database:  schema,
@@ -6,8 +6,6 @@ define(['models/tag', 'mixins/backbone-collections', 'utils/schema'], function(T
     model:     Tag,
     modelName: 'Tag'
   });
-
-  Mixins.extend(Tags)
 
 
   window.App.collectionClasses['Tags'] = window.App.collectionClasses['Tags'] || Tags

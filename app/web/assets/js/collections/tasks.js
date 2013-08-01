@@ -1,4 +1,4 @@
-define(['models/task', 'mixins/backbone-collections', 'utils/schema'], function(Task, Mixins, schema)
+define(['models/task', 'utils/schema'], function(Task, schema)
 {
   var Tasks = Backbone.Collection.extend({
     database:  schema,
@@ -7,9 +7,8 @@ define(['models/task', 'mixins/backbone-collections', 'utils/schema'], function(
     modelName: 'Task'
   });
 
-  // TODO(hbt) Refactor (low): add mixins + adds models in app.js + remove duplicated code from models + collections at the bottom
-  Mixins.extend(Tasks)
 
+  // TODO(hbt) Refactor (low): add mixins + adds models in app.js + remove duplicated code from models + collections at the bottom
   window.App.collectionClasses['Tasks'] = window.App.collectionClasses['Tasks'] || Tasks
   window.App.collections['Tasks'] = window.App.collections['Tasks'] || new Tasks()
 
