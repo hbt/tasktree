@@ -597,5 +597,5 @@
         exports.debugLog = debugLog;
     }
 
-    //window.addEventListener("unload",function(){Backbone.sync("closeall")})
+    window.addEventListener("unload",function(){Backbone.sync("closeall")})
 })();

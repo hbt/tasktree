@@ -6,7 +6,7 @@ define([], function()
     id:          'tasktree',
     description: 'Task Management',
     // Note(hbt) set to false to see all indexedb operations
-    nolog:       0,
+    nolog:       App.config.envName !== 'dev',
     migrations:  [
       {
         // create tables
