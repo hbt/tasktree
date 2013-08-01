@@ -1,9 +1,10 @@
 define(['view-model/vm-list-one'], function(ListOneViewModel)
 {
+  // TODO(hbt) Refactor (low): move to folder task
   var ListViewModel = kb.ViewModel.extend({
     constructor: function()
     {
-      var tasks = App.collections.Tasks.global
+      var tasks = App.collections.Tasks
       tasks.fetch()
 
       this.tasks = kb.collectionObservable(tasks, {

@@ -22,7 +22,10 @@ define(['models/task', 'services/msg'], function(Task, Msg)
 
 
       // create
-      model.global.create(model.toJSON())
+      var task = new Task()
+      task.set('content', model.get('content'))
+      task.save()
+      App.collections.Tasks.add(task, {at: 0})
 
 
       // clear

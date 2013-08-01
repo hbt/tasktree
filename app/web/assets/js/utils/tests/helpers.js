@@ -1,28 +1,30 @@
-define([], function()
+define(['utils/db'], function(DB)
 {
   var Helpers = {
-    reset: function()
+    reset: function(callback)
     {
-      // reset local storage
-      _.each(App.models, function(Model)
+      this.resetCollections()
+      Backbone.Relational.eventQueue = new Backbone.BlockingQueue();
+
+      // close all db connections
+      Backbone.sync('closeall')
+      DB.deleteDatabase(App.config.databaseName, function()
       {
-        Model.prototype.localStorage._clear()
+        // trigger migrations for new db
+        App.collections.Tags.fetch()
+        _.events.on('database-ready', _.once(function()
+        {
+          callback()
+        }))
       })
 
-
-      this.resetCollections()
-
-      Backbone.Relational.store.reset()
-      Backbone.Relational.eventQueue = new Backbone.BlockingQueue();
     },
 
     resetCollections: function()
     {
-
-      // reset global collections
+      // reset collections
       _.each(App.collections, function(v)
       {
-        v.global.reset(null)
         v.reset(null)
       })
 

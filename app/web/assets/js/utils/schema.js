@@ -3,7 +3,7 @@ define([], function()
   // database schema + migrations
   var schema =
   {
-    id:          'tasktree',
+    id:          App.config.databaseName,
     description: 'Task Management',
     // Note(hbt) set to false to see all indexedb operations
     nolog:       App.config.envName !== 'dev',

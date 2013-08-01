@@ -42,8 +42,6 @@ define(['components/chai/chai', 'components/mocha/mocha', 'css!components/mocha/
       })
 
 
-      this.cleanState()
-
       var self = this
       require(this.getTestFiles(), function()
       {
@@ -133,19 +131,6 @@ define(['components/chai/chai', 'components/mocha/mocha', 'css!components/mocha/
       })
     },
 
-    /**
-     * empties local storage to prevent collision with previous test runs
-     */
-    cleanState: function()
-    {
-      _.each(_.keys(localStorage), function(key)
-      {
-        if(_s.startsWith(key, 'tasktree-'))
-        {
-          localStorage.removeItem(key)
-        }
-      })
-    },
 
     /**
      * returns list of test files
@@ -155,9 +140,13 @@ define(['components/chai/chai', 'components/mocha/mocha', 'css!components/mocha/
       // TODO(hbt) Feature: generate this list
 
       // TODO(hbt) Feature: have parameters to run sanity vs crash vs unit vs functional or all (crash will require special perms)
-      return ['tests/functional/view-model/fn-list-one', 'tests/functional/view-model/fn-capture',
-        'tests/unit/mixins/unit-backbone-collections', 'tests/functional/services/fn-msg', 'tests/sanity/sanity',
-        'tests/unit/mixins/unit-backbone-relations', 'tests/functional/view-model/tag/fn-list'
+      return [
+        'tests/functional/view-model/fn-capture'
+//        'tests/functional/view-model/fn-list-one',
+//        'tests/unit/mixins/unit-backbone-collections',
+//        'tests/functional/services/fn-msg', 'tests/sanity/sanity',
+//        'tests/unit/mixins/unit-backbone-relations',
+//        'tests/functional/view-model/tag/fn-list'
       ]
     }
 

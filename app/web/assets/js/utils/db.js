@@ -6,7 +6,7 @@ define([], function()
    * delete an indexeddb by name
    * @param name
    */
-  exports.deleteDatabase = function(name)
+  exports.deleteDatabase = function(name, callback)
   {
     try
     {
@@ -16,6 +16,7 @@ define([], function()
       dbreq.onsuccess = function()
       {
         console.log('indexedDB: ' + name + ' deleted');
+        if(callback) callback()
       }
       dbreq.onerror = function(event)
       {
