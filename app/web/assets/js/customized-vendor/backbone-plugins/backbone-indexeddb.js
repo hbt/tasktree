@@ -563,16 +563,18 @@
 
         var success = options.success;
         options.success = function(resp) {
-            resolve();
             if (success) success(resp);
+            resolve(resp);
+          // TODO(hbt) check if this is needed knowing that we already call in success -- no need to call sync twice
+          // TODO(hbt) maybe the first one should be silent
             object.trigger('sync', object, resp, options);
         };
 
         var error = options.error;
         options.error = function(resp) {
-            reject();
             if (error) error(resp);
-            object.trigger('error', object, resp, options);
+            reject();
+          object.trigger('error', object, resp, options);
         };
 
         var next = function(){
