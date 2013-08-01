@@ -68,9 +68,9 @@ module.exports = function(grunt)
         files = _.chain(files)
           .map(function(file)
           {
-            // skip deleted
-            var status = file.trim().split(' ').shift()
-            if(status === 'D')
+            // skip deleted and unstaged files
+            var status = file.split(' ').shift()
+            if(status === 'D' || status.length === 0)
             {
               return;
             }
