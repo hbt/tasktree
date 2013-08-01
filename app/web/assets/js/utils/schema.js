@@ -15,7 +15,6 @@ define([], function()
         {
           transaction.db.createObjectStore('tasks');
           transaction.db.createObjectStore('tags');
-          transaction.db.createObjectStore('tagstasks');
           next();
         }
       },

@@ -57,10 +57,6 @@ define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function
       }
     },
 
-    initialize: function()
-    {
-//      this.on('post-save', this.handleInlineTags, this)
-    },
 
     /**
      * converts inline tags in the content to actual tags then removes them from the content

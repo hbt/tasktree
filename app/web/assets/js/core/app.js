@@ -11,9 +11,11 @@ define(['require'], function(require)
       App.vm = App.vm || {}
       App.services = App.services || {}
 
-      require(['config/config'], function(config)
+      require(['config/config', 'utils/utils'], function(config, Utils)
       {
         App.config = config
+        App.utils = Utils
+
         require(['core/router', 'utils/db'], function(Router, DBUtils)
         {
           new Router()
@@ -35,7 +37,29 @@ define(['require'], function(require)
             App.collections.Tags.fetch()
             _.events.once('database-ready', function()
             {
-              require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
+
+////              console.log(App.collections.Tasks.create({content: 'some'}))
+//              var t = new App.models.Task({content: 'as'})
+//              t.save()
+//              console.log('n', t.get('id'))
+//              t.save()
+//              console.log('u', t.get('id'))
+//              console.log(Backbone.Relational.store)
+//              window.setTimeout(function()
+//              {
+//              }, 1000)
+//              App.collections.Tasks.fetch({success: function()
+//              {
+//                console.log(App.collections.Tasks)
+//              }})
+//              return;
+//              App.collections.Tasks.create({content: 'some'}).then(function()
+//              {
+//                console.log('hh')
+//              })
+//              return;
+
+              require(['view-model/vm-capture', 'view-model/vm-list'], function()
               {
                 callback()
               })
