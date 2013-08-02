@@ -3,7 +3,6 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 
   describe('Capture | saves new tasks', function()
   {
-
     describe('focus', function()
     {
       describe('on Alt-C', function()
@@ -17,9 +16,10 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 
     describe('capture', function()
     {
+      var input, coll
+
       describe('on Enter', function()
       {
-        var input, coll
         beforeEach(function()
         {
           input = $('#capture-container input')
@@ -51,10 +51,9 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
               assert.is(coll.length, 0)
             })
 
-            afterEach(function(done)
+            afterEach(function()
             {
               input.val('')
-              TestUtils.reset(done)
             })
           });
 
@@ -78,11 +77,8 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
               assert.is(input.val(), '')
             })
 
-//            it('should display at the top of the list', function()
-//            {
-//              var val = $('#list-container input').first().val()
-//              assert.is(val, content)
-//            })
+            describe('tagging', function()
+            {
 
 //            describe('has inline tags', function()
 //            {
@@ -107,6 +103,58 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 //                assert.is(tag2.getRawJSON().tasks.length, 1)
 //              })
 //            });
+
+              xit('should be tagged as #unprocessed', function()
+              {
+              })
+
+              describe('is "tag using active filter" on?', function()
+              {
+                xit('should be tagged according to active tags', function()
+                {
+
+                })
+              });
+            });
+
+
+            describe('append to list', function()
+            {
+              describe('has filter?', function()
+              {
+                describe('yes', function()
+                {
+                  describe('tags match current filter?', function()
+                  {
+                    describe('yes', function()
+                    {
+                      xit('should appear at the top of the list', function()
+                      {
+                      })
+                    });
+
+                    describe('no', function()
+                    {
+                      xit('should not appear at the top of the list', function()
+                      {
+
+                      })
+                    });
+                  })
+                });
+
+                describe('no', function()
+                {
+                  it('should appear at the top of the list', function()
+                  {
+                    var val = $('#list-container input').first().val()
+                    assert.is(val, content)
+                  })
+
+                });
+              })
+            });
+
 
             afterEach(function(done)
             {
