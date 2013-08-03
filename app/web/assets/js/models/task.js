@@ -15,40 +15,20 @@ define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function
         reverseRelation: {
           key:           'parent',
           includeInJSON: 'id',
-          // TODO(hbt) remove and verify this if this needed. issues were created when added for other relation
           autoFetch:     true,
           type:          Backbone.HasOne
         }
       },
-
-//      {
-//        type:            Backbone.HasMany,
-//        key:             'tags',
-//        relatedModel:    'App.models.Tag',
-//        collectionType:  'App.collectionClasses.Tags',
-//        includeInJSON:   'id',
-//        autoFetch:       true,
-//        reverseRelation: {
-//          key:           'tasks',
-//          includeInJSON: 'id',
-//          type:          Backbone.HasMany
-//        }
-//      }
-
-//      {
-//        type:            Backbone.HasMany,
-//        key:             'tags',
-//        relatedModel:    'App.models.TagTask',
-//        includeInJSON:   'id',
-//        autoFetch: 1,
-////        autoFetch:       true,
-//        reverseRelation: {
-//          key:           'tasks',
-////          includeInJSON: 'id',
-////          type:          Backbone.HasMany
-//        }
-//      }
-
+      {
+        type:            Backbone.HasMany,
+        key:             'taskstags',
+        relatedModel:    'App.models.TasksTags',
+        collectionType:  'App.collectionClasses.TasksTags',
+        reverseRelation: {
+          key:           'tasks',
+          includeInJSON: 'id'
+        }
+      }
     ],
     defaults:  function()
     {

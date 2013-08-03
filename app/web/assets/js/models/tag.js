@@ -10,7 +10,20 @@ define(['mixins/backbone-model-helpers', 'utils/schema'], function(ModelHelpers,
       return {
         content: ''
       }
-    }
+    },
+
+    relations: [
+      {
+        type: Backbone.HasMany,
+        key:  'taskstags',
+        relatedModel:    'App.models.TasksTags',
+        collectionType:  'App.collectionClasses.TasksTags',
+        reverseRelation: {
+          key:           'tags',
+          includeInJSON: 'id'
+        }
+      }
+    ]
   })
 
   _.extend(Model.prototype, ModelHelpers)

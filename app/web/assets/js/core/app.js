@@ -5,7 +5,7 @@ define(['require'], function(require)
     function initModels()
     {
       // TODO(hbt) Refactor (low): generate / get list
-      require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
+      require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags', 'models/taskstags', 'collections/taskstags'], function()
       {
         // TODO(hbt) Refactor (high): initialize backbone relations after every has been loaded
         App.models.Task.setup()
