@@ -567,7 +567,7 @@
             resolve(resp);
           // TODO(hbt) check if this is needed knowing that we already call in success -- no need to call sync twice
           // TODO(hbt) maybe the first one should be silent
-            object.trigger('sync', object, resp, options);
+//            object.trigger('sync', object, resp, options);
         };
 
         var error = options.error;
