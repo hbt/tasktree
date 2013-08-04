@@ -1,4 +1,4 @@
-define(['mixins/backbone-model-helpers', 'utils/schema'], function(ModelHelpers, schema)
+define(['utils/schema'], function(schema)
 {
   var Model = Backbone.RelationalModel.extend({
     database:  schema,
@@ -26,7 +26,6 @@ define(['mixins/backbone-model-helpers', 'utils/schema'], function(ModelHelpers,
     ]
   })
 
-  _.extend(Model.prototype, ModelHelpers)
 
 
   window.App.models['Tag'] = window.App.models['Tag'] || Model

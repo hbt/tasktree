@@ -50,12 +50,15 @@ define(['require'], function(require)
 
           _.events.once('init-app', function()
           {
-            // TODO(hbt) Refactor (low): generate / get list
-            require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
+            App.collections.Tags.fetch().then(function()
             {
-              require(['view-model/vm-capture', 'view-model/vm-list'], function()
+              // TODO(hbt) Refactor (low): generate / get list
+              require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
               {
-                callback()
+                require(['view-model/vm-capture', 'view-model/vm-list'], function()
+                {
+                  callback()
+                })
               })
             })
           })

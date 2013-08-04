@@ -25,6 +25,15 @@ define(['utils/db'], function(DB)
       // reset collections
       _.each(App.collections, function(v)
       {
+
+        // remove listeners on existing models -- to prevent it from triggering callbacks after the test is done
+        v.each(function(model)
+        {
+          model.off()
+        })
+
+        // Note(hbt) consider removing callbacks on collections as well
+
         v.reset(null)
       })
 

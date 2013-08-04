@@ -1,4 +1,4 @@
-define([], function()
+define(['backbone'], function()
 {
   var exports = {}
 
@@ -25,7 +25,7 @@ define([], function()
       related = model2
     }
 
-    if(related)
+    if(related && related.storeName)
     {
       // init
       var map = Backbone.Relational.rmap
@@ -91,12 +91,10 @@ define([], function()
         }
       })
     }
-
-
-    return Backbone.Model.prototype.initialize.apply(this, arguments);
   }
 
 
+  var saveBak = Backbone.Model.prototype.save
   /**
    * only meant to be used internally. So no need to support the val/options ala backbone
    * @param key
@@ -105,22 +103,26 @@ define([], function()
    */
   exports.save = function(key, val, options)
   {
+    // if this model is related to another one. The other triggered the save,
+    // therefore remove it from the relational map to prevent them from saving each other infinitely
     if(options && options.clearRelated)
     {
       var map = Backbone.Relational.rmap[this.get('id')]
 
-      _.each(map, function(v,k)
+      _.each(map, function(v, k)
       {
         if(v === options.clearRelated)
         {
-          map.slice(k,1)
+          map.slice(k, 1)
         }
       })
 
       Backbone.Relational.rmap[this.get('id')] = map
     }
 
-    return Backbone.Model.prototype.save.apply(this, arguments);
+
+    this.trigger('pre-save')
+    return saveBak.apply(this, arguments);
   }
 
 

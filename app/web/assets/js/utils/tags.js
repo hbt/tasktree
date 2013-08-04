@@ -36,7 +36,31 @@ define([], function()
       }
     })
 
-    return ret
+
+    return _.unique(ret)
+  }
+
+
+  /**
+   *
+   * @param content
+   * @returns {boolean|*|App.models.Tag|*}
+   */
+  exports.findOrCreateByContent = function(content)
+  {
+    // find
+    var tag = Backbone.Relational.store.getCollection(App.models.Tag).findWhere({content: content})
+
+    // create if not found
+    if(!tag)
+    {
+      tag = new App.models.Tag({
+        content: content
+      })
+      tag.save()
+    }
+
+    return tag
   }
 
   return exports

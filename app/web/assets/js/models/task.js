@@ -1,4 +1,4 @@
-define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function(TagUtils, ModelHelpers, schema)
+define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 {
   var Model = Backbone.RelationalModel.extend({
     database:  schema,
@@ -38,6 +38,66 @@ define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function
     },
 
 
+    initialize: function()
+    {
+      this.on('pre-save', this.handleInlineTags)
+
+      return Backbone.Model.prototype.initialize.apply(this, arguments);
+    },
+
+
+    /**
+     *
+     * @param tag tag can be an array of strings or tag models
+     * @param skipSave  - false by default
+     */
+    tag: function(tag, skipSave)
+    {
+      // transform
+      var tags = _.isArray(tag) && tag || [tag]
+      skipSave = skipSave || false
+
+      var ids = this.getTags().pluck('id')
+
+      // add tags
+      _.each(tags, function(v)
+      {
+        var tag = _.isString(v) && v || v instanceof App.models.Tag && v.get('content')
+        var otag = TagUtils.findOrCreateByContent(tag)
+
+        // TODO(hbt) deal with duplicates in taskstags
+        this.get('taskstags').add({tags: otag})
+      }, this)
+
+
+      // only save if there is a new tag
+      var nids = this.getTags().pluck('id')
+      if(_.difference(nids, ids).length > 0 && !skipSave)
+      {
+        this.save()
+      }
+    },
+
+    untag: function()
+    {
+      throw new Error('Not implemented yet')
+    },
+
+    getTags: function()
+    {
+      var coll = new App.collectionClasses.Tags()
+      var tags = this.get('taskstags').map(function(v)
+      {
+        return v.get('tags')
+      })
+
+      // reset + filters out duplicates -- use groupby if mistaken
+      coll.reset(tags)
+
+      return coll
+
+    },
+
     /**
      * converts inline tags in the content to actual tags then removes them from the content
      */
@@ -47,22 +107,9 @@ define(['utils/tags', 'mixins/backbone-model-helpers', 'utils/schema'], function
       var content = this.get('content')
       var tags = TagUtils.extract(content)
 
-
-      // associate tags
-      _.each(_.unique(tags), function(tag)
-      {
-        var otag = App.models.Tag.prototype.global.create({content: tag});
-        this.get('tags').add(otag)
-      }, this)
-
-
-      // prevent recursive calls
-      this.save(null, {skipPostSave: true})
+      this.tag(tags, true)
     }
   })
-
-
-  _.extend(Model.prototype, ModelHelpers)
 
 
   window.App.models['Task'] = window.App.models['Task'] || Model

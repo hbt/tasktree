@@ -52,14 +52,14 @@ require(['require', 'jquery',
     })
 
     // load knockback + knockout
-    require(['knockback', 'knockout',
+    require(['knockback', 'knockout', 'mixins/backbone-model-helpers',
       // not in arguments
-      'customized-vendor/backbone-plugins/backbone-getters-setters',
       'customized-vendor/backbone-plugins/backbone-indexeddb',
       'vendor/backbone/backbone-relational'
-    ], function(kb, ko)
+    ], function(kb, ko, ModelHelpers)
     {
       window.ko = ko
+      _.extend(Backbone.Model.prototype, ModelHelpers)
 
       require(['core/app'], function(App)
       {
