@@ -16,7 +16,7 @@ define(['utils/tests/helpers'], function(TestUtils)
       it('should save the model', function(done)
       {
         assert.is(child.get('parent').get('id'), parent.get('id'))
-        child.on('sync', function()
+        child.once('sync', function()
         {
           done()
         })
@@ -26,7 +26,7 @@ define(['utils/tests/helpers'], function(TestUtils)
       it('on sync should save related models', function(done)
       {
         assert.is(parent.get('children').at(0).get('id'), child.get('id'))
-        parent.on('sync', function()
+        parent.once('sync', function()
         {
           done()
         })

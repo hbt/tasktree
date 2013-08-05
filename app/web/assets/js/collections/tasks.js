@@ -8,7 +8,6 @@ define(['models/task', 'utils/schema'], function(Task, schema)
   });
 
 
-  // TODO(hbt) Refactor (low): add mixins + adds models in app.js + remove duplicated code from models + collections at the bottom
   window.App.collectionClasses['Tasks'] = window.App.collectionClasses['Tasks'] || Tasks
   window.App.collections['Tasks'] = window.App.collections['Tasks'] || new Tasks()
 

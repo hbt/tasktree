@@ -59,12 +59,16 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 
       var ids = this.getTags().pluck('id')
 
-      // add tags
-      _.each(tags, function(v)
+      // TODO(hbt) NEXT use contains to decide if we should add or not
+      var otags = _.map(tags, function(v)
       {
         var tag = _.isString(v) && v || v instanceof App.models.Tag && v.get('content')
-        var otag = TagUtils.findOrCreateByContent(tag)
+        return TagUtils.findOrCreateByContent(tag)
+      })
 
+      // add tags
+      _.each(otags, function(otag)
+      {
         // TODO(hbt) deal with duplicates in taskstags
         this.get('taskstags').add({tags: otag})
       }, this)
@@ -107,7 +111,17 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       var content = this.get('content')
       var tags = TagUtils.extract(content)
 
-      this.tag(tags, true)
+      if(tags)
+      {
+        this.tag(tags, true)
+
+        this.getTags().each(function(v)
+        {
+          content = content.replace('#' + v.get('content'), '')
+        }, this)
+
+        this.set('content', content.trim())
+      }
     }
   })
 

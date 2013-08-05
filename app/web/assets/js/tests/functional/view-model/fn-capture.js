@@ -38,7 +38,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
 
             it('should display error message', function(done)
             {
-              _.events.on('on-msg-show', function()
+              _.events.once('on-msg-show', function()
               {
                 assert.is(1, 1)
                 done()

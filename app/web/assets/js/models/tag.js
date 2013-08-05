@@ -23,7 +23,12 @@ define(['utils/schema'], function(schema)
           includeInJSON: 'id'
         }
       }
-    ]
+    ],
+
+    getTasks: function()
+    {
+      return this.toJSON()['taskstags']
+    }
   })
 
 

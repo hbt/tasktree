@@ -25,6 +25,13 @@
     </form>
 </div>
 
+<div id="tags-container" kb-inject="App.vm.TagsList">
+    <div data-bind="foreach: {data: tags, as: 'tag'}">
+        <div>
+            <span data-bind="text: content"></span>
+        </div>
+    </div>
+</div>
 
 
 <div id="list-container" kb-inject="App.vm.List" data-bind="visible: hasTasks" style="display: none;">
@@ -36,6 +43,10 @@
                     valueUpdate: 'keyup'"
                         />
             </form>
+        </div>
+            <div>
+                <span data-bind="text: content"></span> --- <span data-bind="text: $data.model().get('taskstags').length"></span>
+            </div>
         </div>
     </div>
 </div>

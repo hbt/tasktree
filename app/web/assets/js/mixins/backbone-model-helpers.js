@@ -25,8 +25,38 @@ define(['backbone'], function()
       related = model2
     }
 
-    if(related && related.storeName)
+    if(related && related !== this)
     {
+      // link model e.g taskstags
+      if(!related.storeName)
+      {
+        var found = false
+        var nrelated = null
+
+        // TODO(hbt) NEXT use _.find
+        // TODO(hbt) reduce complexity
+        _.each(related._relations, function(v, relationName)
+        {
+          if(found)
+            return false
+
+          if(related.attributes[relationName]  && related.attributes[relationName] !== this)
+          {
+            nrelated = related.get(relationName)
+            found = true
+          }
+        }, this)
+
+
+        related = nrelated
+
+        if(!related)
+        {
+          return
+        }
+      }
+
+
       // init
       var map = Backbone.Relational.rmap
       map = map || {}
@@ -35,6 +65,7 @@ define(['backbone'], function()
 
       map[this.get('id')].push(related)
 
+      // TODO(hbt) inv using groupby
       // remove duplicates
       var tmp = {}
       _.each(map[this.get('id')], function(v)
@@ -53,7 +84,7 @@ define(['backbone'], function()
    */
   exports.initialize = function()
   {
-    if(this.isNew())
+    if(this.isNew() && this.storeName)
     {
       this.set('id', App.utils.guid())
     }
@@ -63,7 +94,7 @@ define(['backbone'], function()
 
 
     // save related models
-    if(relationKeys.length)
+    if(relationKeys.length && this.storeName)
     {
       // listen to changes in relations
       _.each(relationKeys, function(key)
@@ -108,14 +139,7 @@ define(['backbone'], function()
     if(options && options.clearRelated)
     {
       var map = Backbone.Relational.rmap[this.get('id')]
-
-      _.each(map, function(v, k)
-      {
-        if(v === options.clearRelated)
-        {
-          map.slice(k, 1)
-        }
-      })
+      map = _.without(map, options.clearRelated)
 
       Backbone.Relational.rmap[this.get('id')] = map
     }

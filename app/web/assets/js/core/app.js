@@ -7,11 +7,9 @@ define(['require'], function(require)
       // TODO(hbt) Refactor (low): generate / get list
       require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags', 'models/taskstags', 'collections/taskstags'], function()
       {
-        // TODO(hbt) Refactor (high): initialize backbone relations after every has been loaded
         App.models.Task.setup()
 
         // trigger the migrations
-        // TODO(hbt) review the sequence of events + if this can be improved
         App.collections.Tags.fetch()
         _.events.on('database-ready', function()
         {
@@ -55,7 +53,7 @@ define(['require'], function(require)
               // TODO(hbt) Refactor (low): generate / get list
               require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags'], function()
               {
-                require(['view-model/vm-capture', 'view-model/vm-list'], function()
+                require(['view-model/vm-capture', 'view-model/vm-list', 'view-model/tag/vm-list'], function()
                 {
                   callback()
                 })
