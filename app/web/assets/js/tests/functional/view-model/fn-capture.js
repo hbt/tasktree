@@ -149,7 +149,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
                   it('should appear at the top of the list', function()
                   {
                     var val = $('#list-container input').first().val()
-                    assert.is(val, content)
+                    assert.is(val, 'new task 0')
                   })
 
                 });

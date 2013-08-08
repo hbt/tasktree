@@ -2,82 +2,89 @@ define(['backbone'], function()
 {
   var exports = {}
 
+  var Relations = {
+    findRelated: function(current, model, model2)
+    {
+      var related = null
 
-  /**
-   * backbone relational sends first param as model for hasMany
-   * @param model
-   * @param model2
-   * @param opts
-   */
-  function updateRelationsMap(model, model2)
-  {
-    var related = null
-    // 2 is a collection
-    if(model instanceof Backbone.Model && model2 instanceof Backbone.Collection)
-    {
-      // 1 is the related model
-      related = model
-    }
-    // 1 & 2 are models
-    else if(model instanceof Backbone.Model && model2 instanceof Backbone.Model)
-    {
-      // 2 is the related model
-      related = model2
-    }
-
-    if(related && related !== this)
-    {
-      // link model e.g taskstags
-      if(!related.storeName)
+      // 2 is a collection
+      if(model instanceof Backbone.Model && model2 instanceof Backbone.Collection)
       {
-        var found = false
-        var nrelated = null
-
-        // TODO(hbt) NEXT use _.find
-        // TODO(hbt) reduce complexity
-        _.each(related._relations, function(v, relationName)
-        {
-          if(found)
-            return false
-
-          if(related.attributes[relationName]  && related.attributes[relationName] !== this)
-          {
-            nrelated = related.get(relationName)
-            found = true
-          }
-        }, this)
-
-
-        related = nrelated
-
-        if(!related)
-        {
-          return
-        }
+        // 1 is the related model
+        related = model
+      }
+      
+      // 1 & 2 are models
+      else if(model instanceof Backbone.Model && model2 instanceof Backbone.Model)
+      {
+        // 2 is the related model
+        related = model2
       }
 
+      // related cannot be the same as current
+      related = (related && related !== current && related) || null
 
-      // init
-      var map = Backbone.Relational.rmap
-      map = map || {}
-      map[this.get('id')] = map[this.get('id')] || []
-
-
-      map[this.get('id')].push(related)
-
-      // TODO(hbt) inv using groupby
-      // remove duplicates
-      var tmp = {}
-      _.each(map[this.get('id')], function(v)
+      // link model e.g taskstags
+      if(related && !related.storeName)
       {
-        tmp[v.get('id')] = v
-      })
-      map[this.get('id')] = _.values(tmp)
+        // find the related instances -- in cases of link model, we don't care about the link model but the related instance to the current model (this)
+        // e.g task -> tag  if current model (this) is a task
+        var found = _.find(related._relations, function(v, relationName)
+        {
+          return related.attributes[relationName] && related.attributes[relationName] !== current
+        }, current)
+
+        // get related model if found
+        related = (found && related.attributes[found.key]) || null
+      }
+
+      return related
+    },
+
+    /**
+     * updates the map whenever events related to relations are triggered (add/remove/change)
+     * This is designed to know which model has been updated and which related models should be saved as well
+     *
+     * Related to the single save feature
+     *
+     * // Note(hbt) Possible bug with the eventQueue -- view first line. Still experimental. Haven't found a case yet
+     * @param model
+     * @param model2
+     */
+    updateRelationsMap: function(model, model2)
+    {
+      // do not process when queue is blocked -- backbone relational fires a lot of events
+      if(Backbone.Relational.eventQueue._queue.length !== 0)
+      {
+        return
+      }
+
+      var related = Relations.findRelated(this, model, model2)
+      if(related && related !== this)
+      {
+        // init
+        var map = Backbone.Relational.rmap
+        map = map || {}
+        map[this.get('id')] = map[this.get('id')] || []
 
 
-      Backbone.Relational.rmap = map
+        map[this.get('id')].push(related)
+
+        // TODO(hbt) inv using groupby
+        // remove duplicates
+        var tmp = {}
+        _.each(map[this.get('id')], function(v)
+        {
+          tmp[v.get('id')] = v
+        })
+        map[this.get('id')] = _.values(tmp)
+
+
+        Backbone.Relational.rmap = map
+      }
     }
   }
+
 
   /**
    * provide models with an id instead of waiting for a callback from the db with one
@@ -102,24 +109,8 @@ define(['backbone'], function()
         _.each(['add', 'remove', 'change'], function(eName)
         {
           var eventName = eName + ':' + key
-          self.on(eventName, updateRelationsMap)
+          self.on(eventName, Relations.updateRelationsMap)
         })
-      })
-
-
-      // save related after saving model
-      this.on('sync', function()
-      {
-        if(Backbone.Relational.rmap && Backbone.Relational.rmap[self.get('id')])
-        {
-          var map = Backbone.Relational.rmap[self.get('id')]
-          _.each(map, function(relatedModel)
-          {
-            relatedModel.save(null, null, {clearRelated: self})
-          })
-
-          Backbone.Relational.rmap[self.get('id')] = []
-        }
       })
     }
   }
@@ -132,20 +123,29 @@ define(['backbone'], function()
    * @param val
    * @param options
    */
-  exports.save = function(key, val, options)
+  exports.save = function()
   {
-    // if this model is related to another one. The other triggered the save,
-    // therefore remove it from the relational map to prevent them from saving each other infinitely
-    if(options && options.clearRelated)
-    {
-      var map = Backbone.Relational.rmap[this.get('id')]
-      map = _.without(map, options.clearRelated)
+    this.trigger('pre-save')
 
-      Backbone.Relational.rmap[this.get('id')] = map
+    // save related instances
+    if(Backbone.Relational.rmap && Backbone.Relational.rmap[this.get('id')])
+    {
+      // clear related instances
+      var map = Backbone.Relational.rmap[this.get('id')]
+      Backbone.Relational.rmap[this.get('id')] = []
+
+      _.each(map, function(relatedModel)
+      {
+        // clear current instance from related instances -- to prevent recursive saves
+        var rmap = Backbone.Relational.rmap[relatedModel.get('id')]
+        rmap = _.without(rmap, this)
+        Backbone.Relational.rmap[relatedModel.get('id')] = rmap
+
+        relatedModel.save()
+      }, this)
     }
 
 
-    this.trigger('pre-save')
     return saveBak.apply(this, arguments);
   }
 

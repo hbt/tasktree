@@ -115,12 +115,12 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       {
         this.tag(tags, true)
 
-        this.getTags().each(function(v)
+        content = _.filter(_s.words(content), function(v)
         {
-          content = content.replace('#' + v.get('content'), '')
-        }, this)
+          return !_s.startsWith(v, '#')
+        }).join(' ')
 
-        this.set('content', content.trim())
+        this.set('content', content)
       }
     }
   })
