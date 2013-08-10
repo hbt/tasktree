@@ -22,23 +22,33 @@ define(['utils/db'], function(DB)
 
     resetCollections: function()
     {
-      // reset collections
+      // reset collections without destroying references to collections in views
+      _.each(Backbone.Relational.store._collections, function(coll)
+      {
+        // remove listeners on existing models -- to prevent it from triggering callbacks after the test is done
+        coll.each(function(model)
+        {
+          Backbone.Relational.store.unregister(model)
+          // creates issues with capture
+          // model.off()
+        })
+        coll.reset([])
+      })
+
       _.each(App.collections, function(v)
       {
-
-        // remove listeners on existing models -- to prevent it from triggering callbacks after the test is done
         v.each(function(model)
         {
           model.off()
         })
 
-        // Note(hbt) consider removing callbacks on collections as well
-
-        v.reset(null)
+        // Note(hbt) consider removing callbacks on collections as well -- will create issues with knockback
+        v.reset()
       })
 
 
-      Backbone.Relational.store.reset()
+      Backbone.Relational.store.stopListening()
+      Backbone.Relational.store._subModels = []
     }
 
   }
