@@ -250,11 +250,12 @@
       if (!ok) {
         var msg = util.getMessage(this, arguments)
           , actual = util.getActual(this, arguments);
+        console.trace()
         throw new AssertionError({
             message: msg
           , actual: actual
           , expected: expected
-          , stackStartFunction: (Assertion.includeStack) ? this.assert : flag(this, 'ssfi')
+          , stackStartFunction: true ? this.assert : flag(this, 'ssfi')
           , showDiff: showDiff
         });
       }
