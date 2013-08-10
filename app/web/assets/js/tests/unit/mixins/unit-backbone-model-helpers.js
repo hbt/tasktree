@@ -46,7 +46,7 @@ define(['utils/tests/helpers'], function(TestUtils)
         describe('storage', function()
         {
 
-          it('should save model + its relation', function(done)
+          it('should save model + its relations', function(done)
           {
             child.once('sync', function()
             {
@@ -92,22 +92,110 @@ define(['utils/tests/helpers'], function(TestUtils)
           task = new Task({content: 'task #tag1 #tag2'})
         })
 
-
-        xit('should save the model', function()
+        describe('relations', function()
         {
-          assert.is('')
-          task.once('sync', function()
+
+          it('should track tags', function(done)
           {
-            done()
+            task.once('sync', function()
+            {
+              assert.is(task.getTags().length, 2)
+
+              assert.is(task.getTags().at(0).get('content'), 'tag1')
+              assert.is(task.getTags().at(1).get('content'), 'tag2')
+
+              assert.is(task.get('taskstags').at(0).get('tag').get('content'), 'tag1')
+              assert.is(task.get('taskstags').at(1).get('tag').get('content'), 'tag2')
+
+              done()
+            })
+
+            task.save()
           })
 
-          task.save()
-        })
 
-        xit('should save related models', function()
+          it('should track tasks', function(done)
+          {
+            task.once('sync', function()
+            {
+              var tag1 = task.getTags().at(0)
+              var tag2 = task.getTags().at(1)
+
+              // Note(hbt) there is a bug in backbone relational where it saves null in addition to saving the task (i.e two records)
+              // rendering the taskstags useless without a wrapper
+              assert.is(tag1.getTasks().length, 1)
+              assert.is(tag1.getTasks().at(0), task)
+
+
+              assert.is(tag2.getTasks().length, 1)
+              assert.is(tag2.getTasks().at(0), task)
+
+              done()
+            })
+
+            task.save()
+          })
+
+          it('should track unique keys | not duplicates', function(done)
+          {
+            task.once('sync', function()
+            {
+              assert.is(task.getTags().length, 2)
+              assert.is(task.get('taskstags').length, 2)
+
+              task.tag('tag1')
+
+              // remains the same after
+              assert.is(task.getTags().length, 2)
+              assert.is(task.get('taskstags').length, 2)
+
+              done()
+            })
+
+            task.save()
+          })
+        });
+
+        describe('storage', function()
         {
+          it('should save model + its relations', function(done)
+          {
+            task.once('sync', function()
+            {
+              assert.is(task.getTags().length, 2)
 
-        })
+              // check this was actually stored
+              var taskId = task.get('id')
+
+              // clear it from memory
+              TestUtils.resetCollections()
+              task = Backbone.Relational.store.find(App.models.Task, taskId)
+              assert.is(task, null)
+
+              // fetch from storage
+              App.collections.Tags.fetch().then(function()
+              {
+                App.collections.Tasks.fetch().then(function()
+                {
+                  task = Backbone.Relational.store.find(App.models.Task, taskId)
+
+                  // is stored properly both ways
+                  assert.is(task.getTags().length, 2)
+
+                  assert.is(task.getTags().at(0).getTasks().at(0), task)
+                  assert.is(task.getTags().at(1).getTasks().at(0), task)
+
+
+                  done()
+                })
+              })
+
+            })
+
+            task.save()
+          })
+        });
+
       });
 
       afterEach(function(done)

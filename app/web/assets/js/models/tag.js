@@ -14,12 +14,12 @@ define(['utils/schema'], function(schema)
 
     relations: [
       {
-        type: Backbone.HasMany,
-        key:  'taskstags',
+        type:            Backbone.HasMany,
+        key:             'taskstags',
         relatedModel:    'App.models.TasksTags',
         collectionType:  'App.collectionClasses.TasksTags',
         reverseRelation: {
-          key:           'tags',
+          key:           'tag',
           includeInJSON: 'id'
         }
       }
@@ -27,10 +27,18 @@ define(['utils/schema'], function(schema)
 
     getTasks: function()
     {
-      return this.toJSON()['taskstags']
+      var coll = new App.collectionClasses.Tasks()
+      var tags = this.get('taskstags').map(function(v)
+      {
+        return v.get('task')
+      })
+
+      // reset + filters out duplicates -- use groupby if mistaken
+      coll.reset(tags)
+
+      return coll
     }
   })
-
 
 
   window.App.models['Tag'] = window.App.models['Tag'] || Model

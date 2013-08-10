@@ -4,7 +4,6 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
     database:  schema,
     storeName: 'tasks',
     modelName: 'Task',
-    // TODO(hbt) Refactor (high): add relations + lazy load them + handle many to many
     relations: [
       {
         type:            Backbone.HasMany,
@@ -25,7 +24,7 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
         relatedModel:    'App.models.TasksTags',
         collectionType:  'App.collectionClasses.TasksTags',
         reverseRelation: {
-          key:           'tasks',
+          key:           'task',
           includeInJSON: 'id'
         }
       }
@@ -45,6 +44,11 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       return Backbone.Model.prototype.initialize.apply(this, arguments);
     },
 
+    hasTag: function(tag)
+    {
+      var content = _.isString(tag) && tag || tag.get('content')
+      return this.getTags().length && _.contains(this.getTags().pluck('content'), content) || false
+    },
 
     /**
      *
@@ -59,24 +63,25 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 
       var ids = this.getTags().pluck('id')
 
-      // TODO(hbt) NEXT use contains to decide if we should add or not
       var otags = _.map(tags, function(v)
       {
         var tag = _.isString(v) && v || v instanceof App.models.Tag && v.get('content')
         return TagUtils.findOrCreateByContent(tag)
       })
 
-      // add tags
+      // add tags if not already present
       _.each(otags, function(otag)
       {
-        // TODO(hbt) deal with duplicates in taskstags
-        this.get('taskstags').add({tags: otag})
+        if(!this.hasTag(otag))
+        {
+          this.get('taskstags').add({tag: otag})
+        }
       }, this)
 
 
       // only save if there is a new tag
       var nids = this.getTags().pluck('id')
-      if(_.difference(nids, ids).length > 0 && !skipSave)
+      if(!skipSave && _.difference(nids, ids).length > 0)
       {
         this.save()
       }
@@ -92,7 +97,7 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       var coll = new App.collectionClasses.Tags()
       var tags = this.get('taskstags').map(function(v)
       {
-        return v.get('tags')
+        return v.get('tag')
       })
 
       // reset + filters out duplicates -- use groupby if mistaken
@@ -115,7 +120,7 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       {
         this.tag(tags, true)
 
-        content = _.filter(_s.words(content), function(v)
+        content = _.filter(_s.words(content),function(v)
         {
           return !_s.startsWith(v, '#')
         }).join(' ')
