@@ -77,6 +77,7 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
         if(!this.hasTag(otag))
         {
           this.get('taskstags').add({tag: otag})
+          otag.save()
         }
       }, this)
 
