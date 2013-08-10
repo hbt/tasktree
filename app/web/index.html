@@ -29,6 +29,7 @@
     <div data-bind="foreach: {data: tags, as: 'tag'}">
         <div>
             <span data-bind="text: content"></span>
+            (<span data-bind="text: $data.getTasks().length"></span>)
         </div>
     </div>
 </div>

@@ -88,7 +88,7 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
                   it('should create + associate inline tags to task', function()
                   {
                     var task = coll.at(0)
-                    var tags = task.getTags()
+                    var tags = task.getUserTags()
 
                     assert.is(tags.length, 2)
                     assert.is(tags.at(0).get('content'), 'tag1')
@@ -104,6 +104,12 @@ define(['keyboardSimulator', 'utils/tests/helpers'], function(Keyboard, TestUtil
                   })
                 });
               });
+
+
+              it('should be tagged as #incomplete', function()
+              {
+                assert.is(coll.at(0).hasTag('incomplete'), true)
+              })
 
               xit('should be tagged as #unprocessed', function()
               {

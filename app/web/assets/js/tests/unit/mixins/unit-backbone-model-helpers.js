@@ -99,7 +99,7 @@ define(['utils/tests/helpers'], function(TestUtils)
           {
             task.once('sync', function()
             {
-              assert.is(task.getTags().length, 2)
+              assert.is(task.getUserTags().length, 2)
 
               assert.is(task.getTags().at(0).get('content'), 'tag1')
               assert.is(task.getTags().at(1).get('content'), 'tag2')
@@ -140,14 +140,12 @@ define(['utils/tests/helpers'], function(TestUtils)
           {
             task.once('sync', function()
             {
-              assert.is(task.getTags().length, 2)
-              assert.is(task.get('taskstags').length, 2)
+              assert.is(task.getUserTags().length, 2)
 
               task.tag('tag1')
 
               // remains the same after
-              assert.is(task.getTags().length, 2)
-              assert.is(task.get('taskstags').length, 2)
+              assert.is(task.getUserTags().length, 2)
 
               done()
             })
@@ -165,7 +163,7 @@ define(['utils/tests/helpers'], function(TestUtils)
             // all 3 syncs must be triggered
             var after = _.after(3, function()
             {
-              assert.is(task.getTags().length, 2)
+              assert.is(task.getUserTags().length, 2)
 
               // check this was actually stored
               var taskId = task.get('id')
@@ -188,7 +186,7 @@ define(['utils/tests/helpers'], function(TestUtils)
                   task = Backbone.Relational.store.find(App.models.Task, taskId)
 
                   // is stored properly both ways
-                  assert.is(task.getTags().length, 2)
+                  assert.is(task.getUserTags().length, 2)
 
                   done()
                 })

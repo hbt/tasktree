@@ -40,7 +40,7 @@ define([], function()
         {
 
           // create default tags
-          _.each(['completed', 'incomplete'], function(v)
+          _.each(App.config.tags, function(v)
           {
             App.collections.Tags.create({content: v}, {wait: true})
           })

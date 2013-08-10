@@ -94,6 +94,29 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 
     },
 
+
+    /**
+     * returns all tags excluding tags used to manipulate applications -- view App.config.tags
+     * @returns {App.collectionClasses.Tags}
+     */
+    getUserTags: function()
+    {
+      var coll = new App.collectionClasses.Tags()
+
+      var tags = this.getTags().reject(function(v)
+      {
+        return _.contains(App.config.tags, v.get('content'))
+      })
+
+      coll.reset(tags)
+
+      return coll
+    },
+
+    /**
+     * returns all tags
+     * @returns {App.collectionClasses.Tags}
+     */
     getTags: function()
     {
 
@@ -114,17 +137,16 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 
     updateCompletion: function()
     {
-//      if(this.get('completed'))
-//      {
-//        this.tag('completed', true)
-//        this.untag('incomplete', true)
-//      }
-//      else
-//      {
-//        this.tag('incomplete', true)
-//        this.untag('completed', true)
-//      }
-//      console.log(this.getTags())
+      if(this.get('completed'))
+      {
+        this.tag('completed', true)
+        this.untag('incomplete', true)
+      }
+      else
+      {
+        this.tag('incomplete', true)
+        this.untag('completed', true)
+      }
     },
 
     /**

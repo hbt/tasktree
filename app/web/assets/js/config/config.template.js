@@ -8,7 +8,16 @@ define([], function()
     'envName':         '%%environment_name%%',
     'testMode':        testMode,
     'databaseName':    testMode ? 'tasktree-test' : 'tasktree',
-    'skipCrashTests':  '%%skip_crash_tests%%' === 'true'
+    'skipCrashTests':  '%%skip_crash_tests%%' === 'true',
+    'tags':            [
+      // tracks completed tasks
+      'completed',
+
+      // tracks incomplete tasks
+      'incomplete'
+    ]
+
+
   }
 
 

@@ -1,4 +1,4 @@
-define(['components/chai/chai', 'components/mocha/mocha', 'css!components/mocha/mocha'], function(chai)
+define(['customized-vendor/chai/chai', 'components/mocha/mocha', 'css!components/mocha/mocha'], function(chai)
 {
 
   // add custom asserts
