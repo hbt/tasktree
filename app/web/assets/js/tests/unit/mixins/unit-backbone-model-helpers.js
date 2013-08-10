@@ -163,8 +163,8 @@ define(['utils/tests/helpers'], function(TestUtils)
           {
 
             // necessary because we need all elements to be saved in storage before wiping everything out from memory
-            // all 3 syncs must be triggered
-            var after = _.after(3, function()
+            // all 5 syncs must be triggered
+            var after = _.after(5, function()
             {
               assert.is(task.getUserTags().length, 2)
 
@@ -201,8 +201,8 @@ define(['utils/tests/helpers'], function(TestUtils)
 
             task.save()
 
-            task.getTags().at(0).once('sync', after)
-            task.getTags().at(1).once('sync', after)
+            App.utils.findTag('tag1').on('sync', after)
+            App.utils.findTag('tag2').on('sync', after)
           })
         });
 

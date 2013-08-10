@@ -39,6 +39,8 @@
     <div data-bind="foreach: tasks">
         <div>
             <form data-bind="submit: save">
+
+                <input type="checkbox" data-bind="checked: completed, click: save"/>
                 <input type="text" data-bind="
                     value: content,
                     valueUpdate: 'keyup'"

@@ -4,6 +4,8 @@ define([], function()
     save: function()
     {
       this.model().save()
+
+      return true
     }
 
   })

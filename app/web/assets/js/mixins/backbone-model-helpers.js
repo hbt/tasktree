@@ -8,7 +8,7 @@ define(['backbone'], function()
    */
   exports.initialize = function()
   {
-    if(this.isNew() && this.storeName)
+    if(this.isNew())
     {
       this.set('id', App.utils.guid())
     }

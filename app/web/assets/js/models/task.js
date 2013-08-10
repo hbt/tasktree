@@ -63,6 +63,8 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       var tags = _.isArray(tag) && tag || [tag]
       skipSave = skipSave || false
 
+      if(tags.length === 0) return
+
       var ids = this.getTags().pluck('id')
 
       var otags = _.map(tags, function(v)
@@ -90,8 +92,53 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
       }
     },
 
-    untag: function()
+    untag: function(tag, skipSave)
     {
+      // transform
+      var tags = _.isArray(tag) && tag || [tag]
+      skipSave = skipSave || false
+
+
+      if(tags.length === 0) return
+
+      var ids = this.getTags().pluck('id')
+
+      var otags = _.map(tags, function(v)
+      {
+        var tag = _.isString(v) && v || v instanceof App.models.Tag && v.get('content')
+        return TagUtils.findOrCreateByContent(tag)
+      })
+
+      // remove tags if present
+      _.each(otags, function(otag)
+      {
+        if(this.hasTag(otag))
+        {
+          // remove
+          var value = this.get('taskstags').findWhere({tag: otag})
+          this.get('taskstags').remove(value)
+
+          // Note(hbt) for some reason the removal does not work but adding works -- i.e need to remove manually
+          otag.get('taskstags').remove(value)
+          otag.save()
+
+          // verify
+          value = this.get('taskstags').findWhere({tag: otag})
+          if(value)
+          {
+            console.log(value, value.get('tag'))
+            throw new Error('More than one tasktag found. Should not have multiple taskstags')
+          }
+        }
+      }, this)
+
+
+      // only save if there is a new tag
+      var nids = this.getTags().pluck('id')
+      if(!skipSave && _.difference(nids, ids).length > 0)
+      {
+        this.save()
+      }
 
     },
 
@@ -140,13 +187,13 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
     {
       if(this.get('completed'))
       {
-        this.tag('completed', true)
         this.untag('incomplete', true)
+        this.tag('completed', true)
       }
       else
       {
-        this.tag('incomplete', true)
         this.untag('completed', true)
+        this.tag('incomplete', true)
       }
     },
 
