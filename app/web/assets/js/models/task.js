@@ -32,7 +32,8 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
     defaults:  function()
     {
       return {
-        content: ''
+        content:   '',
+        completed: false
       }
     },
 
@@ -40,6 +41,7 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
     initialize: function()
     {
       this.on('pre-save', this.handleInlineTags)
+      this.on('pre-save', this.updateCompletion)
 
       return Backbone.Model.prototype.initialize.apply(this, arguments);
     },
@@ -89,22 +91,40 @@ define(['utils/tags', 'utils/schema'], function(TagUtils, schema)
 
     untag: function()
     {
-      throw new Error('Not implemented yet')
+
     },
 
     getTags: function()
     {
-      var coll = new App.collectionClasses.Tags()
-      var tags = this.get('taskstags').map(function(v)
+
+      var tags = _.map(this.toJSON()['taskstags'], function(v)
       {
-        return v.get('tag')
+        return App.store.find(App.models.Tag, v.tag)
       })
+
+      var coll = new App.collectionClasses.Tags()
 
       // reset + filters out duplicates -- use groupby if mistaken
       coll.reset(tags)
 
       return coll
 
+    },
+
+
+    updateCompletion: function()
+    {
+//      if(this.get('completed'))
+//      {
+//        this.tag('completed', true)
+//        this.untag('incomplete', true)
+//      }
+//      else
+//      {
+//        this.tag('incomplete', true)
+//        this.untag('completed', true)
+//      }
+//      console.log(this.getTags())
     },
 
     /**

@@ -25,18 +25,45 @@ define(['utils/schema'], function(schema)
       }
     ],
 
-    getTasks: function()
+
+    getTasks: function(filters)
     {
-      var coll = new App.collectionClasses.Tasks()
-      var tags = this.get('taskstags').map(function(v)
+      var ret = _.map(this.toJSON()['taskstags'], function(v)
       {
-        return v.get('task')
+        return v['task']
       })
 
-      // reset + filters out duplicates -- use groupby if mistaken
-      coll.reset(tags)
 
-      return coll
+      // filter results further with other tags
+      filters = filters && (_.isArray(filters) && filters) || (_.isString(filters) && [filters]) || null
+      _.each(filters, function(v)
+      {
+        // find filter
+        var tag = App.utils.findTag(v)
+
+        if(!tag)
+        {
+          return
+        }
+
+        var ids = tag.getTasks()
+        if(ids.length)
+        {
+          ret = _.intersection(ret, ids)
+        }
+      })
+
+
+      ret = _.unique(ret)
+
+      // remove null records -- bug in backbone relational? -- null in the JSON
+      ret = _.filter(ret, function(v)
+      {
+        return v !== null
+      })
+
+
+      return ret
     }
   })
 

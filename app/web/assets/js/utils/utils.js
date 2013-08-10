@@ -16,5 +16,15 @@ define([], function()
   }
 
 
+  exports.findTag = function(name)
+  {
+    var coll = App.store.getCollection(App.models.Tag)
+    var tag = coll.where({content: name})
+    tag = tag && _.isArray(tag) && tag[0] || null
+
+    return tag
+  }
+
+
   return exports
 })

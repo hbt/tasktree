@@ -8,6 +8,7 @@ define(['require'], function(require)
       require(['models/task', 'collections/tasks', 'models/tag', 'collections/tags', 'models/taskstags', 'collections/taskstags'], function()
       {
         App.models.Task.setup()
+        App.store = Backbone.Relational.store
 
         // trigger the migrations
         App.collections.Tags.fetch()

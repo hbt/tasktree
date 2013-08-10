@@ -124,11 +124,11 @@ define(['utils/tests/helpers'], function(TestUtils)
               // Note(hbt) there is a bug in backbone relational where it saves null in addition to saving the task (i.e two records)
               // rendering the taskstags useless without a wrapper
               assert.is(tag1.getTasks().length, 1)
-              assert.is(tag1.getTasks().at(0), task)
+              assert.is(tag1.getTasks()[0], task.get('id'))
 
 
               assert.is(tag2.getTasks().length, 1)
-              assert.is(tag2.getTasks().at(0), task)
+              assert.is(tag2.getTasks()[0], task.get('id'))
 
               done()
             })
@@ -160,7 +160,10 @@ define(['utils/tests/helpers'], function(TestUtils)
         {
           it('should save model + its relations', function(done)
           {
-            task.once('sync', function()
+
+            // necessary because we need all elements to be saved in storage before wiping everything out from memory
+            // all 3 syncs must be triggered
+            var after = _.after(3, function()
             {
               assert.is(task.getTags().length, 2)
 
@@ -175,6 +178,11 @@ define(['utils/tests/helpers'], function(TestUtils)
               // fetch from storage
               App.collections.Tags.fetch().then(function()
               {
+                // verify first because we want to make sure it is not influenced after tasks are loaded
+                assert.is(App.utils.findTag('tag1').getTasks()[0], taskId)
+                assert.is(App.utils.findTag('tag2').getTasks()[0], taskId)
+
+
                 App.collections.Tasks.fetch().then(function()
                 {
                   task = Backbone.Relational.store.find(App.models.Task, taskId)
@@ -182,17 +190,18 @@ define(['utils/tests/helpers'], function(TestUtils)
                   // is stored properly both ways
                   assert.is(task.getTags().length, 2)
 
-                  assert.is(task.getTags().at(0).getTasks().at(0), task)
-                  assert.is(task.getTags().at(1).getTasks().at(0), task)
-
-
                   done()
                 })
               })
-
             })
 
+
+            task.once('sync', after)
+
             task.save()
+
+            task.getTags().at(0).once('sync', after)
+            task.getTags().at(1).once('sync', after)
           })
         });
 
